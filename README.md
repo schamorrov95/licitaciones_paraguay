@@ -16,7 +16,10 @@ Análisis completo del pipeline de ciencia de datos aplicado a datos reales de c
 ├── data/
 │   └── README.md          # origen y descarga de los CSV (no se versionan)
 ├── notebooks/
-│   └── licitaciones_paraguay.ipynb
+│   ├── licitaciones_paraguay.ipynb          # pipeline ML (clasificación/regresión/clustering)
+│   └── trabajo_practico_estadistica.ipynb   # análisis estadístico inferencial (TP Integrado)
+├── informe/
+│   └── trabajo_practico_estadistica.html    # informe A4 imprimible a PDF (Arial 11)
 ├── .gitignore
 ├── requirements.txt
 └── README.md
@@ -39,6 +42,15 @@ Ver [`data/README.md`](data/README.md) para el detalle de los archivos
 | 4 | Regresión supervisada | Random Forest — R² 0.637, MAE USD 8,804 |
 | 5 | Clustering | 4 perfiles de instituciones identificados |
 
+### Trabajo Práctico Integrado de Estadística
+
+El notebook [`notebooks/trabajo_practico_estadistica.ipynb`](notebooks/trabajo_practico_estadistica.ipynb)
+desarrolla un análisis estadístico inferencial completo sobre el mismo dataset
+(descripción y clasificación de variables, limpieza, análisis descriptivo,
+estimación por intervalos de confianza, pruebas de hipótesis, ANOVA y regresión
+lineal múltiple, y resumen ejecutivo). El informe listo para entregar (A4, Arial 11,
+imprimible a PDF) está en [`informe/trabajo_practico_estadistica.html`](informe/trabajo_practico_estadistica.html).
+
 ## Dataset
 
 - **Fuente:** [contrataciones.gov.py/datos](https://www.contrataciones.gov.py/datos)
@@ -58,6 +70,8 @@ pip install -r requirements.txt
 pandas==2.2.2
 numpy==2.0.2
 scikit-learn==1.6.1
+scipy==1.13.1
+statsmodels==0.14.2
 matplotlib==3.10.0
 seaborn==0.13.2
 gdown==5.2.0
