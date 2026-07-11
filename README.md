@@ -14,17 +14,20 @@ Análisis completo del pipeline de ciencia de datos aplicado a datos reales de c
 ```
 /
 ├── data/
-│   ├── records_adjudicaciones_2021.csv
-│   ├── records_adjudicaciones_2022.csv
-│   ├── records_contratos_1.csv
-│   └── records_contratos_2.csv
+│   └── README.md          # origen y descarga de los CSV (no se versionan)
 ├── notebooks/
-│   └── prediccion_riesgo_crediticio.ipynb
-├── reports/
-│   └── informe_final.pdf
+│   └── licitaciones_paraguay.ipynb
+├── .gitignore
 ├── requirements.txt
 └── README.md
 ```
+
+Los CSV (~101 MB) no se incluyen en el repositorio: el notebook los descarga
+automáticamente con `gdown` desde una carpeta pública de Google Drive
+([enlace](https://drive.google.com/drive/folders/1738grWDl9j2VXf3ju0JFq0Njo2WXiQGo)).
+Ver [`data/README.md`](data/README.md) para el detalle de los archivos
+(`records_adj_2021.csv`, `records_adj_2022.csv`, `records_contratos_2021.csv`,
+`records_contratos_2022.csv`) y su origen en el Portal DNCP.
 
 ## Etapas del trabajo
 
@@ -57,6 +60,7 @@ numpy==2.0.2
 scikit-learn==1.6.1
 matplotlib==3.10.0
 seaborn==0.13.2
+gdown==5.2.0
 ```
 
 ## Uso de IA generativa
