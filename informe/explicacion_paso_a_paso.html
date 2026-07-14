@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<title>Explicación paso a paso — TP Estadística DNCP Paraguay</title>
+<style>
+@page { size: A4; margin: 1.8cm 2cm; }
+* { box-sizing: border-box; }
+body { font-family: Arial, Helvetica, sans-serif; font-size: 11pt; line-height: 1.5; color:#1a1a1a; margin:0; }
+h1 { font-size: 17pt; margin: 0 0 2pt; }
+h2 { font-size: 13pt; color:#1f3864; border-bottom:2px solid #1f3864; padding-bottom:2px; margin:18pt 0 6pt; }
+h3 { font-size: 11.5pt; color:#2e4a7a; margin:12pt 0 4pt; }
+.sub { color:#555; font-size:10pt; margin:2pt 0 0; }
+p { margin:5pt 0; text-align:justify; }
+ul,ol { margin:4pt 0 4pt 0; padding-left:20px; }
+li { margin:2pt 0; }
+code { font-family: Consolas,"Courier New",monospace; background:#eef1f5; padding:0 3px; border-radius:3px; font-size:9.5pt; }
+pre.code { background:#f6f8fa; border:1px solid #d0d7de; border-left:3px solid #6b7a90; border-radius:5px;
+  padding:8px 11px; font-family:Consolas,"Courier New",monospace; font-size:9pt; line-height:1.4;
+  overflow-x:auto; white-space:pre-wrap; margin:6pt 0; }
+.out { background:#f6f8fa; border:1px dashed #9aa6b6; border-radius:5px; padding:7px 11px;
+  font-family:Consolas,"Courier New",monospace; font-size:8.8pt; line-height:1.4; white-space:pre-wrap;
+  overflow-x:auto; margin:6pt 0; color:#243b53; }
+.step { border:1px solid #dfe3ea; border-radius:6px; padding:4px 13px 10px; margin:11pt 0; break-inside:avoid; }
+.lbl { display:inline-block; font-size:8pt; font-weight:bold; text-transform:uppercase; letter-spacing:.5px;
+  padding:1px 8px; border-radius:3px; margin:8pt 0 3pt; }
+.lbl-q{background:#dbe6f6;color:#1f3864;} .lbl-r{background:#e3e7eb;color:#37474f;} .lbl-i{background:#dff0df;color:#256029;}
+.concepto { background:#fff8e6; border-left:3px solid #e0a800; padding:6px 11px; margin:7pt 0; font-size:10pt; }
+.concepto b{ color:#8a6d00; }
+.nota { background:#f4f6fb; border-left:3px solid #1f3864; padding:6px 11px; margin:7pt 0; font-size:10pt; }
+.concl { background:#eef7ee; border-left:3px solid #2e7d32; padding:6px 11px; margin:7pt 0; }
+table { border-collapse: collapse; width:100%; font-size:9.3pt; margin:7pt 0; }
+th,td { border:1px solid #bbb; padding:3px 6px; text-align:center; }
+th { background:#e8edf5; }
+td:first-child, th:first-child { text-align:left; }
+.formula { text-align:center; font-style:italic; margin:7pt 0; font-size:10.5pt; }
+.toc { background:#f7f9fc; border:1px solid #dfe3ea; border-radius:6px; padding:8px 14px; font-size:10pt; column-count:2; }
+.toc a { color:#1f3864; text-decoration:none; } .toc li{ margin:1.5pt 0; }
+.small { font-size:9pt; color:#666; }
+dl.glos dt { font-weight:bold; color:#1f3864; margin-top:6pt; }
+dl.glos dd { margin:1pt 0 0 0; text-align:justify; }
+.avoid-break { break-inside: avoid; }
+.legend { font-size:9.3pt; }
+.legend span{ margin-right:14px; white-space:nowrap; }
+</style>
+</head>
+<body>
+
+<h1>Análisis estadístico de las contrataciones públicas del Paraguay</h1>
+<p class="sub">Explicación <b>paso a paso</b> del código y de los resultados — Notebook <code>trabajo_practico_estadistica.ipynb</code></p>
+<p class="sub">Maestría en Ciencia de Datos · Probabilidad y Estadística · Fuente: DNCP (OCDS), 2021–2022</p>
+
+<div class="nota"><b>Para qué sirve este documento.</b> Acompaña al notebook celda por celda. Para cada bloque de código se explica <b>qué hace</b>, se muestra el <b>resultado real</b> obtenido y se ofrece la <b>interpretación estadística</b>. Las cajas amarillas (<i>Concepto</i>) definen la idea teórica que hay detrás. No hace falta saber programar para seguirlo: el código está para referencia, pero la explicación es autónoma.</div>
+
+<p class="legend"><b>Cómo leer cada paso:</b>
+<span><span class="lbl lbl-q">Qué hace</span> el código</span>
+<span><span class="lbl lbl-r">Resultado</span> la salida real</span>
+<span><span class="lbl lbl-i">Interpretación</span> qué significa</span>
+</p>
+
+<div class="toc"><b>Contenido</b>
+<ol>
+<li><a href="#p0">Librerías y configuración</a></li>
+<li><a href="#p1">Descarga y carga de los datos</a></li>
+<li><a href="#p2">Limpieza: el pipeline de preparación</a></li>
+<li><a href="#p3">Clasificación de las variables</a></li>
+<li><a href="#p4">Faltantes, atípicos y transformación log</a></li>
+<li><a href="#p5">Estadísticos descriptivos</a></li>
+<li><a href="#p6">Gráficos descriptivos</a></li>
+<li><a href="#p7">Intervalo de confianza para la media</a></li>
+<li><a href="#p8">Intervalo de confianza para la proporción</a></li>
+<li><a href="#p9">Prueba t de Welch (medias)</a></li>
+<li><a href="#p10">Prueba z (proporciones)</a></li>
+<li><a href="#p11">Regresión lineal múltiple</a></li>
+<li><a href="#p12">Resumen ejecutivo</a></li>
+<li><a href="#glos">Glosario de conceptos</a></li>
+</ol>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="p0">1. Librerías y configuración</h2>
+<div class="step">
+<span class="lbl lbl-q">Qué hace</span>
+<pre class="code">import numpy as np, pandas as pd
+import matplotlib.pyplot as plt, seaborn as sns
+from scipy import stats
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+from statsmodels.stats.proportion import proportions_ztest, proportion_confint</pre>
+<p>Importa las herramientas del análisis: <code>pandas</code>/<code>numpy</code> para manipular tablas y números; <code>matplotlib</code>/<code>seaborn</code> para gráficos; <code>scipy.stats</code> para pruebas estadísticas (t, z, intervalos); <code>statsmodels</code> para la regresión (<code>ols</code> = <i>ordinary least squares</i>, mínimos cuadrados) y las pruebas de proporciones.</p>
+<span class="lbl lbl-i">Interpretación</span>
+<p>Es solo preparación del entorno. Cada import se usará más adelante: retener que <b>scipy</b> aporta las pruebas y <b>statsmodels</b> el modelo de regresión.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="p1">2. Descarga y carga de los datos</h2>
+<div class="step">
+<span class="lbl lbl-q">Qué hace</span>
+<p>Si los CSV no están en <code>./data</code>, los descarga con <code>gdown</code> desde una carpeta pública de Google Drive. Los archivos originales provienen del portal de la DNCP en formato <b>OCDS</b> (<i>Open Contracting Data Standard</i>), el estándar internacional de datos abiertos de contrataciones.</p>
+<span class="lbl lbl-r">Resultado</span>
+<div class="out">CSV ya presentes en ./data: ['records_contratos_2022.csv', 'records_contratos_2021.csv']</div>
+<span class="lbl lbl-i">Interpretación</span>
+<p>Los datos están disponibles localmente; no se descargó nada. El portal publica los mismos registros bajo dos endpoints (<code>contratos</code> y <code>adjudicaciones</code>) que resultaron <b>idénticos</b>, por eso se usa uno solo. Los CSV de 2021 y 2022 traen las mismas 66 columnas OCDS pero en distinto orden, así que el renombrado se hace <b>por nombre</b> y no por posición.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="p2">3. Limpieza: el pipeline de preparación</h2>
+<p>La función <code>cargar_y_limpiar()</code> concentra toda la preparación. Recibe los CSV crudos y devuelve una tabla lista para analizar. Sus pasos, en orden:</p>
+
+<div class="step">
+<span class="lbl lbl-q">Qué hace (paso a paso dentro de la función)</span>
+<ol>
+<li><b>Une</b> 2021 y 2022 en una sola tabla y renombra las 66 columnas OCDS a nombres en español legibles (<code>monto_licitado</code>, <code>num_oferentes</code>, <code>modalidad</code>, …).</li>
+<li><b>Descarta</b> columnas de texto libre, identificadores internos y columnas casi vacías.</li>
+<li><b>Convierte fechas</b> de texto a formato <code>datetime</code>.</li>
+<li>Pasa columnas numéricas a enteros y <b>elimina columnas con más de 25.000 nulos</b> (prácticamente vacías).</li>
+<li><b>Filtra</b> los procesos verdaderamente cerrados: <code>estado == 'complete'</code> y <code>detalle_estado == 'Adjudicada'</code>.</li>
+<li><b>Convierte el monto a dólares</b>: los montos en guaraníes se dividen por un tipo de cambio fijo (<code>TIPO_CAMBIO = 7200</code> PYG/USD, promedio 2021–2022); los que ya están en USD se dejan igual.</li>
+<li><b>Crea variables derivadas</b>: <code>tipo_es</code> (Bienes/Servicios/Obras) y <code>competencia</code> (1 si hubo más de un oferente, 0 si hubo uno solo).</li>
+</ol>
+<span class="lbl lbl-r">Resultado</span>
+<div class="out">Dataset limpio: (23982, 37) | por año: {2022: 18567, 2021: 5415}</div>
+<span class="lbl lbl-i">Interpretación</span>
+<p>De los ~39.957 registros crudos se conservan <b>23.982 procesos adjudicados y completos</b>, con 37 columnas. La muestra está desbalanceada por año (más procesos cargados en 2022), lo que se tendrá en cuenta al comparar.</p>
+</div>
+
+<div class="concepto"><b>Concepto — ¿por qué convertir a una sola moneda?</b> Sumar o promediar montos en monedas distintas no tiene sentido. Al llevar todo a USD las cifras se vuelven comparables. <b>Advertencia honesta:</b> usar un tipo de cambio <i>fijo</i> para los dos años es una simplificación: parte de la diferencia de montos entre 2021 y 2022 podría deberse al movimiento cambiario real, no solo a que se contrató “más caro”. Conviene tenerlo presente al interpretar.</div>
+
+<!-- ============================================================ -->
+<h2 id="p3">4. Clasificación de las variables</h2>
+<p>Se eligen <b>6 variables</b> (3 cuantitativas y 3 cualitativas). Clasificarlas correctamente es lo que determina qué análisis es válido sobre cada una.</p>
+<table class="avoid-break">
+<tr><th>Variable</th><th>Tipo</th><th>Por qué</th></tr>
+<tr><td><code>monto_usd</code></td><td>Cuantitativa continua</td><td>Puede tomar cualquier valor real positivo (dinero).</td></tr>
+<tr><td><code>num_oferentes</code></td><td>Cuantitativa discreta</td><td>Es un conteo: 1, 2, 3… oferentes (enteros).</td></tr>
+<tr><td><code>duracion_dias_licitacion</code></td><td>Cuantitativa discreta</td><td>Días enteros ≥ 0.</td></tr>
+<tr><td><code>tipo_es</code></td><td>Cualitativa nominal</td><td>Bienes / Servicios / Obras: categorías sin orden.</td></tr>
+<tr><td><code>modalidad</code></td><td>Cualitativa nominal</td><td>Contratación Directa, Concurso de Ofertas, … sin jerarquía.</td></tr>
+<tr><td><code>competencia</code></td><td>Cualitativa nominal <b>binaria</b></td><td>Derivada: 1 = más de un oferente, 0 = oferente único.</td></tr>
+</table>
+<div class="concepto"><b>Concepto — continua vs discreta / nominal vs binaria.</b> Una variable <b>continua</b> admite infinitos valores intermedios (un monto puede ser 19.974,26 USD); una <b>discreta</b> solo saltos enteros (no hay 2,5 oferentes). Una <b>nominal</b> son etiquetas sin orden. <code>competencia</code> es una variable nominal binaria construida a partir de una cuantitativa (<code>num_oferentes</code>): al binarizarla perdemos detalle numérico, pero ganamos poder responder preguntas de <b>proporción</b> (“¿qué % de procesos tuvo competencia?”).</div>
+
+<!-- ============================================================ -->
+<h2 id="p4">5. Faltantes, atípicos y transformación logarítmica</h2>
+
+<h3>5.1 Valores faltantes</h3>
+<div class="step">
+<span class="lbl lbl-q">Qué hace</span>
+<pre class="code">df[analisis].isna().sum()</pre>
+<p>Cuenta cuántos valores faltan (<code>NaN</code>) en cada variable del análisis.</p>
+<span class="lbl lbl-r">Resultado</span>
+<div class="out">monto_usd                    112
+num_oferentes               1124
+duracion_dias_licitacion    1191
+tipo_es                        0
+modalidad                      0
+anio                           0
+competencia                 1124</div>
+<span class="lbl lbl-i">Interpretación</span>
+<p>Las categóricas están completas. Faltan datos en <code>num_oferentes</code> (1.124), <code>duracion</code> (1.191) y algunos montos (112). Se adopta <b>eliminación por lista en cada análisis</b>: en cada prueba se descartan solo los casos que le faltan a las variables involucradas, conservando el máximo de información posible. Por eso más adelante el tamaño muestral <b>n cambia según el análisis</b> (23.870 para el monto, 22.858 para competencia, etc.).</p>
+</div>
+
+<h3>5.2 Valores atípicos (regla del IQR)</h3>
+<div class="step">
+<span class="lbl lbl-q">Qué hace</span>
+<pre class="code">q1, q3 = m.quantile([.25, .75]); iqr = q3 - q1
+lim_sup = q3 + 1.5*iqr
+n_out = (m > lim_sup).sum()</pre>
+<p>Aplica la <b>regla del rango intercuartílico (IQR)</b>: se consideran atípicos los montos que superan <code>Q3 + 1,5·IQR</code>.</p>
+<span class="lbl lbl-r">Resultado</span>
+<div class="out">Q1=10.914  Q3=49.722  IQR=38.809  límite superior=107.935
+Outliers por encima del límite: 3.186 (13,3% de los montos)
+Máximo: 73.151.373 USD  |  asimetría (skew): 27,0</div>
+<span class="lbl lbl-i">Interpretación</span>
+<p>Un 13,3% de los contratos supera el límite y el máximo (73 millones USD) es enorme frente a la mediana (~20.000 USD). La asimetría de <b>27</b> confirma una distribución fuertemente sesgada a la derecha. <b>Decisión: no se eliminan</b> — son contratos reales (grandes obras públicas). En su lugar se transforma la variable.</p>
+</div>
+<div class="concepto"><b>Concepto — regla IQR y asimetría (skew).</b> El IQR es el rango del 50% central de los datos (entre el percentil 25 y el 75). La regla “1,5·IQR” marca como atípico lo que se aleja mucho de ese núcleo. La <b>asimetría</b> (skew) mide cuán inclinada está la distribución: 0 = simétrica; valores altos y positivos (aquí 27) = una cola larga hacia la derecha (pocos valores gigantes). En datos de dinero esto es la norma, no un error.</div>
+
+<h3>5.3 Transformación logarítmica</h3>
+<div class="step">
+<span class="lbl lbl-q">Qué hace</span>
+<pre class="code">dfa = df[df['monto_usd'].notna() & (df['monto_usd'] > 0)].copy()
+dfa['log_monto'] = np.log10(dfa['monto_usd'])</pre>
+<p>Se queda con los montos positivos y crea <code>log_monto = log₁₀(monto)</code>.</p>
+<span class="lbl lbl-r">Resultado</span>
+<div class="out">Subconjunto con monto&gt;0 para análisis monetario: 23.853 filas
+(se excluyen 129 con monto nulo o cero)</div>
+<span class="lbl lbl-i">Interpretación</span>
+<p>El logaritmo <b>comprime</b> la escala: 1.000, 10.000 y 100.000 pasan a 3, 4 y 5. Así la distribución del monto, antes muy sesgada, se vuelve aproximadamente simétrica y acampanada — condición que necesitan las pruebas paramétricas (t, regresión). Los 129 registros excluidos = 112 nulos + 17 con monto cero (el log de 0 no existe).</p>
+</div>
+<div class="concepto"><b>Concepto — ¿por qué log?</b> Muchas variables económicas crecen de forma multiplicativa (un contrato puede ser 10× o 100× otro). El logaritmo convierte esos factores multiplicativos en distancias aditivas, acerca los valores extremos y estabiliza la varianza. Al final se “deshace” el log con <code>10^x</code> para volver a dólares. El promedio calculado en escala log y luego des-transformado se llama <b>media geométrica</b> (ver Glosario).</div>
+
+<!-- ============================================================ -->
+<h2 id="p5">6. Estadísticos descriptivos</h2>
+<div class="step">
+<span class="lbl lbl-q">Qué hace</span>
+<p>Calcula, para cada variable cuantitativa, n, media, mediana, desvío estándar, mínimo, máximo y coeficiente de variación (CV).</p>
+<span class="lbl lbl-r">Resultado</span>
+<table class="avoid-break">
+<tr><th>Variable</th><th>n</th><th>Media</th><th>Mediana</th><th>Desv. est.</th><th>Máx.</th><th>CV %</th></tr>
+<tr><td>monto_usd</td><td>23.870</td><td>174.044</td><td>19.974</td><td>1.466.581</td><td>73.151.373</td><td>842,7</td></tr>
+<tr><td>num_oferentes</td><td>22.858</td><td>2,73</td><td>2,00</td><td>2,44</td><td>43</td><td>89,5</td></tr>
+<tr><td>duracion_dias_licitacion</td><td>22.791</td><td>13,29</td><td>10,00</td><td>15,31</td><td>728</td><td>115,2</td></tr>
+</table>
+<span class="lbl lbl-i">Interpretación</span>
+<p>En <code>monto_usd</code> la <b>media (174.044) es casi 9 veces la mediana (19.974)</b>: señal inequívoca de asimetría — unos pocos megacontratos “tiran” la media hacia arriba, mientras la mitad de los procesos no supera los ~20.000 USD. Por eso la <b>mediana describe mejor</b> el monto “típico” que la media. El CV de 842% es extremo (confirma la necesidad del log). En oferentes, la mediana es 2 y el máximo 43.</p>
+</div>
+<div class="concepto"><b>Concepto — media vs mediana y el CV.</b> La <b>media</b> es sensible a valores extremos; la <b>mediana</b> (valor central) no. Cuando media ≫ mediana, la distribución está sesgada a la derecha. El <b>coeficiente de variación</b> (CV = desvío/media ×100) mide la dispersión <i>relativa</i>: &lt;10% baja, 10–30% moderada, &gt;30% alta. Un CV de 842% indica una variabilidad enorme.</div>
+
+<!-- ============================================================ -->
+<h2 id="p6">7. Gráficos descriptivos</h2>
+<div class="step">
+<span class="lbl lbl-q">Qué hace (Gráfico 1)</span>
+<p>Histograma de <code>log₁₀(monto)</code> con líneas de media y mediana, y boxplot del log-monto separado por año.</p>
+<span class="lbl lbl-i">Interpretación</span>
+<p>En escala logarítmica el monto es <b>aproximadamente simétrico y unimodal</b>, centrado en <code>log₁₀ ≈ 4,37</code> (≈ 23.500 USD). Media y mediana casi coinciden: la transformación corrigió la asimetría. El boxplot por año muestra montos algo <b>mayores en 2022</b>.</p>
+<span class="lbl lbl-q">Qué hace (Gráfico 2)</span>
+<p>Gráfico de barras de la cantidad de contrataciones por <code>tipo</code> y por <code>modalidad</code>.</p>
+<span class="lbl lbl-r">Resultado</span>
+<div class="out">Tipo (%):     Obras 40,5 · Bienes 35,7 · Servicios 23,8
+Modalidad (%): Contratación Directa 60,9 · Concurso de Ofertas 21,4
+              · Licitación Pública Nacional 10,3 · por Excepción 4,8 · …</div>
+<span class="lbl lbl-i">Interpretación</span>
+<p>Las tres categorías de tipo tienen tamaños amplios (buenas para comparar). En modalidad domina la <b>Contratación Directa</b> (≈61%): la mayoría de los procesos son directos, aunque —como veremos en la regresión— son los de <b>menor monto</b>.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="p7">8. Intervalo de confianza para la media</h2>
+<div class="step">
+<span class="lbl lbl-q">Qué hace</span>
+<pre class="code">media = x.mean(); ee = x.std(ddof=1)/np.sqrt(n)
+tcrit = stats.t.ppf(0.975, n-1)
+li, ls = media - tcrit*ee, media + tcrit*ee</pre>
+<p>Construye el <b>IC del 95%</b> para la media de <code>log₁₀(monto)</code> con la distribución <b>t de Student</b>, y luego lo convierte a dólares con <code>10^</code>.</p>
+<span class="lbl lbl-r">Resultado</span>
+<div class="out">n=23.853  media(log)=4,3715  EE=0,00438  t*=1,9601
+IC95% (log10): (4,3629 ; 4,3800)
+IC95% en USD (media geométrica): 23.521 -> (23.061 ; 23.991)</div>
+<span class="lbl lbl-i">Interpretación</span>
+<p>Con un <b>95% de confianza</b>, la <b>media geométrica</b> del monto adjudicado de <i>toda la población</i> de contrataciones está entre <b>23.061 y 23.991 USD</b>. El intervalo es muy angosto (~930 USD de amplitud) porque el n es enorme: cuanto más grande la muestra, más preciso el estimado.</p>
+</div>
+<div class="concepto"><b>Concepto — qué es (y qué NO es) un intervalo de confianza.</b> El IC del 95% <b>no</b> dice que “el 95% de los contratos cuesta entre 23.061 y 23.991”. Dice que, si repitiéramos el muestreo muchísimas veces y construyéramos un intervalo cada vez, el <b>95% de esos intervalos contendría la verdadera media poblacional</b>. Es una afirmación sobre el método, no sobre un contrato individual. El <b>error estándar</b> (EE = desvío/√n) mide cuánto varía la media entre muestras; se achica con n grande. Con n tan grande, la t de Student ≈ la normal (t* = 1,96).</div>
+
+<!-- ============================================================ -->
+<h2 id="p8">9. Intervalo de confianza para la proporción</h2>
+<div class="step">
+<span class="lbl lbl-q">Qué hace</span>
+<pre class="code">k, n = comp.sum(), len(comp); phat = k/n
+ee = np.sqrt(phat*(1-phat)/n)
+proportion_confint(k, n, method='wilson')</pre>
+<p>Estima el IC del 95% para la <b>proporción de procesos con competencia</b> (más de un oferente), por dos métodos: aproximación normal y método de Wilson.</p>
+<span class="lbl lbl-r">Resultado</span>
+<div class="out">éxitos=14.833  n=22.858  p̂=0,6489
+IC95% (aprox. normal): (0,6427 ; 0,6551)
+IC95% (Wilson):        (0,6427 ; 0,6551)</div>
+<span class="lbl lbl-i">Interpretación</span>
+<p>Con 95% de confianza, entre el <b>64,3% y el 65,5%</b> de los procesos de la población tiene competencia efectiva (estimación puntual 64,9%). Es decir, aproximadamente <b>1 de cada 3 procesos recibe una sola oferta</b> — hallazgo relevante para la transparencia. Ambos métodos coinciden gracias al gran n.</p>
+</div>
+<div class="concepto"><b>Concepto — proporción y método de Wilson.</b> Para una variable binaria (éxito/fracaso), el parámetro de interés es la proporción p. La fórmula clásica <code>p̂ ± 1,96·√(p̂(1−p̂)/n)</code> funciona bien con n grande, pero falla cuando p̂ está cerca de 0 o 1 o con muestras chicas. El <b>intervalo de Wilson</b> corrige eso y es más fiable; que ambos coincidan aquí confirma que n es más que suficiente.</div>
+
+<!-- ============================================================ -->
+<h2 id="p9">10. Prueba de hipótesis I — diferencia de medias (t de Welch)</h2>
+<div class="step">
+<span class="lbl lbl-q">Qué hace</span>
+<pre class="code">g21 = dfa[dfa['anio']==2021]['log_monto']
+g22 = dfa[dfa['anio']==2022]['log_monto']
+t, p = stats.ttest_ind(g21, g22, equal_var=False)   # Welch</pre>
+<p>Compara la media de <code>log₁₀(monto)</code> entre 2021 y 2022 con una prueba <b>t de Welch</b> (bilateral).</p>
+<ul>
+<li><b>H₀:</b> μ₂₀₂₁ = μ₂₀₂₂ (el monto medio no difiere entre años)</li>
+<li><b>H₁:</b> μ₂₀₂₁ ≠ μ₂₀₂₂ (sí difiere — no se presume dirección)</li>
+</ul>
+<span class="lbl lbl-r">Resultado</span>
+<div class="out">2021: n=5.378   media(log)=4,2294  (USD geom 16.958)
+2022: n=18.475  media(log)=4,4128  (USD geom 25.871)
+Estadístico t = -17,214   valor p = 2,69e-65
+Decisión: se RECHAZA H0</div>
+<span class="lbl lbl-i">Interpretación</span>
+<p>El valor p (≈ 2,7×10⁻⁶⁵) es <b>muchísimo menor que α = 0,05</b> ⇒ <b>se rechaza H₀</b>. El monto típico creció de ≈16.958 USD (2021) a ≈25.871 USD (2022), un aumento de +53% en la media geométrica. La diferencia es tanto estadística como prácticamente relevante.</p>
+</div>
+<div class="concepto"><b>Concepto — hipótesis, valor p, α y la t de Welch.</b> Una prueba de hipótesis enfrenta <b>H₀</b> (“no pasa nada”, no hay diferencia) contra <b>H₁</b>. El <b>estadístico t</b> mide a cuántos errores estándar está la diferencia observada de cero. El <b>valor p</b> es la probabilidad de ver una diferencia así de grande (o mayor) <i>si H₀ fuera cierta</i>: si p &lt; α (0,05), la diferencia es “demasiado rara para ser casualidad” y se rechaza H₀. Se usa la variante de <b>Welch</b> porque no asume que los dos grupos tengan igual varianza — es la opción más segura por defecto. Bilateral = nos interesa cualquier diferencia, suba o baje.</div>
+
+<!-- ============================================================ -->
+<h2 id="p10">11. Prueba de hipótesis II — diferencia de proporciones (z)</h2>
+<div class="step">
+<span class="lbl lbl-q">Qué hace</span>
+<pre class="code">count = np.array([c21.sum(), c22.sum()]); nobs = np.array([len(c21), len(c22)])
+z, p = proportions_ztest(count, nobs)</pre>
+<p>Compara la <b>proporción de procesos con competencia</b> entre 2021 y 2022 con una prueba <b>z de diferencia de proporciones</b> (bilateral).</p>
+<ul>
+<li><b>H₀:</b> p₂₀₂₁ = p₂₀₂₂ &nbsp;·&nbsp; <b>H₁:</b> p₂₀₂₁ ≠ p₂₀₂₂</li>
+</ul>
+<span class="lbl lbl-r">Resultado</span>
+<div class="out">2021: p̂=0,7247  (n=5.169)
+2022: p̂=0,6268  (n=17.689)
+Estadístico z = 12,977   valor p = 1,66e-38
+Decisión: se RECHAZA H0</div>
+<span class="lbl lbl-i">Interpretación</span>
+<p>p ≈ 1,7×10⁻³⁸ &lt; 0,05 ⇒ <b>se rechaza H₀</b>. La competencia <b>cayó</b> del 72,5% (2021) al 62,7% (2022). Combinado con el resultado anterior, en 2022 se contrató por montos mayores pero con <b>menos concurrencia</b> de oferentes — una señal que merece atención desde la eficiencia del gasto.</p>
+</div>
+<div class="concepto"><b>Concepto — prueba z para proporciones.</b> Análoga a la t, pero para comparar dos <b>porcentajes</b> en vez de dos promedios. El estadístico z mide a cuántos errores estándar está la diferencia de proporciones de cero, usando una proporción “combinada” de ambos grupos bajo el supuesto de H₀. Se apoya en que, con n grande, la distribución de una proporción se aproxima a la normal.</div>
+
+<!-- ============================================================ -->
+<h2 id="p11">12. Regresión lineal múltiple</h2>
+<p>Pregunta: <b>¿qué variables explican el monto adjudicado?</b> Variable respuesta: <code>log₁₀(monto)</code>. Predictores: n.º de oferentes, duración, tipo y modalidad.</p>
+
+<h3>12.1 Diagrama de dispersión (Gráfico 3)</h3>
+<div class="step">
+<span class="lbl lbl-q">Qué hace</span>
+<pre class="code">sns.regplot(x='num_oferentes', y='log_monto', ...)
+r, _ = stats.pearsonr(sub['num_oferentes'], sub['log_monto'])</pre>
+<p>Grafica la relación entre n.º de oferentes y log-monto y calcula la correlación de Pearson <code>r</code>.</p>
+<span class="lbl lbl-i">Interpretación</span>
+<p>La nube muestra una relación <b>positiva pero débil</b> (r ≈ 0,28): a más oferentes, montos algo mayores, pero la dispersión es grande. Un solo predictor no alcanza — de ahí el modelo múltiple.</p>
+</div>
+<div class="concepto"><b>Concepto — correlación r.</b> Mide la fuerza y el signo de la relación lineal entre dos variables cuantitativas, de −1 a +1. Cerca de 0 = sin relación lineal; cerca de ±1 = relación fuerte. r ≈ 0,28 es una relación real pero moderada-débil.</div>
+
+<h3>12.2 Estimación del modelo</h3>
+<div class="step">
+<span class="lbl lbl-q">Qué hace</span>
+<pre class="code">reg = ols('log_monto ~ num_oferentes + duracion_dias_licitacion '
+          '+ C(tipo_es) + C(modalidad_g)', data=dfr).fit()</pre>
+<p>Ajusta por <b>mínimos cuadrados</b> un modelo que predice el log-monto. <code>C(...)</code> indica que tipo y modalidad son categóricas: se convierten en variables <i>dummy</i> (0/1), tomando una categoría como base. La modalidad se colapsa a las 5 más frecuentes + “Otras”.</p>
+<span class="lbl lbl-r">Resultado (ajuste global)</span>
+<div class="out">n=22.465   R²=0,663   R²_aj=0,663   F=4.914   p(F)=0,00</div>
+<span class="lbl lbl-i">Interpretación</span>
+<p>El modelo explica el <b>66,3% de la variabilidad</b> del log-monto (R² = 0,663) y la <b>prueba F global es altamente significativa</b> (p ≈ 0): el conjunto de predictores sí sirve para explicar el monto.</p>
+</div>
+
+<h3>12.3 Coeficientes: qué dice cada variable</h3>
+<p>Cada coeficiente es el cambio en <code>log₁₀(monto)</code> al variar ese predictor <b>manteniendo el resto constante</b> (<i>ceteris paribus</i>). Como la respuesta está en log₁₀, se traduce a efecto multiplicativo con <code>10^coef</code> y a % con <code>(10^coef − 1)×100</code>.</p>
+<table class="avoid-break">
+<tr><th>Término (base: Bienes · Concurso de Ofertas)</th><th>Coef. (log₁₀)</th><th>×factor (10^coef)</th><th>Efecto</th><th>p</th></tr>
+<tr><td>Intercepto</td><td>+4,5333</td><td>—</td><td>≈ 34.150 USD (caso base)</td><td>0</td></tr>
+<tr><td>Tipo = Obras</td><td>+0,2357</td><td>1,72×</td><td>+72% vs Bienes</td><td>0</td></tr>
+<tr><td>Tipo = Servicios</td><td>+0,0563</td><td>1,14×</td><td>+14% vs Bienes</td><td>&lt;0,001</td></tr>
+<tr><td>Modalidad = Contratación Directa</td><td>−0,7093</td><td>0,20×</td><td>−80% vs Concurso</td><td>0</td></tr>
+<tr><td>Modalidad = Licitación Pública Nacional</td><td>+0,8477</td><td>7,04×</td><td>×7 vs Concurso</td><td>0</td></tr>
+<tr><td>Modalidad = por Excepción</td><td>+0,7472</td><td>5,59×</td><td>×5,6 vs Concurso</td><td>&lt;0,001</td></tr>
+<tr><td>Modalidad = Locación de Inmuebles</td><td>−0,3129</td><td>0,49×</td><td>−51% vs Concurso</td><td>&lt;0,001</td></tr>
+<tr><td>Modalidad = Otras</td><td>+0,5112</td><td>3,25×</td><td>×3,2 vs Concurso</td><td>&lt;0,001</td></tr>
+<tr><td>N.º de oferentes (por unidad)</td><td>+0,0240</td><td>1,057×</td><td>+5,7% por oferente</td><td>&lt;0,001</td></tr>
+<tr><td>Duración licitación (por día)</td><td>+0,0005</td><td>1,001×</td><td>+0,1% por día</td><td>0,005</td></tr>
+</table>
+<div class="concl"><b>Lectura de conjunto.</b> La <b>modalidad es el factor de mayor peso</b>: la <b>Contratación Directa</b> —la más frecuente— se asocia a montos <b>mucho menores</b> (−80% frente a un Concurso de Ofertas), mientras que la <b>Licitación Pública Nacional</b> concentra los importes más altos (×7). El <b>tipo</b> también pesa: las <b>Obras</b> cuestan ~72% más que los Bienes. Cada <b>oferente adicional</b> se asocia a +5,7% de monto (relación positiva pero débil). Todos los coeficientes son significativos (p &lt; 0,01).</div>
+<div class="concepto"><b>Concepto — R², prueba F y variables dummy.</b> El <b>R²</b> es la fracción de la variación de la respuesta que el modelo logra explicar (0 = nada, 1 = todo); 0,663 = dos tercios, muy bueno para datos sociales. La <b>prueba F global</b> contrasta H₀: “todos los coeficientes de pendiente son 0” (el modelo no sirve); rechazarla valida el modelo. Las <b>variables dummy</b>: una categórica con k niveles se codifica con k−1 indicadores 0/1; la categoría omitida es la <b>base</b> (aquí Bienes y Concurso de Ofertas), y cada coeficiente se lee <i>en comparación con esa base</i>.</div>
+
+<h3>12.4 Diagnóstico de residuos (Gráfico 4)</h3>
+<div class="step">
+<span class="lbl lbl-q">Qué hace</span>
+<p>Grafica los <b>residuos</b> (errores del modelo) contra los valores ajustados y un <b>QQ-plot</b> para chequear su normalidad.</p>
+<span class="lbl lbl-i">Interpretación</span>
+<p>Los residuos están razonablemente centrados en cero (no hay un patrón grozero), lo que respalda el modelo. El QQ-plot muestra <b>colas algo pesadas</b> (más valores extremos que una normal perfecta), limitación esperable con datos económicos reales y n tan grande. No invalida las conclusiones, pero conviene declararlo.</p>
+</div>
+<div class="concepto"><b>Concepto — residuos y sus supuestos.</b> Un <b>residuo</b> es la diferencia entre el valor real y el que predice el modelo. La regresión asume que los residuos son aproximadamente normales, con media 0 y varianza constante (homocedasticidad) y sin patrón. El gráfico “residuos vs ajustados” debe verse como una nube sin forma; el <b>QQ-plot</b> compara la distribución de los residuos con la normal: si caen sobre la diagonal, son normales.</div>
+
+<!-- ============================================================ -->
+<h2 id="p12">13. Resumen ejecutivo</h2>
+<p>Se analizaron <b>23.982 contrataciones públicas adjudicadas</b> del Paraguay (DNCP, 2021–2022). Hallazgos principales:</p>
+<ul>
+<li>Los montos son muy dispares: la mitad de los procesos no supera ~20.000 USD, pero unos pocos megacontratos (obras) elevan el promedio. El monto <b>típico</b> (media geométrica) ronda los <b>23.000–24.000 USD</b> (IC 95%).</li>
+<li>Aproximadamente <b>2 de cada 3 procesos</b> reciben más de una oferta.</li>
+<li>Entre 2021 y 2022 el <b>monto típico creció</b> (≈17.000 → ≈26.000 USD) mientras la <b>competencia bajó</b> (72% → 63%). Ambas diferencias son estadísticamente significativas.</li>
+<li>La <b>modalidad</b> y el <b>tipo</b> son los grandes determinantes del monto; un modelo con estas variables explica <b>~2/3</b> de la variación (R² = 0,66).</li>
+</ul>
+<p class="small">Estos resultados ofrecen una base cuantitativa para monitorear la transparencia y la eficiencia del gasto público. Recordar la salvedad del tipo de cambio fijo al comparar montos entre años.</p>
+
+<!-- ============================================================ -->
+<h2 id="glos">Glosario de conceptos</h2>
+<dl class="glos">
+<dt>Población y muestra</dt><dd>La <b>población</b> es todo el universo de interés (todas las contrataciones); la <b>muestra</b> son los datos que tenemos. La inferencia estadística usa la muestra para sacar conclusiones sobre la población.</dd>
+<dt>Media geométrica</dt><dd>Promedio calculado en escala logarítmica y luego des-transformado (<code>10^media(log)</code>). Representa el valor “típico” de datos multiplicativos y es mucho más robusto a los valores extremos que la media aritmética.</dd>
+<dt>Desvío estándar / Error estándar</dt><dd>El <b>desvío estándar</b> mide cuánto varían los datos individuales. El <b>error estándar</b> (= desvío/√n) mide cuánto varía la <i>media</i> de una muestra a otra; disminuye al crecer n.</dd>
+<dt>Coeficiente de variación (CV)</dt><dd>Dispersión relativa: desvío/media ×100. Permite comparar variabilidad entre variables de distinta escala.</dd>
+<dt>Intervalo de confianza (95%)</dt><dd>Rango que, con el método usado, contendría el verdadero parámetro poblacional en el 95% de las muestras posibles. No es la probabilidad de que un dato caiga en el rango.</dd>
+<dt>Hipótesis nula (H₀) y alternativa (H₁)</dt><dd>H₀ afirma “no hay efecto/diferencia”; H₁ lo contrario. Se busca evidencia para rechazar H₀.</dd>
+<dt>Valor p</dt><dd>Probabilidad de observar un resultado tan extremo como el obtenido si H₀ fuera cierta. Si p &lt; α se rechaza H₀.</dd>
+<dt>Nivel de significancia (α)</dt><dd>Umbral fijado de antemano (aquí 0,05). Es la probabilidad máxima aceptada de rechazar H₀ siendo verdadera (error tipo I).</dd>
+<dt>Error tipo I y tipo II</dt><dd><b>Tipo I (α):</b> rechazar H₀ cuando es verdadera (falsa alarma). <b>Tipo II (β):</b> no rechazar H₀ cuando es falsa (no detectar un efecto real, típico con muestras chicas).</dd>
+<dt>Prueba t de Welch</dt><dd>Compara las medias de dos grupos sin asumir varianzas iguales. Más robusta que la t clásica.</dd>
+<dt>Prueba z de proporciones</dt><dd>Compara dos porcentajes entre grupos, apoyándose en la aproximación normal (válida con n grande).</dd>
+<dt>Contraste bilateral</dt><dd>La hipótesis alternativa es “≠” (interesa cualquier diferencia, en las dos direcciones). Unilateral sería “&gt;” o “&lt;”.</dd>
+<dt>Regresión por mínimos cuadrados</dt><dd>Ajusta la recta/plano que minimiza la suma de los cuadrados de los errores (residuos) entre lo observado y lo predicho.</dd>
+<dt>R² (coeficiente de determinación)</dt><dd>Proporción de la variabilidad de la respuesta explicada por el modelo (0 a 1).</dd>
+<dt>Prueba F global</dt><dd>Contrasta si el modelo en su conjunto explica algo (H₀: todos los coeficientes de pendiente son 0).</dd>
+<dt>Variable dummy y categoría base</dt><dd>Codificación 0/1 de una variable categórica; se omite un nivel (la <b>base</b>) y cada coeficiente se interpreta respecto de ella.</dd>
+<dt>Ceteris paribus</dt><dd>“Manteniendo lo demás constante”: cómo se interpreta cada coeficiente de una regresión múltiple, aislando el efecto de esa variable.</dd>
+<dt>Residuo / Homocedasticidad</dt><dd><b>Residuo:</b> diferencia entre valor real y predicho. <b>Homocedasticidad:</b> que la varianza de los residuos sea constante (supuesto de la regresión).</dd>
+<dt>Asimetría (skew) y transformación log</dt><dd>La asimetría mide el sesgo de la distribución; una cola derecha larga (skew alto) se corrige aplicando logaritmo, que simetriza y estabiliza la varianza.</dd>
+</dl>
+
+<p class="small" style="margin-top:14pt;border-top:1px solid #ccc;padding-top:6pt">
+Fuente de datos: Dirección Nacional de Contrataciones Públicas (DNCP), Paraguay — datos abiertos en estándar OCDS, período 2021–2022. Documento explicativo del notebook <code>trabajo_practico_estadistica.ipynb</code>.</p>
+
+</body></html>

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guía interactiva — Estadística de las contrataciones del Paraguay</title>
+<style>
+:root{
+  --bg:#eef2f8; --surface:#ffffff; --surface2:#f7f9fc; --ink:#182338; --muted:#5b6675;
+  --line:#dde3ec; --primary:#2563a8; --primary-d:#1b4b86; --green:#2e9e5b; --amber:#e0a800;
+  --red:#d64545; --purple:#6b4fbf; --shadow:0 2px 10px rgba(24,35,56,.07), 0 1px 3px rgba(24,35,56,.06);
+  --radius:14px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.6;font-size:16px;}
+h1,h2,h3{line-height:1.25;margin:0;}
+p{margin:.6em 0;}
+a{color:var(--primary);}
+.wrap{max-width:960px;margin:0 auto;padding:0 18px;}
+/* progress bar */
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--primary),var(--purple));z-index:100;transition:width .1s;}
+/* nav */
+nav.chips{position:sticky;top:0;z-index:50;background:rgba(238,242,248,.92);backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);padding:8px 0;}
+nav.chips .row{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
+nav.chips a{flex:0 0 auto;font-size:12.5px;text-decoration:none;color:var(--muted);background:var(--surface);
+  border:1px solid var(--line);padding:5px 11px;border-radius:999px;white-space:nowrap;transition:.15s;}
+nav.chips a:hover{color:var(--primary);border-color:var(--primary);}
+nav.chips a.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+/* hero */
+header.hero{background:linear-gradient(135deg,#1b4b86,#2563a8 55%,#6b4fbf);color:#fff;padding:46px 0 40px;}
+header.hero .wrap{max-width:960px;}
+.badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
+  padding:3px 12px;border-radius:999px;font-size:12.5px;letter-spacing:.3px;margin-bottom:14px;}
+header.hero h1{font-size:31px;font-weight:800;letter-spacing:-.5px;}
+header.hero p{font-size:16px;opacity:.94;max-width:680px;}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:26px;}
+.kpi{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:12px 14px;}
+.kpi .n{font-size:23px;font-weight:800;}
+.kpi .l{font-size:11.5px;opacity:.9;line-height:1.3;margin-top:2px;}
+/* sections */
+section{padding:34px 0 8px;}
+.sec-tag{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--primary);
+  text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;}
+.sec-tag .dot{width:9px;height:9px;border-radius:50%;background:var(--primary);}
+h2.title{font-size:25px;font-weight:800;letter-spacing:-.4px;margin-bottom:4px;}
+.lead{color:var(--muted);font-size:16.5px;max-width:720px;}
+/* card / widget */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:20px 22px;margin:18px 0;}
+.card h3{font-size:17px;margin-bottom:4px;}
+.widget-hint{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:7px;margin:2px 0 14px;}
+.widget-hint::before{content:"👆";}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:720px){.grid2{grid-template-columns:1fr;}.kpis{grid-template-columns:repeat(2,1fr);}header.hero h1{font-size:25px;}}
+/* controls */
+label.ctl{display:block;font-size:13px;font-weight:600;color:var(--ink);margin:10px 0 3px;}
+input[type=range]{width:100%;accent-color:var(--primary);}
+select,button.btn{font:inherit;}
+select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);}
+.seg{display:inline-flex;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px;}
+.seg button{border:0;background:transparent;padding:7px 15px;border-radius:7px;cursor:pointer;font-weight:600;color:var(--muted);font-size:14px;}
+.seg button.on{background:var(--primary);color:#fff;}
+button.btn{cursor:pointer;border:0;background:var(--primary);color:#fff;font-weight:600;padding:9px 16px;border-radius:9px;}
+button.btn:hover{background:var(--primary-d);}
+button.btn.ghost{background:var(--surface2);color:var(--primary);border:1px solid var(--line);}
+.readout{font-variant-numeric:tabular-nums;}
+.big-num{font-size:30px;font-weight:800;letter-spacing:-.5px;}
+/* callouts */
+.callout{border-left:4px solid var(--primary);background:var(--surface2);border-radius:0 10px 10px 0;padding:12px 16px;margin:16px 0;}
+.callout.key{border-color:var(--amber);background:#fff8e6;}
+.callout.win{border-color:var(--green);background:#eefaf1;}
+.callout b{color:var(--ink);}
+.callout .t{font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;display:flex;gap:7px;align-items:center;}
+.callout.key .t{color:#8a6d00;} .callout.win .t{color:#1f7a44;} .callout .t.p{color:var(--primary-d);}
+/* result cards */
+.rescard{border:1px solid var(--line);border-radius:12px;padding:15px 17px;background:var(--surface);}
+.rescard .h{font-weight:700;margin-bottom:8px;font-size:15px;}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;}
+.pill.rej{background:#fdecec;color:var(--red);} .pill.ok{background:#eefaf1;color:var(--green);}
+.stat-line{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line);padding:5px 0;font-size:14px;}
+.stat-line span:last-child{font-weight:700;font-variant-numeric:tabular-nums;}
+/* quiz */
+.quiz .opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);
+  border-radius:10px;padding:11px 14px;margin:7px 0;cursor:pointer;font-size:14.5px;transition:.12s;}
+.quiz .opt:hover{border-color:var(--primary);}
+.quiz .opt.correct{border-color:var(--green);background:#eefaf1;}
+.quiz .opt.wrong{border-color:var(--red);background:#fdecec;}
+.quiz .explain{font-size:13.5px;color:var(--muted);margin-top:8px;display:none;}
+.quiz .explain.show{display:block;}
+/* accordion */
+.acc details{border:1px solid var(--line);border-radius:10px;margin:7px 0;background:var(--surface);overflow:hidden;}
+.acc summary{cursor:pointer;padding:11px 15px;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center;}
+.acc summary::-webkit-details-marker{display:none;}
+.acc summary::after{content:"+";color:var(--primary);font-weight:800;font-size:19px;}
+.acc details[open] summary::after{content:"–";}
+.acc .body{padding:0 15px 13px;color:var(--muted);font-size:14.5px;}
+svg{display:block;max-width:100%;}
+.tag-num{font-variant-numeric:tabular-nums;}
+footer{color:var(--muted);font-size:13px;padding:30px 0 50px;text-align:center;}
+.mono{font-family:Consolas,"SF Mono",monospace;font-size:13px;background:var(--surface2);padding:2px 6px;border-radius:5px;}
+.legendrow{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--muted);margin-top:8px;}
+.legendrow i{width:12px;height:12px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-1px;}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">Guía interactiva · Probabilidad y Estadística</span>
+    <h1>¿Cómo gasta el Estado paraguayo?</h1>
+    <p>Una recorrida <b>visual e interactiva</b> por el análisis estadístico de <b>23.982 contrataciones públicas</b> (DNCP, 2021–2022). Movés los controles, y los gráficos y números responden. Pensada para <b>entender la intuición</b> detrás de cada técnica, no solo el resultado.</p>
+    <div class="kpis">
+      <div class="kpi"><div class="n">23.982</div><div class="l">contrataciones analizadas</div></div>
+      <div class="kpi"><div class="n">~20 mil</div><div class="l">USD: monto mediano</div></div>
+      <div class="kpi"><div class="n">2 de 3</div><div class="l">procesos con &gt;1 oferente</div></div>
+      <div class="kpi"><div class="n">66%</div><div class="l">del monto explicado por el modelo</div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="chips"><div class="wrap"><div class="row" id="navrow">
+  <a href="#asimetria">1 · La asimetría</a>
+  <a href="#log">2 · El logaritmo</a>
+  <a href="#outliers">3 · Outliers (IQR)</a>
+  <a href="#ic">4 · Intervalos de confianza</a>
+  <a href="#prop">5 · Proporciones</a>
+  <a href="#hip">6 · Pruebas de hipótesis</a>
+  <a href="#reg">7 · Regresión (calculadora)</a>
+  <a href="#quiz">8 · Repaso</a>
+  <a href="#glos">Glosario</a>
+</div></div></nav>
+
+<div class="wrap">
+
+<!-- ============ 1. ASIMETRÍA ============ -->
+<section id="asimetria">
+  <div class="sec-tag"><span class="dot"></span>Descriptivo</div>
+  <h2 class="title">1. El problema de la gran asimetría</h2>
+  <p class="lead">La mitad de los contratos no llega a 20.000 USD, pero unos pocos superan los 70 millones. Eso hace que la <b>media</b> (promedio) engañe. Cambiá la escala y mirá qué pasa.</p>
+
+  <div class="card">
+    <h3>Distribución del monto: escala normal vs. logarítmica</h3>
+    <div class="widget-hint">Tocá los botones para cambiar de escala</div>
+    <div class="seg" id="scaleSeg" role="tablist">
+      <button class="on" data-scale="lin">Escala normal (USD)</button>
+      <button data-scale="log">Escala logarítmica</button>
+    </div>
+    <svg id="histSvg" viewBox="0 0 640 300" style="margin-top:14px"></svg>
+    <div class="legendrow">
+      <span><i style="background:var(--red)"></i>Media (promedio): <b class="tag-num">174.044 USD</b></span>
+      <span><i style="background:var(--green)"></i>Mediana (valor central): <b class="tag-num">19.974 USD</b></span>
+    </div>
+    <p id="histMsg" style="font-size:14px;color:var(--muted);margin-top:12px"></p>
+  </div>
+
+  <div class="callout key"><div class="t">💡 Idea clave</div>
+    Cuando la <b>media es casi 9 veces la mediana</b>, la distribución está “estirada” hacia la derecha por unos pocos valores gigantes. En escala normal casi todo se amontona en una sola barra; el logaritmo <b>reordena</b> los datos en una linda campana simétrica, donde recién las técnicas clásicas (media, intervalos, regresión) funcionan bien.</div>
+</section>
+
+<!-- ============ 2. LOGARITMO ============ -->
+<section id="log">
+  <div class="sec-tag"><span class="dot"></span>Transformación</div>
+  <h2 class="title">2. El “truco” del logaritmo</h2>
+  <p class="lead">El logaritmo base 10 responde: <i>“¿cuántos ceros tiene el número?”</i>. Convierte multiplicar en sumar, y por eso comprime los valores enormes. Deslizá y observá.</p>
+
+  <div class="card">
+    <h3>De dólares a <span class="mono">log₁₀</span></h3>
+    <div class="widget-hint">Arrastrá el control para mover el monto</div>
+    <label class="ctl">Monto del contrato: <span id="logAmt" class="readout" style="color:var(--primary);font-weight:800"></span></label>
+    <input type="range" id="logRange" min="2" max="8" step="0.01" value="4.3">
+    <svg id="logSvg" viewBox="0 0 640 130" style="margin-top:6px"></svg>
+    <div class="grid2" style="margin-top:10px">
+      <div class="rescard"><div class="h">En dólares</div><div class="big-num readout" id="logUsd" style="color:var(--ink)"></div><div style="font-size:12.5px;color:var(--muted)">escala natural: los saltos son gigantes</div></div>
+      <div class="rescard"><div class="h">En log₁₀</div><div class="big-num readout" id="logVal" style="color:var(--primary)"></div><div style="font-size:12.5px;color:var(--muted)">cada +1 significa ×10 en dólares</div></div>
+    </div>
+  </div>
+  <div class="callout"><div class="t p">Regla práctica</div>
+    log₁₀(1.000)=3, log₁₀(10.000)=4, log₁₀(100.000)=5. Subir <b>un punto</b> en la escala log = <b>multiplicar por 10</b> los dólares. Así, distancias iguales representan factores iguales — ideal para el dinero, que crece de forma multiplicativa.</div>
+</section>
+
+<!-- ============ 3. OUTLIERS ============ -->
+<section id="outliers">
+  <div class="sec-tag"><span class="dot"></span>Limpieza</div>
+  <h2 class="title">3. Valores atípicos y la regla del IQR</h2>
+  <p class="lead">¿Cómo decidir qué es “anormalmente grande”? La regla del rango intercuartílico (IQR) traza una cerca automática. Pasá el mouse por el diagrama.</p>
+  <div class="card">
+    <h3>Boxplot del monto (con la cerca de outliers)</h3>
+    <svg id="boxSvg" viewBox="0 0 640 210"></svg>
+    <div id="boxTip" style="font-size:14px;color:var(--muted);min-height:20px;margin-top:8px"></div>
+  </div>
+  <div class="callout"><div class="t p">¿Qué hicimos?</div>
+    La cerca superior es <span class="mono">Q3 + 1,5·IQR = 107.935 USD</span>. Un <b>13,3%</b> de los contratos la supera. Pero <b>no los borramos</b>: son obras reales de gran envergadura. En su lugar aplicamos el logaritmo, que los “trae de vuelta” sin perder información.</div>
+</section>
+
+<!-- ============ 4. INTERVALOS DE CONFIANZA ============ -->
+<section id="ic">
+  <div class="sec-tag"><span class="dot"></span>Estimación</div>
+  <h2 class="title">4. Intervalos de confianza: lo que de verdad significan</h2>
+  <p class="lead">El error más común: creer que “el 95% de los datos cae en el intervalo”. La verdad es sobre el <b>método</b>. Generá muestras y compruébalo con tus ojos.</p>
+  <div class="card">
+    <h3>Simulación: 20 muestras, 20 intervalos</h3>
+    <div class="widget-hint">Generá muestras nuevas y contá cuántos intervalos “atrapan” la media real</div>
+    <button class="btn" id="ciBtn">🎲 Generar 20 muestras nuevas</button>
+    <span id="ciCount" style="margin-left:12px;font-weight:700"></span>
+    <svg id="ciSvg" viewBox="0 0 640 300" style="margin-top:12px"></svg>
+    <div class="legendrow">
+      <span><i style="background:var(--green)"></i>El intervalo contiene la media real</span>
+      <span><i style="background:var(--red)"></i>No la contiene (falla)</span>
+      <span><i style="background:var(--ink)"></i>Media poblacional real (μ)</span>
+    </div>
+  </div>
+  <div class="callout win"><div class="t">✅ Resultado del TP</div>
+    Con la muestra real (n≈23.900), el IC 95% del monto típico es <b>23.061 – 23.991 USD</b>. Es <b>angosto</b> porque el n es enorme: más datos ⇒ más precisión. Interpretación correcta: <i>si repitiéramos el muestreo muchas veces, el 95% de los intervalos así construidos contendría la verdadera media.</i></div>
+</section>
+
+<!-- ============ 5. PROPORCIONES ============ -->
+<section id="prop">
+  <div class="sec-tag"><span class="dot"></span>Estimación</div>
+  <h2 class="title">5. Proporciones: ¿cuánta competencia hay?</h2>
+  <p class="lead">Una variable binaria (¿hubo más de un oferente?) se resume con una proporción. Aquí, cuánto se “concursó” de verdad.</p>
+  <div class="grid2">
+    <div class="card" style="text-align:center">
+      <h3>Competencia efectiva</h3>
+      <svg id="donutSvg" viewBox="0 0 200 200" style="margin:6px auto"></svg>
+      <div class="big-num" style="color:var(--primary)">64,9%</div>
+      <div style="color:var(--muted);font-size:14px">de los procesos tuvo más de un oferente</div>
+    </div>
+    <div class="card">
+      <h3>El intervalo de confianza</h3>
+      <p style="font-size:14.5px;color:var(--muted)">Con 95% de confianza, la proporción poblacional está entre:</p>
+      <svg id="propIcSvg" viewBox="0 0 360 90"></svg>
+      <div class="callout key" style="margin-top:6px"><div class="t">💡 Lo relevante</div>
+        Aproximadamente <b>1 de cada 3 procesos</b> recibe una <b>única oferta</b>. Es una señal de alerta para la transparencia y la competencia del gasto público.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. PRUEBAS DE HIPÓTESIS ============ -->
+<section id="hip">
+  <div class="sec-tag"><span class="dot"></span>Inferencia</div>
+  <h2 class="title">6. Pruebas de hipótesis, sin misterio</h2>
+  <p class="lead">Una prueba pregunta: <i>“¿esta diferencia es real o pudo salir por azar?”</i>. Movés el estadístico y el nivel α, y ves cómo cambia el valor p (el área en las colas).</p>
+  <div class="card">
+    <h3>Curva de la distribución y zona de rechazo</h3>
+    <div class="widget-hint">Deslizá el estadístico observado y el nivel de significancia α</div>
+    <svg id="hipSvg" viewBox="0 0 640 280"></svg>
+    <div class="grid2" style="margin-top:6px">
+      <div>
+        <label class="ctl">Estadístico observado (z): <b id="zVal" class="readout" style="color:var(--primary)"></b></label>
+        <input type="range" id="zRange" min="0" max="4" step="0.05" value="1.2">
+      </div>
+      <div>
+        <label class="ctl">Nivel de significancia α: <b id="aVal" class="readout" style="color:var(--purple)"></b></label>
+        <input type="range" id="aRange" min="0.01" max="0.20" step="0.01" value="0.05">
+      </div>
+    </div>
+    <div class="rescard" style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <div>valor p (área de las colas): <b id="pOut" class="readout" style="font-size:19px"></b></div>
+      <div id="decOut"></div>
+    </div>
+  </div>
+
+  <div class="callout"><div class="t p">Cómo leerlo</div>
+    Si el estadístico cae en la <b>zona roja</b> (colas), el valor p es menor que α: la diferencia es “demasiado rara para ser casualidad” y <b>rechazamos H₀</b>. Cuanto más lejos del centro, más chico el p.</div>
+
+  <div class="grid2">
+    <div class="rescard">
+      <div class="h">Prueba 1 · Monto medio 2021 vs 2022 <span class="pill rej">se rechaza H₀</span></div>
+      <div class="stat-line"><span>Media 2021 (geom.)</span><span>16.958 USD</span></div>
+      <div class="stat-line"><span>Media 2022 (geom.)</span><span>25.871 USD</span></div>
+      <div class="stat-line"><span>Estadístico t (Welch)</span><span>−17,2</span></div>
+      <div class="stat-line"><span>valor p</span><span>2,7 × 10⁻⁶⁵</span></div>
+      <p style="font-size:13.5px;color:var(--muted);margin-top:8px">El monto típico <b>creció +53%</b>. El p es tan pequeño que el estadístico se saldría de la pantalla de arriba.</p>
+    </div>
+    <div class="rescard">
+      <div class="h">Prueba 2 · Competencia 2021 vs 2022 <span class="pill rej">se rechaza H₀</span></div>
+      <div class="stat-line"><span>Con competencia 2021</span><span>72,5%</span></div>
+      <div class="stat-line"><span>Con competencia 2022</span><span>62,7%</span></div>
+      <div class="stat-line"><span>Estadístico z</span><span>13,0</span></div>
+      <div class="stat-line"><span>valor p</span><span>1,7 × 10⁻³⁸</span></div>
+      <p style="font-size:13.5px;color:var(--muted);margin-top:8px">La competencia <b>cayó ~10 puntos</b>: en 2022 se contrató por más plata pero con menos oferentes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. REGRESIÓN ============ -->
+<section id="reg">
+  <div class="sec-tag"><span class="dot"></span>Modelado</div>
+  <h2 class="title">7. Regresión: predecí el monto vos mismo</h2>
+  <p class="lead">El modelo aprendió cómo cada característica del proceso empuja el monto hacia arriba o abajo. Esta calculadora usa los <b>coeficientes reales</b> del TP. Elegí y mirá la predicción.</p>
+
+  <div class="card">
+    <h3>🧮 Calculadora del modelo</h3>
+    <div class="widget-hint">Cambiá tipo, modalidad y cantidades: la predicción se recalcula al instante</div>
+    <div class="grid2">
+      <div>
+        <label class="ctl">Tipo de compra</label>
+        <select id="rTipo"><option>Bienes</option><option>Obras</option><option>Servicios</option></select>
+        <label class="ctl">Modalidad</label>
+        <select id="rMod">
+          <option>Concurso de Ofertas</option>
+          <option>Contratación Directa</option>
+          <option>Licitación Pública Nacional</option>
+          <option>Contratación por Excepción</option>
+          <option>Locación de Inmuebles</option>
+          <option>Otras</option>
+        </select>
+      </div>
+      <div>
+        <label class="ctl">N.º de oferentes: <b id="rOfV" style="color:var(--primary)"></b></label>
+        <input type="range" id="rOf" min="1" max="20" step="1" value="3">
+        <label class="ctl">Duración de la licitación (días): <b id="rDurV" style="color:var(--primary)"></b></label>
+        <input type="range" id="rDur" min="0" max="90" step="1" value="10">
+      </div>
+    </div>
+    <div style="text-align:center;margin:18px 0 6px">
+      <div style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Monto adjudicado estimado</div>
+      <div class="big-num readout" id="rPred" style="color:var(--green);font-size:40px"></div>
+      <div style="font-size:13px;color:var(--muted)">log₁₀ del monto = <span id="rLog" class="readout"></span></div>
+    </div>
+    <div id="rBreak" style="margin-top:12px"></div>
+  </div>
+
+  <div class="card">
+    <h3>El peso de cada factor</h3>
+    <p style="font-size:14px;color:var(--muted);margin-top:0">Cada barra muestra por cuánto <b>multiplica</b> el monto ese factor, frente a la categoría base (Bienes · Concurso de Ofertas). A la izquierda del ×1 lo reducen; a la derecha lo aumentan. Escala logarítmica.</p>
+    <div class="seg" id="coefSeg" style="margin-bottom:8px">
+      <button class="on" data-mode="factor">Como multiplicador (×)</button>
+      <button data-mode="pct">Como % de cambio</button>
+    </div>
+    <svg id="coefSvg" viewBox="0 0 640 340"></svg>
+  </div>
+
+  <div class="callout win"><div class="t">✅ Qué explica el monto</div>
+    La <b>modalidad</b> es el factor de mayor peso: la <b>Contratación Directa</b> (la más usada) va con montos ~80% menores, mientras la <b>Licitación Pública Nacional</b> concentra los importes altos (×7). El modelo completo explica el <b>66% de la variación</b> del monto (R² = 0,66) y su prueba F global es contundente.</div>
+</section>
+
+<!-- ============ 8. QUIZ ============ -->
+<section id="quiz">
+  <div class="sec-tag"><span class="dot"></span>Ponete a prueba</div>
+  <h2 class="title">8. Repaso interactivo</h2>
+  <p class="lead">Tres preguntas para fijar la intuición. Hacé clic en la que creas correcta.</p>
+  <div class="card quiz" id="quizBox"></div>
+</section>
+
+<!-- ============ GLOSARIO ============ -->
+<section id="glos">
+  <div class="sec-tag"><span class="dot"></span>Referencia</div>
+  <h2 class="title">Glosario en un clic</h2>
+  <div class="acc" id="glosBox"></div>
+</section>
+
+</div>
+
+<footer>
+  Guía interactiva del notebook <span class="mono">trabajo_practico_estadistica.ipynb</span> · Fuente: Dirección Nacional de Contrataciones Públicas (DNCP), Paraguay — datos abiertos OCDS, 2021–2022.<br>
+  Para la versión imprimible (PDF de entrega) ver <span class="mono">explicacion_paso_a_paso.html</span>.
+</footer>
+
+<script>
+/* ===================== helpers ===================== */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const fmt=n=>n.toLocaleString('es-PY',{maximumFractionDigits:0});
+const SVGNS='http://www.w3.org/2000/svg';
+function el(tag,attrs={},parent){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function clear(svg){while(svg.firstChild)svg.removeChild(svg.firstChild);}
+function erf(x){const t=1/(1+0.3275911*Math.abs(x));const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);return x>=0?y:-y;}
+const Phi=z=>0.5*(1+erf(z/Math.SQRT2));
+function randn(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+
+/* ===================== progress + scrollspy ===================== */
+const prog=$('#progress');
+addEventListener('scroll',()=>{const h=document.documentElement;const p=h.scrollTop/(h.scrollHeight-h.clientHeight);prog.style.width=(p*100)+'%';});
+const navLinks=$$('#navrow a');
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const id=e.target.id;navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+id));const act=navLinks.find(a=>a.classList.contains('active'));if(act)act.scrollIntoView({inline:'center',block:'nearest'});}});},{rootMargin:'-45% 0px -50% 0px'});
+$$('section').forEach(s=>io.observe(s));
+
+/* ===================== 1. histograma asimetría ===================== */
+const histSvg=$('#histSvg'), histMsg=$('#histMsg');
+// datos aproximados a la forma real
+const linBars=[0.86,0.075,0.03,0.014,0.008,0.005,0.003,0.0022,0.0015,0.001,0.0008,0.0006,0.0004,0.0003,0.0002]; // 0..75M en pasos de 5M
+const logBars=[0.01,0.03,0.07,0.14,0.20,0.21,0.16,0.10,0.055,0.02,0.006]; // log10 2.5..7.5
+function drawHist(scale){
+  clear(histSvg);const W=640,H=300,pad=40,bw=W-pad*2,bh=H-pad-30;
+  const bars=scale==='lin'?linBars:logBars;const max=Math.max(...bars);const n=bars.length;const gap=3;const w=(bw/n)-gap;
+  // eje
+  el('line',{x1:pad,y1:H-30,x2:W-10,y2:H-30,stroke:'#c7d0dc'},histSvg);
+  bars.forEach((v,i)=>{
+    const x=pad+i*(w+gap), hgt=(v/max)*bh, y=H-30-hgt;
+    el('rect',{x,y,width:w,height:hgt,rx:2,fill:scale==='lin'?'#c2ceda':'#6ea8e0'},histSvg);
+  });
+  // etiquetas eje
+  const labs=scale==='lin'?['0','25M','50M','75M']:['100','10 mil','1 M','100 M'];
+  labs.forEach((t,i)=>{const x=pad+(bw)*(i/(labs.length-1));el('text',{x,y:H-14,'text-anchor':'middle','font-size':11,fill:'#5b6675'},histSvg).textContent=t;});
+  el('text',{x:W/2,y:H-1,'text-anchor':'middle','font-size':11,fill:'#5b6675'},histSvg).textContent=scale==='lin'?'Monto en USD (escala normal)':'Monto en USD (escala logarítmica)';
+  // media / mediana markers
+  function marker(frac,color,lab){const x=pad+bw*frac;el('line',{x1:x,y1:pad-8,x2:x,y2:H-30,stroke:color,'stroke-width':2,'stroke-dasharray':'5 4'},histSvg);
+    el('text',{x:Math.min(x,W-60),y:pad-12,'text-anchor':'middle','font-size':11,'font-weight':700,fill:color},histSvg).textContent=lab;}
+  if(scale==='lin'){ marker(19974/75e6,'#2e9e5b','mediana'); marker(174044/75e6,'#d64545','media'); }
+  else { marker((Math.log10(19974)-2)/(7.5-2)*0.96+0.02,'#2e9e5b','mediana'); marker((Math.log10(174044)-2)/(7.5-2)*0.96+0.02,'#d64545','media'); }
+  histMsg.innerHTML=scale==='lin'
+    ? 'En escala normal <b>casi todo se apila en la primera barra</b>: la cola de megacontratos es invisible pero arrastra la media (roja) muy lejos de la mediana (verde). Imposible modelar así.'
+    : 'En escala logarítmica aparece una <b>campana simétrica</b>: media y mediana casi coinciden. Ahora sí podemos usar promedios, intervalos y regresión.';
+}
+$$('#scaleSeg button').forEach(b=>b.onclick=()=>{$$('#scaleSeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');drawHist(b.dataset.scale);});
+drawHist('lin');
+
+/* ===================== 2. recta logarítmica ===================== */
+const logRange=$('#logRange');
+function drawLogLine(){
+  const t=+logRange.value, usd=Math.pow(10,t);
+  $('#logAmt').textContent=fmt(usd)+' USD';
+  $('#logUsd').textContent=fmt(usd)+' USD';
+  $('#logVal').textContent=t.toFixed(2);
+  const svg=$('#logSvg');clear(svg);const W=640,pad=40,y=70,bw=W-pad*2;
+  el('line',{x1:pad,y1:y,x2:W-pad,y2:y,stroke:'#c7d0dc','stroke-width':2},svg);
+  for(let k=2;k<=8;k++){const x=pad+bw*((k-2)/6);
+    el('line',{x1:x,y1:y-6,x2:x,y2:y+6,stroke:'#c7d0dc'},svg);
+    const lab=['100','1 mil','10 mil','100 mil','1 M','10 M','100 M'][k-2];
+    el('text',{x,y:y+24,'text-anchor':'middle','font-size':11,fill:'#5b6675'},svg).textContent=lab;
+    el('text',{x,y:y-12,'text-anchor':'middle','font-size':10,fill:'#9aa6b6'},svg).textContent='10^'+k;
+  }
+  const px=pad+bw*((t-2)/6);
+  el('line',{x1:px,y1:28,x2:px,y2:y,stroke:'#2563a8','stroke-width':2},svg);
+  el('circle',{cx:px,cy:y,r:9,fill:'#2563a8',stroke:'#fff','stroke-width':2},svg);
+  const badge=el('text',{x:Math.max(60,Math.min(px,W-60)),y:22,'text-anchor':'middle','font-size':13,'font-weight':800,fill:'#1b4b86'},svg);
+  badge.textContent=fmt(usd)+' USD  ·  log = '+t.toFixed(2);
+}
+logRange.oninput=drawLogLine; drawLogLine();
+
+/* ===================== 3. boxplot IQR ===================== */
+(function(){
+  const svg=$('#boxSvg'),tip=$('#boxTip');const W=640,H=210,pad=40,y=95,bh=54;
+  const bw=W-pad*2;const L=v=>pad+bw*((Math.log10(v)-3)/(Math.log10(2e8)-3)); // eje log 1k..200M
+  clear(svg);
+  el('line',{x1:pad,y1:160,x2:W-pad,y2:160,stroke:'#c7d0dc'},svg);
+  [1e3,1e4,1e5,1e6,1e7,1e8].forEach(v=>{const x=L(v);el('line',{x1:x,y1:156,x2:x,y2:164,stroke:'#c7d0dc'},svg);
+    el('text',{x,y:180,'text-anchor':'middle','font-size':11,fill:'#5b6675'},svg).textContent=({1000:'1 mil',10000:'10 mil',100000:'100 mil',1000000:'1 M',10000000:'10 M',100000000:'100 M'})[v];});
+  const q1=10914,med=19974,q3=49722,fence=107935,maxv=73151373;
+  // whisker
+  el('line',{x1:L(q1),y1:y,x2:L(fence),y2:y,stroke:'#7b8aa0','stroke-width':2},svg);
+  // box
+  const parts=[
+    ['caja (50% central)','#6ea8e0',L(q1),L(q3)-L(q1)],
+  ];
+  el('rect',{x:L(q1),y:y-bh/2,width:L(q3)-L(q1),height:bh,rx:4,fill:'#bcd6f2',stroke:'#2563a8','data-t':'Caja: el 50% central de los contratos (Q1=10.914 a Q3=49.722 USD)'},svg);
+  el('line',{x1:L(med),y1:y-bh/2,x2:L(med),y2:y+bh/2,stroke:'#1b4b86','stroke-width':3,'data-t':'Mediana = 19.974 USD (la mitad de los contratos vale menos)'},svg);
+  // fence
+  el('line',{x1:L(fence),y1:y-bh/2-8,x2:L(fence),y2:y+bh/2+8,stroke:'#e0a800','stroke-width':2,'stroke-dasharray':'5 4','data-t':'Cerca de outliers = Q3 + 1,5·IQR = 107.935 USD'},svg);
+  el('text',{x:L(fence),y:y-bh/2-14,'text-anchor':'middle','font-size':10.5,'font-weight':700,fill:'#8a6d00'},svg).textContent='cerca 1,5·IQR';
+  // outliers
+  for(let i=0;i<26;i++){const v=fence*Math.pow(maxv/fence,Math.random());el('circle',{cx:L(v),cy:y+(Math.random()*30-15),r:3.5,fill:'#d64545','fill-opacity':.55,'data-t':'Outlier: contrato de gran monto (hasta 73 M USD). No se elimina.'},svg);}
+  el('text',{x:L(q1)-6,y:y-bh/2-10,'text-anchor':'end','font-size':10.5,fill:'#5b6675'},svg).textContent='Q1';
+  el('text',{x:L(q3)+2,y:y-bh/2-10,'font-size':10.5,fill:'#5b6675'},svg).textContent='Q3';
+  tip.textContent='Pasá el mouse por las partes del gráfico para ver qué significan.';
+  svg.querySelectorAll('[data-t]').forEach(n=>{n.style.cursor='help';n.onmouseenter=()=>tip.innerHTML='ℹ️ '+n.getAttribute('data-t');});
+})();
+
+/* ===================== 4. IC repeated sampling ===================== */
+(function(){
+  const svg=$('#ciSvg'),btn=$('#ciBtn'),cnt=$('#ciCount');const W=640,H=300,pad=30;
+  const mu=4.3715, sd=0.72, n=120, se=sd/Math.sqrt(n), tcrit=1.96;
+  const xmin=mu-4*se, xmax=mu+4*se, X=v=>pad+ (W-2*pad)*((v-xmin)/(xmax-xmin));
+  function run(){
+    clear(svg);let ok=0;const rows=20,top=20,gap=(H-40)/rows;
+    // línea mu
+    el('line',{x1:X(mu),y1:10,x2:X(mu),y2:H-10,stroke:'#182338','stroke-width':2,'stroke-dasharray':'4 4'},svg);
+    el('text',{x:X(mu),y:12,'text-anchor':'middle','font-size':11,'font-weight':700,fill:'#182338'},svg).textContent='μ real';
+    for(let i=0;i<rows;i++){
+      let s=0;for(let j=0;j<n;j++)s+=mu+sd*randn();const m=s/n;const lo=m-tcrit*se,hi=m+tcrit*se;
+      const contains=lo<=mu&&mu<=hi;if(contains)ok++;const c=contains?'#2e9e5b':'#d64545';const yy=top+i*gap+gap/2;
+      el('line',{x1:X(lo),y1:yy,x2:X(hi),y2:yy,stroke:c,'stroke-width':3,'stroke-linecap':'round'},svg);
+      el('circle',{cx:X(m),cy:yy,r:3.5,fill:c},svg);
+    }
+    cnt.innerHTML=`<span style="color:${ok>=18?'var(--green)':'var(--amber)'}">${ok} de 20</span> intervalos contienen μ`;
+  }
+  btn.onclick=run; run();
+})();
+
+/* ===================== 5. donut + prop IC ===================== */
+(function(){
+  const svg=$('#donutSvg');clear(svg);const cx=100,cy=100,r=72,sw=26;const p=0.649;
+  el('circle',{cx,cy,r,fill:'none',stroke:'#e6ebf2','stroke-width':sw},svg);
+  const arc=el('circle',{cx,cy,r,fill:'none',stroke:'#2563a8','stroke-width':sw,'stroke-linecap':'round',transform:`rotate(-90 ${cx} ${cy})`},svg);
+  const C=2*Math.PI*r;arc.setAttribute('stroke-dasharray',`${C*p} ${C}`);
+  const ic=$('#propIcSvg');clear(ic);const W=360,pad=30,y=45,bw=W-2*pad;const lo=64.3,hi=65.5,mn=63,mx=67;
+  const X=v=>pad+bw*((v-mn)/(mx-mn));
+  el('line',{x1:pad,y1:y,x2:W-pad,y2:y,stroke:'#c7d0dc'},ic);
+  [63,64,65,66,67].forEach(v=>{el('text',{x:X(v),y:y+20,'text-anchor':'middle','font-size':10,fill:'#5b6675'},ic).textContent=v+'%';});
+  el('rect',{x:X(lo),y:y-10,width:X(hi)-X(lo),height:20,rx:6,fill:'#bcd6f2',stroke:'#2563a8'},ic);
+  el('circle',{cx:X(64.9),cy:y,r:5,fill:'#1b4b86'},ic);
+  el('text',{x:X(64.9),y:y-16,'text-anchor':'middle','font-size':11,'font-weight':700,fill:'#1b4b86'},ic).textContent='64,9%';
+  el('text',{x:X(lo),y:y-16,'text-anchor':'middle','font-size':10,fill:'#5b6675'},ic).textContent='64,3';
+  el('text',{x:X(hi),y:y-16,'text-anchor':'middle','font-size':10,fill:'#5b6675'},ic).textContent='65,5';
+})();
+
+/* ===================== 6. hipótesis ===================== */
+(function(){
+  const svg=$('#hipSvg'),zR=$('#zRange'),aR=$('#aRange');const W=640,H=280,pad=36,base=H-40,peak=30;
+  const xmin=-4,xmax=4,X=z=>pad+(W-2*pad)*((z-xmin)/(xmax-xmin)),Y=d=>base-(d/0.4)*(base-peak);
+  const nd=z=>Math.exp(-z*z/2)/Math.sqrt(2*Math.PI);
+  function path(a,b){let d='';for(let z=a;z<=b+1e-9;z+=0.05){d+=(d?'L':'M')+X(z).toFixed(1)+' '+Y(nd(z)).toFixed(1);}return d;}
+  function draw(){
+    clear(svg);const z=+zR.value,a=+aR.value;const zc=-Phi;/*noop*/
+    // critical z for two-tailed alpha
+    let zcrit=1.96;{let lo=0,hi=6;for(let i=0;i<40;i++){const m=(lo+hi)/2;(2*(1-Phi(m))>a)?lo=m:hi=m;}zcrit=(lo+hi)/2;}
+    // shaded rejection tails
+    el('path',{d:path(xmin,-zcrit)+`L${X(-zcrit)} ${base} L${X(xmin)} ${base} Z`,fill:'#f6c9c9'},svg);
+    el('path',{d:path(zcrit,xmax)+`L${X(xmax)} ${base} L${X(zcrit)} ${base} Z`,fill:'#f6c9c9'},svg);
+    // curve
+    el('path',{d:path(xmin,xmax),fill:'none',stroke:'#2563a8','stroke-width':2.5},svg);
+    el('line',{x1:pad,y1:base,x2:W-pad,y2:base,stroke:'#c7d0dc'},svg);
+    // crit lines
+    [-zcrit,zcrit].forEach(c=>{el('line',{x1:X(c),y1:peak-6,x2:X(c),y2:base,stroke:'#d64545','stroke-width':1.5,'stroke-dasharray':'4 4'},svg);});
+    el('text',{x:X(zcrit),y:peak-10,'text-anchor':'middle','font-size':10.5,fill:'#d64545'},svg).textContent='+crítico '+zcrit.toFixed(2);
+    el('text',{x:X(-zcrit),y:peak-10,'text-anchor':'middle','font-size':10.5,fill:'#d64545'},svg).textContent='−crítico';
+    // observed stat (both tails)
+    [z,-z].forEach(s=>{el('line',{x1:X(s),y1:Y(nd(s))-4,x2:X(s),y2:base,stroke:'#6b4fbf','stroke-width':2.5},svg);
+      el('circle',{cx:X(s),cy:Y(nd(s)),r:4,fill:'#6b4fbf'},svg);});
+    el('text',{x:X(z),y:base+16,'text-anchor':'middle','font-size':11,'font-weight':700,fill:'#6b4fbf'},svg).textContent='±'+z.toFixed(2);
+    // axis ticks
+    [-3,-2,-1,0,1,2,3].forEach(t=>el('text',{x:X(t),y:base+30,'text-anchor':'middle','font-size':10,fill:'#9aa6b6'},svg).textContent=t);
+    const p=2*(1-Phi(z));
+    $('#zVal').textContent=z.toFixed(2);$('#aVal').textContent=a.toFixed(2);
+    $('#pOut').innerHTML=(p<0.001?p.toExponential(1):p.toFixed(3));
+    const rej=p<a;
+    $('#decOut').innerHTML=rej?'<span class="pill rej">se rechaza H₀</span>':'<span class="pill ok">no se rechaza H₀</span>';
+    $('#pOut').style.color=rej?'var(--red)':'var(--green)';
+  }
+  zR.oninput=draw;aR.oninput=draw;draw();
+})();
+
+/* ===================== 7. regresión ===================== */
+const B0=4.5333, B_OF=0.0240, B_DUR=0.0005;
+const TIPO={'Bienes':0,'Obras':0.2357,'Servicios':0.0563};
+const MOD={'Concurso de Ofertas':0,'Contratación Directa':-0.7093,'Licitación Pública Nacional':0.8477,'Contratación por Excepción':0.7472,'Locación de Inmuebles':-0.3129,'Otras':0.5112};
+function calc(){
+  const tipo=$('#rTipo').value,mod=$('#rMod').value,of=+$('#rOf').value,dur=+$('#rDur').value;
+  $('#rOfV').textContent=of;$('#rDurV').textContent=dur;
+  const log=B0+TIPO[tipo]+MOD[mod]+B_OF*of+B_DUR*dur;const usd=Math.pow(10,log);
+  $('#rPred').textContent=fmt(usd)+' USD';$('#rLog').textContent=log.toFixed(3);
+  // breakdown
+  const terms=[['Base (Bienes · Concurso)',B0,true],['Tipo: '+tipo,TIPO[tipo]],['Modalidad: '+mod,MOD[mod]],[of+' oferentes',B_OF*of],[dur+' días',B_DUR*dur]];
+  const box=$('#rBreak');box.innerHTML='<div style="font-size:12.5px;color:var(--muted);margin-bottom:6px">Cómo se arma el log del monto:</div>';
+  terms.forEach(([lab,v,base])=>{
+    const pct=base?null:(Math.pow(10,v)-1)*100;
+    const col=base?'#5b6675':v>0?'#2e9e5b':v<0?'#d64545':'#9aa6b6';
+    const sign=base?'':(v>=0?'+':'');
+    box.innerHTML+=`<div style="display:flex;justify-content:space-between;font-size:13.5px;padding:3px 0;border-bottom:1px dashed var(--line)">
+      <span>${lab}</span><span style="color:${col};font-weight:700" class="readout">${sign}${v.toFixed(3)}${pct!==null?`  (${pct>=0?'+':''}${pct.toFixed(0)}%)`:''}</span></div>`;
+  });
+}
+['#rTipo','#rMod','#rOf','#rDur'].forEach(s=>{$(s).oninput=calc;$(s).onchange=calc;});calc();
+
+/* coef chart */
+const COEFS=[
+  ['Licitación Púb. Nacional',0.8477],['Contratación por Excepción',0.7472],['Modalidad "Otras"',0.5112],
+  ['Tipo Obras',0.2357],['Tipo Servicios',0.0563],['+1 oferente',0.0240],
+  ['Locación de Inmuebles',-0.3129],['Contratación Directa',-0.7093]
+];
+function drawCoef(mode){
+  const svg=$('#coefSvg');clear(svg);const W=640,rowH=36,top=10,x0=250,bw=W-x0-30;
+  const H=top+COEFS.length*rowH+10;svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  const cx=x0+bw/2;// center = factor 1 (log10=0), axis -1..1
+  el('line',{x1:cx,y1:top,x2:cx,y2:H-16,stroke:'#c7d0dc','stroke-dasharray':'3 3'},svg);
+  el('text',{x:cx,y:H-4,'text-anchor':'middle','font-size':10.5,fill:'#5b6675'},svg).textContent='×1 (sin efecto)';
+  [-1,-0.5,0.5,1].forEach(l=>{const x=cx+ (bw/2)*l;el('text',{x,y:H-4,'text-anchor':'middle','font-size':10,fill:'#9aa6b6'},svg).textContent='×'+Math.pow(10,l).toFixed(l<0?2:1);});
+  COEFS.forEach(([lab,c],i)=>{
+    const y=top+i*rowH+rowH/2;const x=cx+(bw/2)*Math.max(-1,Math.min(1,c));const pos=c>=0;const col=pos?'#2e9e5b':'#d64545';
+    el('rect',{x:pos?cx:x,y:y-9,width:Math.abs(x-cx),height:18,rx:4,fill:col,'fill-opacity':.85},svg);
+    el('text',{x:x0-10,y:y+4,'text-anchor':'end','font-size':12.5,fill:'#182338'},svg).textContent=lab;
+    const factor=Math.pow(10,c),pct=(factor-1)*100;
+    const t=mode==='factor'?'×'+factor.toFixed(2):(pct>=0?'+':'')+pct.toFixed(0)+'%';
+    el('text',{x:pos?x+6:x-6,y:y+4,'text-anchor':pos?'start':'end','font-size':12,'font-weight':700,fill:col},svg).textContent=t;
+  });
+}
+$$('#coefSeg button').forEach(b=>b.onclick=()=>{$$('#coefSeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');drawCoef(b.dataset.mode);});
+drawCoef('factor');
+
+/* ===================== 8. quiz ===================== */
+const QUIZ=[
+ {q:'La media del monto (174.044 USD) es casi 9× la mediana (19.974 USD). ¿Qué indica?',
+  o:['Que hay un error en los datos','Que la distribución está muy sesgada por unos pocos contratos gigantes','Que la mayoría de los contratos son caros'],a:1,
+  e:'Media ≫ mediana = cola larga a la derecha. Unos pocos megacontratos “tiran” del promedio; la mediana describe mejor el valor típico.'},
+ {q:'Un IC 95% de [23.061; 23.991] USD significa…',
+  o:['Que el 95% de los contratos cuesta entre esos valores','Que el método captura la verdadera media en el 95% de las muestras posibles','Que hay 95% de probabilidad de gastar eso'],a:1,
+  e:'El IC es una afirmación sobre el método de estimación, no sobre un contrato individual ni sobre “dónde caen los datos”.'},
+ {q:'En la regresión, la Contratación Directa tiene coeficiente −0,71 (log₁₀). ¿Cómo se lee?',
+  o:['Reduce el monto ~80% frente a un Concurso de Ofertas','Resta 0,71 USD al monto','No es significativa'],a:0,
+  e:'10^(−0,71) ≈ 0,20, es decir ×0,2 → un 80% menos que la categoría base (Concurso de Ofertas), manteniendo lo demás constante.'}
+];
+const qb=$('#quizBox');
+QUIZ.forEach((it,qi)=>{
+  const d=document.createElement('div');d.style.marginBottom='18px';
+  d.innerHTML=`<div style="font-weight:700;margin-bottom:8px">${qi+1}. ${it.q}</div>`;
+  it.o.forEach((o,oi)=>{const b=document.createElement('button');b.className='opt';b.textContent=o;
+    b.onclick=()=>{if(d.dataset.done)return;d.dataset.done=1;
+      [...d.querySelectorAll('.opt')].forEach((x,xi)=>{if(xi===it.a)x.classList.add('correct');else if(xi===oi)x.classList.add('wrong');x.style.cursor='default';});
+      d.querySelector('.explain').classList.add('show');};
+    d.appendChild(b);});
+  const ex=document.createElement('div');ex.className='explain';ex.innerHTML='<b>'+(1?'':'')+'Por qué:</b> '+it.e;d.appendChild(ex);
+  qb.appendChild(d);
+});
+
+/* ===================== glosario ===================== */
+const GLOS=[
+ ['Media vs. mediana','La media es el promedio (sensible a valores extremos); la mediana es el valor central (robusto). Si media ≫ mediana, hay asimetría a la derecha.'],
+ ['Media geométrica','Promedio calculado en escala log y devuelto a la escala original (10^media_log). Representa el valor “típico” de datos multiplicativos.'],
+ ['Coeficiente de variación (CV)','Desvío ÷ media ×100. Mide dispersión relativa: &lt;10% baja, 10–30% moderada, &gt;30% alta.'],
+ ['Rango intercuartílico (IQR)','Distancia entre el percentil 25 (Q1) y el 75 (Q3): el 50% central. La regla “Q3+1,5·IQR” marca outliers.'],
+ ['Intervalo de confianza (95%)','Rango que, con el método usado, contendría el verdadero parámetro en el 95% de las muestras posibles. No es la probabilidad de un dato individual.'],
+ ['Error estándar','Cuánto varía un estimador (p. ej. la media) de una muestra a otra: se achica con más datos (√n).'],
+ ['Hipótesis nula (H₀)','La afirmación de “no hay efecto/diferencia”. Se busca evidencia para rechazarla.'],
+ ['Valor p','Probabilidad de un resultado tan extremo como el observado si H₀ fuera cierta. Si p &lt; α, se rechaza H₀.'],
+ ['Nivel α','Umbral fijado de antemano (típ. 0,05). Riesgo máximo aceptado de rechazar H₀ siendo verdadera (error tipo I).'],
+ ['t de Welch','Compara dos medias sin asumir varianzas iguales. Opción segura por defecto.'],
+ ['z de proporciones','Compara dos porcentajes entre grupos usando la aproximación normal (válida con n grande).'],
+ ['R²','Fracción de la variación de la respuesta que el modelo explica (0 a 1). 0,66 = dos tercios.'],
+ ['Prueba F global','Contrasta si el modelo de regresión, como conjunto, explica algo (H₀: todos los coeficientes de pendiente = 0).'],
+ ['Variable dummy / categoría base','Codificación 0/1 de una categórica; se omite un nivel (la base) y cada coeficiente se lee respecto de él.'],
+ ['Ceteris paribus','“Manteniendo lo demás constante”: cómo se interpreta cada coeficiente de una regresión múltiple.']
+];
+const gb=$('#glosBox');
+GLOS.forEach(([t,b])=>{const d=document.createElement('details');d.innerHTML=`<summary>${t}</summary><div class="body">${b}</div>`;gb.appendChild(d);});
+</script>
+</body></html>

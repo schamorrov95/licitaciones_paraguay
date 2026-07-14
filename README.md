@@ -47,7 +47,7 @@ Ver [`data/README.md`](data/README.md) para el detalle de los archivos
 El notebook [`notebooks/trabajo_practico_estadistica.ipynb`](notebooks/trabajo_practico_estadistica.ipynb)
 desarrolla un análisis estadístico inferencial completo sobre el mismo dataset
 (descripción y clasificación de variables, limpieza, análisis descriptivo,
-estimación por intervalos de confianza, pruebas de hipótesis, ANOVA y regresión
+estimación por intervalos de confianza, pruebas de hipótesis, regresión
 lineal múltiple, y resumen ejecutivo). El informe listo para entregar (A4, Arial 11,
 imprimible a PDF) está en [`informe/trabajo_practico_estadistica.html`](informe/trabajo_practico_estadistica.html).
 
