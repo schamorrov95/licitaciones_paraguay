@@ -21,6 +21,12 @@ Los archivos CSV de este proyecto (~101 MB en total) **no se versionan en git**
 - **Formato:** CSV según el estándar [Open Contracting Data Standard (OCDS)](https://standard.open-contracting.org/)
 - **Años:** 2021 y 2022
 
+> **Nota sobre el monto.** El TP de estadística usa el campo `tender/value/amount`,
+> que en OCDS es el **valor total estimado** del proceso (**monto licitado/estimado**),
+> no el monto finalmente adjudicado (`awards/value/amount`, en el dataset de
+> adjudicaciones detalladas). Verificado además que `records_adj_*` y
+> `records_contratos_*` son archivos idénticos.
+
 ## Descarga
 
 El notebook (`notebooks/licitaciones_paraguay.ipynb`) descarga automáticamente
@@ -30,7 +36,7 @@ de Google Drive:
 ```python
 import gdown
 gdown.download_folder(
-    url='https://drive.google.com/drive/folders/1738grWDl9j2VXf3ju0JFq0Njo2WXiQGo',
+    url='https://drive.google.com/drive/folders/1u3rRbpS0ioVadkA5HS_peP6CpwrMXouw',
     output='data',
     quiet=False,
 )

@@ -25,25 +25,30 @@ p { margin:5pt 0; text-align:justify; }
 <div class="sub">Trabajo Práctico Integrado · Probabilidad y Estadística · Maestría en Ciencia de Datos</div>
 
 <h2>1. Descripción del dataset y el problema</h2>
-<p><b>Fuente.</b> Portal de la Dirección Nacional de Contrataciones Públicas (DNCP) del Paraguay, datos abiertos en estándar <b>OCDS</b> (Open Contracting Data Standard) — <span class="small">contrataciones.gov.py/datos</span>. Cada registro es un <b>proceso de contratación pública adjudicado</b> durante 2021–2022, con monto, modalidad, método, categoría, institución compradora, número de oferentes y fechas del proceso. La población relevada son los procesos cargados en el portal para esos años (39.957 registros crudos), de los que se analizan los efectivamente <b>completados y adjudicados</b>.</p>
-<p><b>Pregunta de investigación.</b> ¿Cómo se distribuyen los montos adjudicados y el nivel de competencia? ¿Difieren el monto y la competencia entre 2021 y 2022 y entre las categorías de compra? ¿Qué variables explican el monto adjudicado?</p>
+<p><b>Fuente.</b> Portal de la Dirección Nacional de Contrataciones Públicas (DNCP) del Paraguay, datos abiertos en estándar <b>OCDS</b> (Open Contracting Data Standard) — <span class="small">contrataciones.gov.py/datos</span>. Cada registro es un <b>proceso de contratación pública</b> de 2021–2022 (monto, modalidad, método, categoría, institución, número de oferentes y fechas). De los 39.957 registros crudos se analizan los <b>completados y adjudicados</b> (23.982).</p>
+<div class="hyp"><b>Variable de monto.</b> Proviene del campo OCDS <span class="small">tender/value/amount</span>, que según el estándar es el <b>valor total estimado</b> del proceso: es el <b>monto licitado (estimado)</b>, no el finalmente adjudicado (este último está en un dataset aparte, <span class="small">awards/value/amount</span>, fuera de alcance). En todo el informe se lo denomina <b>monto licitado</b>.</div>
+<p><b>Pregunta de investigación (central).</b> ¿Difieren el <b>monto licitado</b> y la <b>proporción de procesos con más de un oferente</b> entre 2021 y 2022, y qué características del proceso se relacionan con el monto licitado?</p>
+<p class="small"><b>Sub-preguntas:</b> <i>(IC)</i> ¿cuál es el monto licitado típico y la proporción con competencia en la población?; <i>(prueba 1)</i> ¿difiere el monto medio entre años?; <i>(prueba 2)</i> ¿difiere la proporción con competencia entre años?; <i>(regresión)</i> ¿qué variables se relacionan con el monto licitado?</p>
 
 <h2>2. Identificación y clasificación de variables</h2>
+<p class="small"><b>6 variables originales</b> (3 cuantitativas + 3 cualitativas) y <b>1 derivada</b> (competencia). Estas 7 forman la <b>base analítica</b>; las demás columnas del archivo original se descartan por no intervenir en las preguntas.</p>
 <table class="avoid-break">
 <tr><th>Variable</th><th>Descripción</th><th>Tipo</th><th>Escala</th></tr>
-<tr><td>monto_usd</td><td>Monto adjudicado en USD (tc 7.200 PYG/USD); se analiza su log₁₀</td><td>Cuantitativa continua</td><td>Razón</td></tr>
+<tr><td>monto_usd</td><td><b>Monto licitado</b> (estimado) en USD (tc 7.200 PYG/USD); se analiza su log₁₀</td><td>Cuantitativa continua</td><td>Razón</td></tr>
 <tr><td>num_oferentes</td><td>Cantidad de oferentes presentados</td><td>Cuantitativa discreta</td><td>Razón</td></tr>
 <tr><td>duracion_dias_licitacion</td><td>Duración del período de licitación (días)</td><td>Cuantitativa discreta</td><td>Razón</td></tr>
 <tr><td>tipo_es</td><td>Categoría de la compra (Bienes/Servicios/Obras)</td><td>Cualitativa nominal</td><td>Nominal</td></tr>
 <tr><td>modalidad</td><td>Modalidad del proceso (Contratación Directa, Concurso de Ofertas…)</td><td>Cualitativa nominal</td><td>Nominal</td></tr>
 <tr><td>anio</td><td>Año del proceso (2021/2022)</td><td>Cualitativa nominal (binaria)</td><td>Nominal</td></tr>
 </table>
-<p class="small">A partir de <b>num_oferentes</b> se binariza <b>competencia</b> (1 = más de un oferente; 0 = oferente único), usada en la inferencia sobre proporciones. El monto es continuo (valor real positivo) y por su fuerte asimetría se transforma con log₁₀.</p>
+<p class="small">La variable <b>derivada competencia</b> (1 = más de un oferente; 0 = oferente único) se construye a partir de <b>num_oferentes</b> y se usa en la inferencia sobre proporciones. El monto es continuo (valor real positivo) y por su fuerte asimetría se transforma con log₁₀.</p>
 
 <h2>3. Limpieza y preparación de los datos</h2>
-<p><b>Origen.</b> Los endpoints "contratos" y "adjudicaciones" resultaron idénticos, por lo que se usan solo los de contratos; los CSV de 2021 y 2022 traen las mismas 66 columnas OCDS en distinto orden, así que el renombrado se hizo por nombre y se recuperó <b>anio</b>.</p>
-<p><b>Faltantes.</b> num_oferentes/competencia: 1.124; duracion_dias_licitacion: 1.191; tipo, modalidad y año sin faltantes. Se usó <b>eliminación por lista en cada análisis</b> (solo las variables involucradas), preservando el máximo de datos.
-<b>Atípicos.</b> El monto tiene asimetría extrema (CV 843%); por la regla IQR, <b>3,186 contratos (13.3%)</b> superan el límite superior (107,935 USD). No se eliminan (son obras reales de gran cuantía): se aplica <b>log₁₀</b>. <b>Transformaciones:</b> monto→USD, log₁₀(monto), binarización de competencia, mapeo de tipo a español. <b>Dataset final: 23.982 observaciones</b> (18.567 de 2022; 5.415 de 2021).</p>
+<p><b>Origen.</b> Los endpoints "contratos" (<span class="small">records_contratos</span>) y "adjudicaciones" (<span class="small">records_adj</span>) son <b>idénticos</b>; se usa uno solo. De las 66 columnas OCDS se seleccionan directamente las 6 variables + id, título e institución.</p>
+<p><b>Moneda.</b> Antes de convertir se verificaron las monedas: solo <b>PYG</b> (23.948) y <b>USD</b> (34), no hay otras. Se convierten a USD <b>solo los montos en PYG</b> (÷ 7.200 PYG/USD, tipo de cambio de referencia promedio 2021–2022 del <b>Banco Central del Paraguay</b>); los ya expresados en USD se dejan igual. <span class="small">Limitación: usar un tc fijo ignora la variación cambiaria intra-período.</span></p>
+<p><b>Faltantes (cantidad y %).</b> num_oferentes/competencia 1.124 (4,7%); duración 1.191 (5,0%); monto 112 (0,5%); tipo, modalidad y año 0%. Se aplica <b>eliminación por lista en cada análisis</b> y se reporta el <b>n usado</b> en cada sección.</p>
+<p><b>Atípicos.</b> El monto tiene asimetría extrema (skew 27; <b>CV 843%</b>); por la regla IQR, <b>3.186 (13,3%)</b> superan el límite superior (107.935 USD). Se verificó que los mayores montos son <b>obras y adquisiciones reales de gran porte</b> (medicamentos del Min. de Salud, obras del MOPC, etc.), no errores de carga: <b>no se eliminan</b> y se aplica <b>log₁₀</b>.</p>
+<p class="small"><b>Cobertura por año.</b> 2021 aporta menos procesos (5.415) que 2022 (18.567): refleja el <b>volumen real cargado</b> en el portal (9.305 vs 30.652 registros crudos; tasas de adjudicación 58% y 61%), no un efecto de los filtros. <b>Base analítica final: 23.982 procesos.</b></p>
 
 <h2>4. Análisis descriptivo y gráficos</h2>
 <table class="avoid-break">
@@ -67,7 +72,7 @@ p { margin:5pt 0; text-align:justify; }
 <h3>6a. Diferencia de medias — t de Welch sobre log₁₀(monto)</h3>
 <div class="hyp"><b>H₀:</b> μ₂₀₂₁ = μ₂₀₂₂ &nbsp;·&nbsp; <b>H₁:</b> μ₂₀₂₁ ≠ μ₂₀₂₂ (bilateral). Welch (no asume varianzas iguales).</div>
 <p>2021: n=5,378, media(log)=4.2294 (≈ 16,958 USD); 2022: n=18,475, media(log)=4.4128 (≈ 25,871 USD). <b>t = -17.21</b>, <b>p = 2.69e-65</b>.</p>
-<div class="concl"><b>Se rechaza H₀:</b> el monto medio adjudicado <b>aumentó</b> de 2021 (≈16.958 USD) a 2022 (≈25.871 USD) — diferencia significativa y de magnitud práctica (+53% en media geométrica).</div>
+<div class="concl"><b>Se rechaza H₀:</b> el monto medio licitado <b>aumentó</b> de 2021 (≈16.958 USD) a 2022 (≈25.871 USD) — diferencia significativa y de magnitud práctica (+53% en media geométrica).</div>
 <h3>6b. Diferencia de proporciones — z sobre competencia</h3>
 <div class="hyp"><b>H₀:</b> p₂₀₂₁ = p₂₀₂₂ &nbsp;·&nbsp; <b>H₁:</b> p₂₀₂₁ ≠ p₂₀₂₂ (bilateral).</div>
 <p>2021: p̂ = 0.7247 (n=5,169); 2022: p̂ = 0.6268 (n=17,689). <b>z = 12.98</b>, <b>p = 1.66e-38</b>.</p>
