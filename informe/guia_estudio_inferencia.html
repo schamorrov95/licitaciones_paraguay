@@ -80,6 +80,14 @@ svg{display:block;max-width:100%;}
 footer{color:var(--muted);font-size:13px;padding:28px 0 50px;text-align:center;}
 .mono{font-family:Consolas,monospace;font-size:13px;background:var(--surface2);padding:2px 6px;border-radius:5px;}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+
+.deriv{background:#0f172a;color:#e7edf5;border-radius:12px;padding:16px 18px;margin:12px 0;}
+.deriv .dh{color:#8fbcf0;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.deriv ol{margin:6px 0 0;padding-left:22px;} .deriv li{margin:8px 0;font-size:14px;line-height:1.55;}
+.deriv code{background:#1e293b;color:#8fe3b0;padding:1px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:12.5px;}
+.deriv .ok{background:#12351f;color:#9df0b8;border-radius:8px;padding:8px 12px;margin-top:12px;font-weight:600;font-size:13.5px;}
+.qacard .acc{margin-top:6px;}
+nav.chips a{scroll-margin:20px;}
 </style>
 </head>
 <body>
@@ -93,14 +101,14 @@ footer{color:var(--muted);font-size:13px;padding:28px 0 50px;text-align:center;}
 </div></header>
 
 <nav class="chips"><div class="wrap"><div class="row" id="navrow">
-  <a href="#base">0 · Cimientos</a>
-  <a href="#ee">1 · Error estándar</a>
-  <a href="#ic">2 · Intervalos (Sec. 5)</a>
-  <a href="#hip">3 · Hipótesis (Sec. 6)</a>
-  <a href="#reg">4 · Regresión (Sec. 7)</a>
-  <a href="#sup">5 · Supuestos</a>
-  <a href="#glos">Glosario</a>
-  <a href="#quiz">Autoevaluación</a>
+  <a href="#" data-tab="base">0 · Cimientos</a>
+  <a href="#" data-tab="ee">1 · Error estándar</a>
+  <a href="#" data-tab="ic">2 · Intervalos (Sec. 5)</a>
+  <a href="#" data-tab="hip">3 · Hipótesis (Sec. 6)</a>
+  <a href="#" data-tab="reg">4 · Regresión (Sec. 7)</a>
+  <a href="#" data-tab="sup">5 · Supuestos</a>
+  <a href="#" data-tab="glos">Glosario</a>
+  <a href="#" data-tab="quiz">🎓 Defensa</a>
 </div></div></nav>
 
 <div class="wrap">
@@ -257,6 +265,38 @@ footer{color:var(--muted);font-size:13px;padding:28px 0 50px;text-align:center;}
   </div>
 </div>
 
+
+<div class="card">
+<h3>🎯 De los datos al número real — IC de la media</h3>
+<p style="font-size:14px;color:var(--muted)">Desmenuzamos, con los valores exactos del TP, cómo se llega a <b>(23.061 ; 23.991) USD</b>.</p>
+<div class="deriv"><div class="dh">Punto de partida (de la muestra)</div>
+x̄ = 4,3715 (promedio del log) · s = 0,677 (desvío) · n = 23.853
+<ol>
+<li>Error estándar: <code>EE = s/√n = 0,677 / 154,4 = 0,00438</code></li>
+<li>Valor crítico (95%, <i>t</i> de Student, gl=23.852): <code>t* = 1,9601</code> <span style="opacity:.7">(≈1,96: con n enorme la t ≈ la normal)</span></li>
+<li>Margen de error: <code>t*·EE = 1,9601 × 0,00438 = 0,00859</code></li>
+<li>IC en escala log: <code>4,3715 ± 0,00859 = (4,3629 ; 4,3800)</code></li>
+<li>Volver a dólares con 10^x: <code>10^4,3629 = 23.061</code> · <code>10^4,3800 = 23.991</code></li>
+</ol>
+<div class="ok">✅ Coincide con la celda [20] del notebook: 23.061 – 23.991 USD (centro 23.521).</div></div>
+<div class="deriv"><div class="dh">Y la proporción (5b)</div>
+éxitos k=14.833 · n=22.858 → p̂ = 14.833/22.858 = 0,6489
+<ol>
+<li>Error estándar: <code>EE = √(p̂(1−p̂)/n) = √(0,6489·0,3511/22.858) = 0,00316</code></li>
+<li>Margen: <code>1,96 × 0,00316 = 0,00619</code></li>
+<li>IC: <code>0,6489 ± 0,00619 = (0,6427 ; 0,6551)</code> → 64,3% – 65,5%</li>
+</ol>
+<div class="ok">✅ Celda [22]. El método de Wilson da lo mismo (0,6427 ; 0,6551).</div></div>
+</div>
+<div class="card qacard">
+<h3>🎓 Preguntas de defensa — Intervalos de confianza</h3>
+<div class="acc">
+<details><summary>¿El IC 95% significa que el 95% de los contratos cuesta entre 23k y 24k?</summary><div class="body"><b>No.</b> Es una afirmación sobre el <b>método</b>: si repitiéramos el muestreo, el 95% de los intervalos así construidos contendría el verdadero promedio. No habla de un contrato individual ni de dónde caen los datos.</div></details>
+<details><summary>¿Por qué la media geométrica y no el promedio común?</summary><div class="body">El monto es muy asimétrico: unos pocos contratos gigantes inflan el promedio aritmético (174.044 USD) y deja de representar lo típico. En escala log y volviendo con 10^x obtenemos ~23.500 USD, el valor realmente típico.</div></details>
+<details><summary>¿Por qué el intervalo es tan angosto?</summary><div class="body">Por el n enorme (≈23.900): el error estándar s/√n es diminuto. Más datos ⇒ más precisión.</div></details>
+<details><summary>¿Para qué el método de Wilson?</summary><div class="body">Es un IC de proporción más robusto (útil con p cerca de 0/1 o n chico). Que coincida con la aproximación normal confirma que el resultado es estable.</div></details>
+</div></div>
+
 <!-- ===================== 3. HIPÓTESIS ===================== -->
 <section id="hip">
   <div class="sec-tag"><span class="dot"></span>Sección 6</div>
@@ -343,6 +383,36 @@ footer{color:var(--muted);font-size:13px;padding:28px 0 50px;text-align:center;}
   </div>
 </div>
 
+
+<div class="card">
+<h3>🎯 De los datos al número real — Pruebas de hipótesis</h3>
+<div class="deriv"><div class="dh">6a · t de Welch (monto por año)</div>
+2021 → m₁=4,2294, s₁≈0,71, n₁=5.378 · 2022 → m₂=4,4128, s₂≈0,67, n₂=18.475
+<ol>
+<li>Error estándar de la diferencia: <code>SE = √(s₁²/n₁ + s₂²/n₂) = 0,01065</code></li>
+<li>Estadístico: <code>t = (m₁−m₂)/SE = (4,2294−4,4128)/0,01065 = −0,1834/0,01065 = −17,2</code></li>
+<li>valor p (bilateral) = <code>2,69×10⁻⁶⁵</code> ≪ 0,05</li>
+</ol>
+<div class="ok">✅ Celda [25]: se rechaza H₀. En USD: 16.958 (2021) vs 25.871 (2022), +53%.</div></div>
+<div class="deriv"><div class="dh">6b · z de proporciones (competencia por año)</div>
+2021 → 3.746/5.169 = 0,7247 · 2022 → 11.087/17.689 = 0,6268
+<ol>
+<li>Proporción combinada: <code>p = 14.833/22.858 = 0,6489</code></li>
+<li>Error estándar: <code>SE = √(p(1−p)(1/n₁+1/n₂)) = 0,00755</code></li>
+<li>Estadístico: <code>z = (0,7247−0,6268)/0,00755 = 0,0979/0,00755 = 12,98</code></li>
+<li>valor p = <code>1,66×10⁻³⁸</code> ≪ 0,05</li>
+</ol>
+<div class="ok">✅ Celda [28]: se rechaza H₀. La competencia cayó de 72,5% a 62,7%.</div></div>
+</div>
+<div class="card qacard">
+<h3>🎓 Preguntas de defensa — Pruebas de hipótesis</h3>
+<div class="acc">
+<details><summary>¿Por qué t de Welch y no la t "común"?</summary><div class="body">La t común supone que los dos grupos tienen la misma varianza. Welch no lo asume (usa la varianza de cada grupo), así que es la opción segura cuando las dispersiones pueden diferir.</div></details>
+<details><summary>¿Por qué el contraste es bilateral?</summary><div class="body">Porque solo preguntamos <b>si hay diferencia</b> entre años, sin anticipar la dirección. H₁ usa "≠" y el 5% de riesgo se reparte en las dos colas.</div></details>
+<details><summary>Un valor p de 10⁻⁶⁵, ¿no es sospechoso?</summary><div class="body">No. Con n grande el error estándar es diminuto, así que una diferencia real (16.958 vs 25.871 USD) queda a 17 desvíos del azar → p prácticamente 0. Es coherente, no un error.</div></details>
+<details><summary>¿Por qué comparan en log y no en dólares directamente?</summary><div class="body">Por la fuerte asimetría del monto. En escala log la distribución es acampanada y el promedio es representativo, condición que la prueba t necesita.</div></details>
+</div></div>
+
 <!-- ===================== 4. REGRESIÓN ===================== -->
 <section id="reg">
   <div class="sec-tag"><span class="dot"></span>Sección 7</div>
@@ -423,6 +493,33 @@ footer{color:var(--muted);font-size:13px;padding:28px 0 50px;text-align:center;}
   <button class="btn" id="ls_reset" style="margin-top:10px">↺ Reset a la recta real (mínimos cuadrados)</button>
 </div>
 
+
+<div class="card">
+<h3>🎯 De los datos al número real — Regresión</h3>
+<div class="deriv"><div class="dh">Cómo se lee un coeficiente</div>
+El modelo entrega coeficientes en escala log₁₀. Para leerlos en % se usa 10^coef.
+<ol>
+<li><b>Obras</b> coef = +0,2357 → <code>10^0,2357 = ×1,72</code> → <b>+72%</b> vs Bienes.</li>
+<li><b>Contratación Directa</b> coef = −0,7093 → <code>10^(−0,7093) = ×0,20</code> → <b>−80%</b> vs Concurso.</li>
+<li><b>+1 oferente</b> coef = +0,0240 → <code>10^0,024 = ×1,057</code> → <b>+5,7%</b> por oferente.</li>
+</ol></div>
+<div class="deriv"><div class="dh">Qué significan R² y F (con los números reales)</div>
+<ol>
+<li><b>R² = 0,663</b>: <code>R² = 1 − (error del modelo)/(variación total)</code>. El modelo reduce 2/3 de la variación del monto → explica <b>~66%</b>.</li>
+<li><b>F = 4.914</b> (p ≈ 0): compara el modelo contra "no usar ninguna variable". Un F tan grande ⇒ el conjunto de variables <b>sí</b> aporta.</li>
+</ol>
+<div class="ok">✅ Celda [32]: n = 22.465, R² = 0,663, F = 4.914, p(F) ≈ 0.</div></div>
+</div>
+<div class="card qacard">
+<h3>🎓 Preguntas de defensa — Regresión</h3>
+<div class="acc">
+<details><summary>¿Cuál es la variable a predecir y por qué en log?</summary><div class="body">El <b>monto licitado</b>, en <b>log₁₀</b>. Se usa log por la fuerte asimetría del monto: así la relación es más lineal y los residuos más simétricos.</div></details>
+<details><summary>¿Qué significa el coeficiente −0,71 de Contratación Directa?</summary><div class="body">Como está en log₁₀: 10^(−0,71) ≈ 0,20, o sea <b>×0,2 = 80% menos</b> que la categoría base (Concurso de Ofertas), manteniendo lo demás constante.</div></details>
+<details><summary>¿0,66 de R² es bueno?</summary><div class="body">Para datos sociales/económicos, sí: explicar dos tercios de la variación con pocas variables es un ajuste fuerte. El tercio restante depende de factores no incluidos.</div></details>
+<details><summary>¿Por qué colapsaron la modalidad a top-5 + "Otras"?</summary><div class="body">Para evitar categorías con muy pocos casos, que darían coeficientes inestables. Se conservan las 5 modalidades más frecuentes y el resto se agrupa.</div></details>
+<details><summary>¿Qué es la "categoría base"?</summary><div class="body">El nivel omitido de cada variable categórica (Bienes y Concurso de Ofertas). Todos los coeficientes se interpretan <b>respecto</b> de esa base.</div></details>
+</div></div>
+
 <!-- ===================== 5. SUPUESTOS ===================== -->
 <section id="sup">
   <div class="sec-tag"><span class="dot"></span>Sección 7 — control de calidad</div>
@@ -455,6 +552,26 @@ footer{color:var(--muted);font-size:13px;padding:28px 0 50px;text-align:center;}
     "Verificamos los supuestos: la <b>independencia</b> se cumple (Durbin-Watson ≈ 2), pero hay algo de <b>heterocedasticidad</b> y los residuos tienen <b>colas pesadas</b> (no-normalidad). Esto es <b>esperable</b> con datos de dinero y n&gt;22.000, donde cualquier desvío mínimo da significativo. El ~95% de los residuos se comporta bien. Lo reportamos como <b>limitación</b>: el modelo es válido para <b>describir asociaciones</b>, no para predecir un contrato exacto."</div>
 </section>
 
+
+<div class="card">
+<h3>🎯 Cómo leímos los supuestos (con los tests reales)</h3>
+<div class="deriv"><div class="dh">Los 3 chequeos</div>
+<ol>
+<li><b>Homocedasticidad</b> — Breusch-Pagan: <code>p ≈ 0</code> → no se cumple del todo (hay heterocedasticidad).</li>
+<li><b>Normalidad</b> de residuos — Jarque-Bera: <code>p ≈ 0</code>; QQ-plot con colas pesadas → no estrictamente.</li>
+<li><b>Independencia</b> — Durbin-Watson: <code>≈ 1,9</code> (cerca de 2) → se cumple.</li>
+</ol>
+<div class="ok">✅ ~95% de los residuos cae en un rango normal. Limitación honesta, no invalida el modelo.</div></div>
+</div>
+<div class="card qacard">
+<h3>🎓 Preguntas de defensa — Supuestos</h3>
+<div class="acc">
+<details><summary>¿Se cumplen los supuestos del modelo?</summary><div class="body">La <b>independencia</b> sí (Durbin-Watson ≈ 2). La <b>homocedasticidad</b> y la <b>normalidad</b> no del todo (Breusch-Pagan y Jarque-Bera con p≈0, colas pesadas). Lo reportamos como limitación.</div></details>
+<details><summary>Si hay heterocedasticidad, ¿el modelo sirve?</summary><div class="body">Sí para <b>describir asociaciones</b> (qué variables se relacionan con el monto y en qué dirección). Para inferencia muy fina convendría usar <b>errores estándar robustos</b>; lo dejamos anotado.</div></details>
+<details><summary>¿Por qué las pruebas "rechazan" siempre con estos datos?</summary><div class="body">Con n&gt;22.000 cualquier desviación mínima de los supuestos da significativa. Por eso miramos también los <b>gráficos</b> (residuos y QQ), que muestran que la desviación es leve y por pocos valores extremos.</div></details>
+<details><summary>¿Qué es un residuo y qué es el QQ-plot?</summary><div class="body">El <b>residuo</b> es el error del modelo (monto real − estimado). El <b>QQ-plot</b> compara esos errores con una campana normal: si caen en la diagonal son normales; despegarse en las puntas = colas pesadas.</div></details>
+</div></div>
+
 <!-- ===================== GLOSARIO ===================== -->
 <section id="glos">
   <div class="sec-tag"><span class="dot"></span>Chuleta</div>
@@ -467,6 +584,23 @@ footer{color:var(--muted);font-size:13px;padding:28px 0 50px;text-align:center;}
   <div class="sec-tag"><span class="dot"></span>Practicá para la defensa</div>
   <h2 class="title">Autoevaluación</h2>
   <p class="lead">Preguntas típicas de defensa. Respondé mentalmente y verificá.</p>
+  
+<div class="card">
+<h3>✅ Checklist de la consigna — ¿dónde está cada ítem?</h3>
+<table class="mini">
+<tr><th>Lo que pide la consigna (Opción B)</th><th>Dónde está</th></tr>
+<tr><td>Problema, variable a predecir y predictores</td><td>Pestaña Regresión · celda [30]</td></tr>
+<tr><td>Descripción y clasificación de variables</td><td>Notebook Sec. 2</td></tr>
+<tr><td>Limpieza: faltantes, atípicos, transformación</td><td>Notebook Sec. 3</td></tr>
+<tr><td>Estimación por intervalos de confianza</td><td>Pestaña Intervalos · celdas [20][22]</td></tr>
+<tr><td>Prueba de hipótesis + justificación bilateral</td><td>Pestaña Hipótesis · celdas [25][28]</td></tr>
+<tr><td>Regresión + interpretación de coeficientes</td><td>Pestaña Regresión · celdas [32][34]</td></tr>
+<tr><td>Análisis de residuales y supuestos</td><td>Pestaña Supuestos · Gráfico 4 + tests</td></tr>
+<tr><td>Diagrama de dispersión</td><td>Notebook Gráfico 3</td></tr>
+</table>
+<p style="font-size:13px;color:var(--muted)">Consejo: para cada número que muestres, tené a mano la celda que lo calcula (pestañas con 🎯) y la respuesta a la pregunta-trampa (🎓).</p>
+</div>
+
   <div class="card quiz" id="quizBox"></div>
 </section>
 
@@ -489,11 +623,12 @@ const Phi=z=>.5*(1+erf(z/Math.SQRT2));
 function randn(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
 const nd=z=>Math.exp(-z*z/2)/Math.sqrt(2*Math.PI);
 
-/* progress + scrollspy */
-addEventListener('scroll',()=>{const h=document.documentElement;$('#progress').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';});
-const links=$$('#navrow a');
-new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));const act=links.find(a=>a.classList.contains('active'));if(act)act.scrollIntoView({inline:'center',block:'nearest'});}}),{rootMargin:'-45% 0px -50% 0px'}).observe;
-$$('section').forEach(s=>new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));}),{rootMargin:'-45% 0px -50% 0px'}).observe(s));
+/* tabs */
+const wrap=[...document.querySelectorAll('.wrap')].find(w=>w.querySelector(':scope>section')),links=$$('#navrow a');const groups={};let cur=null;
+[...wrap.children].forEach(ch=>{if(ch.tagName==='SECTION')cur=ch.id;if(cur){(groups[cur]=groups[cur]||[]).push(ch);}});
+function showTab(id){for(const k in groups)groups[k].forEach(e=>e.style.display=(k===id)?'':'none');links.forEach(a=>a.classList.toggle('active',a.dataset.tab===id));const c=links.find(a=>a.dataset.tab===id);if(c)c.scrollIntoView({inline:'center',block:'nearest'});window.scrollTo(0,0);}
+links.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();showTab(a.dataset.tab);}));
+$('#progress').style.display='none';showTab('base');
 
 /* ---------- W1: normal + sd + z ---------- */
 const MEAN=4.3715, SD=0.676;
