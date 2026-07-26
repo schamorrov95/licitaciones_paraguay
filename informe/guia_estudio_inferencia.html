@@ -230,6 +230,33 @@ footer{color:var(--muted);font-size:13px;padding:28px 0 50px;text-align:center;}
   </div>
 </section>
 
+
+<div class="card" style="border:2px solid var(--primary)">
+  <h3>🔬 Con nuestros datos — Intervalo de la <u>media</u> (jugá y reseteá)</h3>
+  <div class="widget-hint">Cambiá n, el promedio y la dispersión, y mirá cómo se mueve el IC. "Reset" vuelve a los valores reales del TP.</div>
+  <div class="grid2">
+   <div>
+    <label class="ctl">n (tamaño de muestra) = <b id="im_n" style="color:var(--primary)"></b></label><input type="range" id="im_nR" min="100" max="24000" step="50">
+    <label class="ctl">Promedio log₁₀ = <b id="im_m" style="color:var(--primary)"></b></label><input type="range" id="im_mR" min="4.0" max="4.7" step="0.0001">
+    <label class="ctl">Desvío σ = <b id="im_s" style="color:var(--primary)"></b></label><input type="range" id="im_sR" min="0.4" max="0.9" step="0.001">
+    <button class="btn" id="im_reset" style="margin-top:10px">↺ Reset a los datos reales</button>
+   </div>
+   <div><svg id="im_svg" viewBox="0 0 320 90" role="img"></svg><div class="rescard" id="im_out" style="text-align:center"></div></div>
+  </div>
+</div>
+<div class="card" style="border:2px solid var(--primary)">
+  <h3>🔬 Con nuestros datos — Intervalo de la <u>proporción</u> (competencia)</h3>
+  <div class="widget-hint">Cambiá la proporción y n; "Reset" vuelve al 64,9% real.</div>
+  <div class="grid2">
+   <div>
+    <label class="ctl">Proporción p̂ = <b id="ip_p" style="color:var(--primary)"></b></label><input type="range" id="ip_pR" min="0.40" max="0.80" step="0.001">
+    <label class="ctl">n = <b id="ip_n" style="color:var(--primary)"></b></label><input type="range" id="ip_nR" min="100" max="24000" step="50">
+    <button class="btn" id="ip_reset" style="margin-top:10px">↺ Reset a los datos reales</button>
+   </div>
+   <div><svg id="ip_svg" viewBox="0 0 320 90" role="img"></svg><div class="rescard" id="ip_out" style="text-align:center"></div></div>
+  </div>
+</div>
+
 <!-- ===================== 3. HIPÓTESIS ===================== -->
 <section id="hip">
   <div class="sec-tag"><span class="dot"></span>Sección 6</div>
@@ -288,6 +315,33 @@ footer{color:var(--muted);font-size:13px;padding:28px 0 50px;text-align:center;}
   <div class="callout key"><div class="t">💡 Ojo con estos valores p tan chicos</div>
     t=−17,2 y z=13 están <b>lejísimos</b> del centro de la campana (fuera de la pantalla del gráfico de arriba). Por eso los valores p son casi 0. Con muestras enormes, hasta diferencias claras dan p minúsculos — coherente con lo que vimos del error estándar.</div>
 </section>
+
+
+<div class="card" style="border:2px solid var(--primary)">
+  <h3>🔬 Con nuestros datos — Prueba <u>t de Welch</u> (monto por año)</h3>
+  <div class="widget-hint">Mové los promedios de cada año y la dispersión; mirá cómo cambian t, el valor p y la decisión. "Reset" = valores reales (t≈−17).</div>
+  <div class="grid2">
+   <div>
+    <label class="ctl">Media 2021 (log₁₀) = <b id="w_m1" style="color:var(--primary)"></b></label><input type="range" id="w_m1R" min="4.0" max="4.6" step="0.001">
+    <label class="ctl">Media 2022 (log₁₀) = <b id="w_m2" style="color:var(--primary)"></b></label><input type="range" id="w_m2R" min="4.0" max="4.6" step="0.001">
+    <label class="ctl">Desvío σ (ambos) = <b id="w_s" style="color:var(--primary)"></b></label><input type="range" id="w_sR" min="0.4" max="1.0" step="0.01">
+    <button class="btn" id="w_reset" style="margin-top:10px">↺ Reset a los datos reales</button>
+   </div>
+   <div class="rescard" id="w_out"></div>
+  </div>
+</div>
+<div class="card" style="border:2px solid var(--primary)">
+  <h3>🔬 Con nuestros datos — Prueba <u>z de proporciones</u> (competencia por año)</h3>
+  <div class="widget-hint">Mové las proporciones de cada año; "Reset" = valores reales (z≈13).</div>
+  <div class="grid2">
+   <div>
+    <label class="ctl">Competencia 2021 = <b id="z_p1" style="color:var(--primary)"></b></label><input type="range" id="z_p1R" min="0.4" max="0.9" step="0.001">
+    <label class="ctl">Competencia 2022 = <b id="z_p2" style="color:var(--primary)"></b></label><input type="range" id="z_p2R" min="0.4" max="0.9" step="0.001">
+    <button class="btn" id="z_reset" style="margin-top:10px">↺ Reset a los datos reales</button>
+   </div>
+   <div class="rescard" id="z_out"></div>
+  </div>
+</div>
 
 <!-- ===================== 4. REGRESIÓN ===================== -->
 <section id="reg">
@@ -354,6 +408,21 @@ footer{color:var(--muted);font-size:13px;padding:28px 0 50px;text-align:center;}
     Tipo y modalidad son texto (Bienes, Obras…). El modelo las convierte en variables <b>0/1</b> ("¿es Obra? sí/no"). Deja una como <b>base</b> de comparación: acá <b>Bienes + Concurso de Ofertas</b>. Por eso cada coeficiente se lee <b>respecto de esa base</b> (ej.: "Obras cuesta 72% más <i>que Bienes</i>").</div>
 </section>
 
+
+<div class="card" style="border:2px solid var(--primary)">
+  <h3>🔬 Con nuestros datos — La recta de "mejor ajuste"</h3>
+  <div class="widget-hint">Cada punto es una contratación real (muestra). Movés la recta y el error total sube o baja. "Reset" la lleva a la recta real de mínimos cuadrados (la de menor error).</div>
+  <svg id="ls_svg" viewBox="0 0 640 340" role="img"></svg>
+  <div class="grid2">
+    <div>
+      <label class="ctl">Pendiente = <b id="ls_sl" style="color:var(--primary)"></b></label><input type="range" id="ls_slR" min="-0.05" max="0.2" step="0.001">
+      <label class="ctl">Intercepto = <b id="ls_ic" style="color:var(--primary)"></b></label><input type="range" id="ls_icR" min="3.8" max="4.6" step="0.01">
+    </div>
+    <div class="rescard" id="ls_out" style="text-align:center"></div>
+  </div>
+  <button class="btn" id="ls_reset" style="margin-top:10px">↺ Reset a la recta real (mínimos cuadrados)</button>
+</div>
+
 <!-- ===================== 5. SUPUESTOS ===================== -->
 <section id="sup">
   <div class="sec-tag"><span class="dot"></span>Sección 7 — control de calidad</div>
@@ -408,6 +477,7 @@ footer{color:var(--muted);font-size:13px;padding:28px 0 50px;text-align:center;}
   Complementa al notebook <span class="mono">trabajo_practico_estadistica.ipynb</span> y al informe. Integrantes: Sebastián Chamorro · Dalma González.
 </footer>
 
+<script>const DATA={"reg_pts": [[1, 5.444], [3, 4.226], [3, 3.75], [5, 4.564], [3, 4.276], [1, 4.038], [2, 4.162], [5, 3.842], [1, 4.672], [2, 4.286], [1, 4.269], [1, 4.129], [3, 4.143], [1, 4.024], [1, 3.842], [1, 4.823], [5, 5.306], [1, 5.047], [1, 4.329], [5, 6.223], [2, 5.523], [3, 5.003], [1, 4.21], [6, 5.254], [1, 5.849], [2, 5.957], [4, 3.017], [4, 4.143], [1, 4.052], [2, 4.346], [3, 5.156], [1, 4.962], [3, 4.291], [2, 3.62], [2, 4.539], [1, 4.561], [1, 4.046], [1, 5.687], [1, 4.075], [2, 4.343], [1, 4.289], [2, 4.368], [1, 4.73], [3, 4.207], [3, 4.151], [3, 4.439], [3, 3.398], [7, 5.584], [8, 4.841], [1, 5.966], [2, 4.213], [2, 5.318], [4, 5.415], [3, 4.097], [1, 4.395], [2, 4.792], [2, 5.949], [3, 3.593], [1, 3.841], [1, 3.609], [1, 5.402], [2, 6.217], [2, 3.62], [1, 4.289], [2, 4.087], [3, 5.243], [1, 3.988], [3, 4.883], [1, 4.205], [1, 5.523], [2, 4.268], [1, 5.068], [3, 3.646], [1, 6.629], [3, 4.338], [1, 4.928], [2, 3.485], [1, 3.815], [4, 4.512], [3, 3.52], [7, 3.745], [3, 4.289], [1, 4.523], [1, 4.333], [2, 4.579], [15, 5.028], [1, 4.738], [2, 3.729], [2, 3.842], [3, 4.188], [1, 2.897], [3, 4.014], [1, 4.184], [3, 4.842], [3, 4.204], [1, 5.319], [3, 4.246], [2, 4.759], [1, 4.432], [4, 3.368], [1, 4.891], [1, 4.43], [1, 4.405], [1, 3.833], [2, 3.772], [3, 4.355], [5, 4.213], [2, 3.745], [3, 4.33], [4, 3.801], [1, 4.716], [2, 4.555], [3, 4.348], [1, 4.291], [1, 5.203], [2, 3.614], [4, 3.944], [3, 3.541], [3, 4.509], [1, 3.338], [9, 4.969], [6, 3.868], [4, 4.428], [2, 4.388], [4, 4.433], [1, 4.284], [3, 4.313], [2, 4.153], [4, 5.712], [2, 4.893], [4, 3.842], [7, 4.923], [1, 4.9], [4, 3.465], [2, 3.912], [4, 4.339], [1, 4.129], [2, 4.111], [3, 2.364], [6, 4.097], [1, 4.035], [2, 4.256], [1, 3.465], [11, 4.982], [3, 4.318], [3, 4.097], [1, 3.964], [3, 4.09], [2, 4.435], [4, 4.745], [1, 4.289], [2, 4.579], [2, 3.935], [1, 4.537], [2, 4.278], [1, 4.444], [5, 4.781], [3, 3.988], [1, 3.745], [4, 5.58], [7, 5.017], [1, 2.687], [2, 3.62], [1, 4.331], [10, 4.979], [2, 4.347], [1, 3.877], [23, 5.454], [1, 3.485], [4, 4.902], [2, 4.257], [2, 4.365], [3, 4.44], [1, 3.996], [3, 4.046], [3, 4.291], [6, 4.766], [7, 3.746], [3, 4.294], [2, 4.859], [2, 4.339], [5, 3.209], [2, 4.444], [5, 4.651], [3, 3.921], [3, 3.62], [2, 3.875], [5, 4.722], [3, 3.745], [4, 4.319], [3, 4.309], [1, 4.796], [1, 5.001], [2, 2.864], [2, 5.62], [3, 4.288], [3, 4.067], [2, 4.388], [5, 4.365], [1, 4.318], [1, 4.036], [1, 4.845], [4, 4.983], [4, 3.582], [1, 4.489], [2, 3.947], [3, 4.368], [3, 4.375], [1, 4.322], [4, 3.719], [3, 3.687], [5, 4.901], [1, 4.213], [3, 4.156], [2, 6.842], [1, 4.749], [2, 3.962], [6, 4.03], [2, 4.852], [3, 3.753], [18, 5.325], [4, 4.097], [2, 4.06], [2, 6.781], [1, 6.664], [7, 3.64], [3, 4.441], [1, 4.016], [2, 4.365], [10, 5.017], [2, 4.59], [7, 4.272], [1, 3.07], [3, 4.143], [1, 4.243], [3, 3.745], [3, 5.092], [1, 4.719], [1, 4.92], [14, 4.819]], "reg_slope": 0.0755, "reg_int": 4.1532, "reg_r": 0.272, "resid_pts": [[5.821, -0.536], [4.087, 0.156], [4.9, -0.435], [4.663, -0.219], [4.113, 0.046], [4.134, 0.218], [3.854, -0.639], [5.749, -0.521], [3.907, 0.102], [4.572, 0.028], [5.493, -0.126], [4.644, 0.037], [3.912, -0.413], [5.475, 0.113], [5.121, -0.439], [5.466, -0.172], [4.111, 0.277], [3.876, -0.692], [4.136, -0.101], [3.949, 0.315], [5.667, 0.791], [4.138, 0.191], [4.136, 0.137], [3.883, -0.549], [4.799, -0.314], [3.854, 0.493], [4.567, -0.029], [4.137, 0.047], [3.9, 0.057], [3.972, 0.24], [4.115, 0.066], [4.134, 0.251], [4.688, -0.015], [4.847, 0.083], [4.159, 0.181], [4.303, 0.715], [5.513, 0.012], [4.617, 0.024], [3.854, 0.109], [5.54, 0.143], [3.912, -0.372], [4.626, 0.192], [5.473, 0.433], [5.699, -0.255], [3.98, 0.319], [3.902, -0.004], [3.879, -0.686], [4.847, -0.347], [5.759, 0.005], [3.91, 0.186], [4.137, 0.152], [4.11, -0.347], [3.912, -0.116], [3.903, -0.433], [3.875, 0.054], [4.136, 0.109], [4.799, 0.134], [3.912, -0.514], [4.849, 0.138], [4.59, 0.263], [4.135, -0.094], [4.135, 0.154], [4.672, -0.252], [4.135, 0.05], [4.135, -0.2], [3.907, -0.685], [3.909, -0.59], [4.136, 0.048], [3.88, -1.253], [4.846, -0.402], [4.564, -0.04], [5.826, -0.172], [3.901, 0.423], [6.072, 0.548], [5.442, 0.431], [4.708, 0.359], [4.644, -0.195], [3.929, -0.379], [4.139, 0.22], [4.823, -0.43], [5.496, -0.375], [3.928, -0.508], [5.516, 0.858], [4.799, 0.225], [4.086, -0.076], [3.908, 0.478], [3.878, -0.233], [4.942, 0.046], [3.955, -0.534], [4.208, -0.199], [4.138, -0.045], [4.311, 0.49], [4.086, 0.125], [3.906, -0.287], [4.087, 0.153], [3.907, 0.339], [3.855, -0.106], [4.088, 0.176], [4.689, 0.047], [3.852, -0.11], [4.086, -0.298], [4.182, -0.499], [5.657, -0.202], [4.669, 0.255], [4.087, 0.267], [4.14, 0.146], [4.088, 0.217], [4.086, 0.089], [4.135, 0.098], [4.686, 0.202], [4.11, 0.239], [3.855, -0.303], [4.134, 0.194], [3.934, -0.713], [4.135, 0.031], [3.852, 0.533], [4.62, -4.273], [3.852, -0.421], [3.928, -0.383], [4.87, 0.047], [5.964, -0.707], [4.135, 0.147], [4.087, -0.245], [3.877, 0.412], [4.02, -0.041], [4.844, -0.012], [3.947, 0.417], [4.329, -0.516], [4.135, 0.008], [4.111, -0.067], [3.959, -0.291], [3.948, -0.408], [4.087, 0.205], [3.907, -0.81], [4.087, 0.246], [5.681, -0.538], [4.566, -0.219], [3.91, 0.332], [5.665, -0.498], [4.134, 0.099], [4.137, 0.11], [4.111, 0.051], [3.948, -0.203], [5.179, -0.313], [4.134, 0.088], [4.62, 0.019], [4.658, -0.118], [4.087, -0.3], [4.112, 0.255], [4.164, 0.195], [4.623, -0.049], [3.996, 0.076], [4.087, 0.097], [5.674, 0.085], [5.439, 1.779], [4.62, 0.237], [4.57, 0.422], [4.616, 0.24], [3.883, -1.16], [4.086, 0.078], [4.237, 0.053], [4.619, 0.411], [3.974, 0.107], [3.927, -0.079], [5.417, 0.545], [4.183, 0.156], [4.11, 0.317], [3.972, 0.328], [5.891, -0.312], [4.114, 0.12], [3.902, 0.128], [3.876, 0.045], [5.537, -0.315], [4.089, 0.152], [3.899, 0.117], [4.568, 0.481], [4.798, -0.406], [4.111, 0.006], [4.134, 0.005], [3.875, -0.362], [3.9, 0.021], [3.884, -0.53], [4.136, 0.11], [4.159, -0.142], [4.333, 0.089], [5.712, -0.333], [4.111, 0.211], [3.852, 0.516], [3.881, 0.466], [5.16, -0.745], [3.856, -0.106], [3.9, 0.251], [4.587, 0.003], [3.916, 0.305], [6.156, -0.601], [4.111, -0.401], [4.113, 0.184], [4.8, -0.281], [3.908, 0.378], [3.932, 0.415], [3.959, 0.36], [3.854, 0.53], [5.07, -1.356], [4.089, -0.169], [3.878, 0.265], [4.136, 0.25], [3.901, 0.146], [3.899, -0.365], [3.909, -0.427], [4.798, -0.074], [4.134, -0.293], [3.851, 0.136], [4.184, -0.082], [3.911, 0.24], [3.931, -0.908], [3.852, 0.274], [3.955, 0.188], [4.87, -0.109], [3.853, 0.436], [3.928, -0.361], [3.996, 0.161], [4.825, -0.096], [4.086, -0.11], [4.305, -0.571], [4.584, 0.358], [4.134, 0.213], [4.134, -0.037], [4.645, 0.123], [4.622, 0.001], [3.9, 0.346], [4.636, 0.053], [3.907, -0.92], [4.306, -0.306], [3.881, 0.107], [3.908, -0.589], [3.88, 0.408], [4.134, -0.172], [4.823, -0.487], [5.424, 0.076], [4.086, 0.012], [4.141, 0.035], [3.997, -0.125], [3.936, 0.137], [4.622, 0.363], [3.877, 0.412], [3.853, -0.664], [3.879, -0.322], [5.498, -0.258], [3.852, -1.033], [3.856, 0.48], [3.908, 0.38], [4.623, 0.159], [4.134, 0.21], [3.854, 0.465], [3.852, -0.385], [4.087, 0.164], [4.135, 0.2], [4.11, 0.209], [4.086, -0.642], [4.134, 0.166], [4.087, 0.056], [3.854, 0.508], [3.855, -0.001], [4.597, 0.216], [4.647, 0.341], [4.624, 0.266], [5.417, 0.328], [4.112, 0.213], [3.907, -0.607], [3.951, 0.12], [3.902, 0.387], [4.135, -0.21], [3.9, 0.395], [3.852, 0.403], [4.894, -0.194], [4.668, 0.24], [4.111, 0.288], [4.135, 0.222], [4.799, -0.287], [3.928, -0.33], [4.62, 0.222], [4.308, 0.612], [4.798, -0.089], [3.901, 0.321], [3.909, -0.247], [4.62, 0.257], [4.871, -0.014], [4.087, 0.222], [4.112, 0.198], [4.8, -0.02], [3.901, 0.251], [5.433, 1.504], [5.634, -0.547], [4.134, -0.389], [4.086, -0.068], [4.823, -0.008], [4.564, 0.218], [4.087, 0.162], [4.798, 0.088], [4.086, -0.438], [4.135, -0.02], [4.11, 0.112], [3.908, 0.411], [3.9, -1.059], [3.907, 0.072], [3.979, 0.015], [4.135, 0.234], [3.908, 0.235], [4.648, -0.085], [4.718, -0.124], [4.645, 0.308], [5.497, -0.034], [4.085, 0.146], [3.878, 0.446], [4.584, -0.119], [3.877, -0.657], [4.134, 0.213], [5.71, -0.266], [3.852, -0.375], [4.111, -0.149]], "qq_pts": [[-2.609, -3.175], [-2.208, -2.515], [-2.0, -2.168], [-1.855, -1.94], [-1.74, -1.78], [-1.645, -1.623], [-1.562, -1.503], [-1.489, -1.393], [-1.424, -1.303], [-1.363, -1.22], [-1.308, -1.155], [-1.256, -1.097], [-1.207, -1.04], [-1.161, -0.995], [-1.118, -0.945], [-1.076, -0.895], [-1.036, -0.852], [-0.998, -0.81], [-0.961, -0.773], [-0.926, -0.732], [-0.891, -0.696], [-0.858, -0.656], [-0.825, -0.623], [-0.794, -0.591], [-0.763, -0.554], [-0.733, -0.526], [-0.703, -0.493], [-0.674, -0.464], [-0.646, -0.434], [-0.618, -0.407], [-0.591, -0.381], [-0.564, -0.355], [-0.538, -0.329], [-0.511, -0.302], [-0.486, -0.278], [-0.46, -0.252], [-0.435, -0.228], [-0.41, -0.21], [-0.385, -0.186], [-0.361, -0.165], [-0.337, -0.145], [-0.313, -0.122], [-0.289, -0.1], [-0.265, -0.084], [-0.242, -0.064], [-0.218, -0.041], [-0.195, -0.026], [-0.172, -0.004], [-0.149, 0.015], [-0.126, 0.025], [-0.103, 0.045], [-0.08, 0.066], [-0.057, 0.081], [-0.034, 0.1], [-0.011, 0.118], [0.011, 0.131], [0.034, 0.146], [0.057, 0.166], [0.08, 0.183], [0.103, 0.203], [0.126, 0.219], [0.149, 0.234], [0.172, 0.251], [0.195, 0.267], [0.218, 0.281], [0.242, 0.297], [0.265, 0.314], [0.289, 0.331], [0.313, 0.344], [0.337, 0.359], [0.361, 0.376], [0.385, 0.387], [0.41, 0.401], [0.435, 0.418], [0.46, 0.433], [0.486, 0.451], [0.511, 0.466], [0.538, 0.485], [0.564, 0.501], [0.591, 0.509], [0.618, 0.523], [0.646, 0.539], [0.674, 0.555], [0.703, 0.57], [0.733, 0.583], [0.763, 0.6], [0.794, 0.62], [0.825, 0.633], [0.858, 0.652], [0.891, 0.674], [0.926, 0.699], [0.961, 0.725], [0.998, 0.753], [1.036, 0.79], [1.076, 0.829], [1.118, 0.86], [1.161, 0.894], [1.207, 0.927], [1.256, 0.96], [1.308, 0.99], [1.363, 1.028], [1.424, 1.056], [1.489, 1.092], [1.562, 1.124], [1.645, 1.169], [1.74, 1.221], [1.855, 1.281], [2.0, 1.393], [2.208, 1.996], [2.609, 3.068]], "sd_log": 0.6826};</script>
 <script>
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const NS='http://www.w3.org/2000/svg';
@@ -527,29 +597,32 @@ $$('#coefSeg button').forEach(b=>b.onclick=()=>{$$('#coefSeg button').forEach(x=
 drawCoef('factor');
 
 /* ---------- W7: residual plot ideal vs real ---------- */
-function drawSup(m){const s=$('#supSvg');clr(s);const W=640,H=250,padL=40,padB=34,base=H-padB,top=14;
- el('line',{x1:padL,y1:top,x2:padL,y2:base,stroke:'#c7d0dc'},s);el('line',{x1:padL,y1:(top+base)/2,x2:W-20,y2:(top+base)/2,stroke:'#d64545','stroke-dasharray':'5 4'},s);
- el('text',{x:(W+padL)/2,y:H-6,'text-anchor':'middle','font-size':11,fill:'#5b6675'},s).textContent='valores ajustados (monto estimado) →';
- el('text',{x:padL-6,y:top+6,'text-anchor':'end','font-size':10,fill:'#5b6675'},s).textContent='+error';
+function drawSup(m){const s=$('#supSvg');clr(s);const W=640,H=250,padL=40,padB=34,base=H-padB,top=14,right=20;
  const mid=(top+base)/2,amp=(base-top)/2-6;
- for(let i=0;i<260;i++){const fx=Math.random();const x=padL+(W-20-padL)*fx;let e;
-   if(m==='ideal')e=randn()*0.33; else {e=randn()*(0.22+0.75*fx); if(Math.random()<0.04)e*=3.2;} // real: embudo + outliers
-   const y=mid-Math.max(-1,Math.min(1,e))*amp;el('circle',{cx:x,cy:y,r:2.6,fill:m==='ideal'?'#2563a8':'#6b4fbf','fill-opacity':.32},s);}
- $('#supMsg').innerHTML=m==='ideal'
-  ?'<b>Caso ideal:</b> nube pareja, del mismo grosor en todo el rango y centrada en la línea roja. Se cumplen los supuestos.'
-  :'<b>Nuestro modelo:</b> la nube se abre como un <b>embudo</b> (más error a la derecha = algo de heterocedasticidad) y hay <b>puntos lejanos</b> (montos extremos). Aceptable, pero lo anotamos como limitación.';}
+ el('line',{x1:padL,y1:top,x2:padL,y2:base,stroke:'#c7d0dc'},s);
+ el('line',{x1:padL,y1:mid,x2:W-right,y2:mid,stroke:'#d64545','stroke-dasharray':'5 4'},s);
+ el('text',{x:(W+padL)/2,y:H-6,'text-anchor':'middle','font-size':11,fill:'#5b6675'},s).textContent='valores ajustados (monto estimado) \u2192';
+ el('text',{x:padL-6,y:top+6,'text-anchor':'end','font-size':10,fill:'#5b6675'},s).textContent='+error';
+ if(m==='real'){const pts=DATA.resid_pts,fx=pts.map(p=>p[0]),ry=pts.map(p=>Math.abs(p[1]));
+   const fmin=Math.min(...fx),fmax=Math.max(...fx),rmax=Math.max(...ry);
+   const X=f=>padL+(W-right-padL)*((f-fmin)/(fmax-fmin)),Y=r=>mid-(r/rmax)*amp;
+   pts.forEach(([f,r])=>el('circle',{cx:X(f),cy:Y(r),r:2.6,fill:'#6b4fbf','fill-opacity':.35},s));
+   $('#supMsg').innerHTML='<b>Nuestro modelo (datos reales):</b> la nube se abre un poco hacia la derecha (algo de heterocedasticidad) y hay <b>puntos lejanos</b> (montos extremos mal predichos). Aceptable; lo anotamos como limitaci\u00f3n.';
+ }else{const X=f=>padL+(W-right-padL)*f;
+   for(let i=0;i<260;i++){const fx=Math.random(),e=randn()*0.33;el('circle',{cx:X(fx),cy:mid-Math.max(-1,Math.min(1,e))*amp,r:2.6,fill:'#2563a8','fill-opacity':.32},s);}
+   $('#supMsg').innerHTML='<b>Caso ideal:</b> nube pareja, del mismo grosor en todo el rango y centrada en la l\u00ednea roja. Se cumplen los supuestos.';}}
 $$('#supSeg button').forEach(b=>b.onclick=()=>{$$('#supSeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');drawSup(b.dataset.m);});
 drawSup('ideal');
 
 /* ---------- QQ-plot ---------- */
 function drawQQ(m){const s=$('#qqSvg');clr(s);const W=640,H=240,pad=34,base=H-pad,top=14,size=base-top;
- const X=t=>W/2-size/2+(t+3)/6*size,Y=t=>base-(t+3)/6*size;
+ const X=tt=>W/2-size/2+(tt+3)/6*size,Y=tt=>base-(tt+3)/6*size;
  el('line',{x1:X(-3),y1:Y(-3),x2:X(3),y2:Y(3),stroke:'#d64545','stroke-width':2},s);
- el('text',{x:X(0),y:H-4,'text-anchor':'middle','font-size':11,fill:'#5b6675'},s).textContent='lo esperado si fueran normales →';
- const N=60;for(let i=0;i<N;i++){const q=-2.6+5.2*(i+0.5)/N;let obs;
-   if(m==='normal')obs=q+randn()*0.06; else obs=Math.sign(q)*Math.pow(Math.abs(q),1.7)*0.9+randn()*0.05; // heavy tails: extremes exaggerated
-   el('circle',{cx:X(q),cy:Y(Math.max(-3,Math.min(3,obs))),r:3,fill:'#2563a8','fill-opacity':.5},s);}
- el('text',{x:X(-2.4),y:Y(2.6),'font-size':11,fill:'#5b6675'},s).textContent=m==='normal'?'siguen la diagonal ✔':'se despegan en las puntas ✗';}
+ el('text',{x:X(0),y:H-4,'text-anchor':'middle','font-size':11,fill:'#5b6675'},s).textContent='lo esperado si fueran normales \u2192';
+ if(m==='heavy'){DATA.qq_pts.forEach(([th,ob])=>el('circle',{cx:X(th),cy:Y(Math.max(-3,Math.min(3,ob))),r:3,fill:'#2563a8','fill-opacity':.5},s));
+   el('text',{x:X(-2.4),y:Y(2.6),'font-size':11,fill:'#5b6675'},s).textContent='datos reales: se despegan en las puntas \u2717';
+ }else{const N=60;for(let i=0;i<N;i++){const q=-2.6+5.2*(i+.5)/N,obs=q+randn()*0.06;el('circle',{cx:X(q),cy:Y(Math.max(-3,Math.min(3,obs))),r:3,fill:'#2563a8','fill-opacity':.5},s);}
+   el('text',{x:X(-2.4),y:Y(2.6),'font-size':11,fill:'#5b6675'},s).textContent='siguen la diagonal \u2714';}}
 $$('#qqSeg button').forEach(b=>b.onclick=()=>{$$('#qqSeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');drawQQ(b.dataset.m);});
 drawQQ('normal');
 
@@ -608,5 +681,77 @@ QUIZ.forEach((it,i)=>{const d=document.createElement('div');d.style.marginBottom
   b.onclick=()=>{if(d.dataset.done)return;d.dataset.done=1;[...d.querySelectorAll('.opt')].forEach((x,xi)=>{if(xi===it.a)x.classList.add('correct');else if(xi===oi)x.classList.add('wrong');x.style.cursor='default';});d.querySelector('.explain').classList.add('show');};
   d.appendChild(b);});
  const ex=document.createElement('div');ex.className='explain';ex.innerHTML='<b>Por qué:</b> '+it.e;d.appendChild(ex);qb.appendChild(d);});
+
+/* ===== Con nuestros datos: IC media ===== */
+(function(){const R={n:23853,m:4.3715,s:0.677},nR=$('#im_nR'),mR=$('#im_mR'),sR=$('#im_sR');
+ function upd(){const n=+nR.value,m=+mR.value,sd=+sR.value;$('#im_n').textContent=fmt(n);$('#im_m').textContent=m.toFixed(3);$('#im_s').textContent=sd.toFixed(3);
+  const ee=sd/Math.sqrt(n),half=1.96*ee,lo=Math.pow(10,m-half),hi=Math.pow(10,m+half),ctr=Math.pow(10,m);
+  const s=$('#im_svg');clr(s);const W=320,pad=22,y=44,bw=W-2*pad,span=0.05,X=v=>pad+bw*((v-(m-span))/(2*span));
+  el('line',{x1:pad,y1:y,x2:W-pad,y2:y,stroke:'#c7d0dc'},s);
+  const L=Math.max(m-span,m-half),Hh=Math.min(m+span,m+half);
+  el('rect',{x:X(L),y:y-9,width:Math.max(2,X(Hh)-X(L)),height:18,rx:6,fill:'#bcd6f2',stroke:'#2563a8'},s);
+  el('circle',{cx:X(m),cy:y,r:4,fill:'#1b4b86'},s);
+  $('#im_out').innerHTML='IC 95% del monto típico:<br><b class="big-num" style="color:var(--primary)">'+fmt(lo)+' – '+fmt(hi)+'</b><br><span style="font-size:12px;color:var(--muted)">centro '+fmt(ctr)+' USD · EE='+ee.toFixed(5)+'</span>';}
+ function rst(){nR.value=R.n;mR.value=R.m;sR.value=R.s;upd();}
+ [nR,mR,sR].forEach(x=>x.oninput=upd);$('#im_reset').onclick=rst;rst();})();
+
+/* ===== Con nuestros datos: IC proporción ===== */
+(function(){const R={p:0.6489,n:22858},pR=$('#ip_pR'),nR=$('#ip_nR');
+ function upd(){const p=+pR.value,n=+nR.value;$('#ip_p').textContent=(p*100).toFixed(1)+'%';$('#ip_n').textContent=fmt(n);
+  const ee=Math.sqrt(p*(1-p)/n),lo=p-1.96*ee,hi=p+1.96*ee;
+  const s=$('#ip_svg');clr(s);const W=320,pad=30,y=44,bw=W-2*pad,X=v=>pad+bw*v;
+  el('line',{x1:pad,y1:y,x2:W-pad,y2:y,stroke:'#c7d0dc'},s);
+  [0,.25,.5,.75,1].forEach(v=>el('text',{x:X(v),y:y+18,'text-anchor':'middle','font-size':9,fill:'#9aa6b6'},s).textContent=(v*100)+'%');
+  el('rect',{x:X(Math.max(0,lo)),y:y-9,width:Math.max(2,X(Math.min(1,hi))-X(Math.max(0,lo))),height:18,rx:6,fill:'#bcd6f2',stroke:'#2563a8'},s);
+  el('circle',{cx:X(p),cy:y,r:4,fill:'#1b4b86'},s);
+  $('#ip_out').innerHTML='IC 95%:<br><b class="big-num" style="color:var(--primary)">'+(lo*100).toFixed(1)+'% – '+(hi*100).toFixed(1)+'%</b>';}
+ function rst(){pR.value=R.p;nR.value=R.n;upd();}
+ [pR,nR].forEach(x=>x.oninput=upd);$('#ip_reset').onclick=rst;rst();})();
+
+/* ===== Con nuestros datos: Welch ===== */
+(function(){const R={m1:4.2294,m2:4.4128,s:0.69,n1:5378,n2:18475},m1R=$('#w_m1R'),m2R=$('#w_m2R'),sR=$('#w_sR');
+ function upd(){const m1=+m1R.value,m2=+m2R.value,sd=+sR.value,n1=R.n1,n2=R.n2;
+  $('#w_m1').textContent=m1.toFixed(3);$('#w_m2').textContent=m2.toFixed(3);$('#w_s').textContent=sd.toFixed(2);
+  const t=(m1-m2)/Math.sqrt(sd*sd/n1+sd*sd/n2),p=2*(1-Phi(Math.abs(t))),rej=p<0.05;
+  $('#w_out').innerHTML='<div class="stat-line"><span>2021 (geom.)</span><span>'+fmt(Math.pow(10,m1))+' USD</span></div>'+
+   '<div class="stat-line"><span>2022 (geom.)</span><span>'+fmt(Math.pow(10,m2))+' USD</span></div>'+
+   '<div class="stat-line"><span>Estadístico t</span><span>'+t.toFixed(2)+'</span></div>'+
+   '<div class="stat-line"><span>valor p</span><span>'+(p<1e-4?p.toExponential(1):p.toFixed(4))+'</span></div>'+
+   '<div style="margin-top:8px">'+(rej?'<span class="pill rej">se rechaza H₀ (hay diferencia)</span>':'<span class="pill ok">no se rechaza H₀</span>')+'</div>';}
+ function rst(){m1R.value=R.m1;m2R.value=R.m2;sR.value=R.s;upd();}
+ [m1R,m2R,sR].forEach(x=>x.oninput=upd);$('#w_reset').onclick=rst;rst();})();
+
+/* ===== Con nuestros datos: z proporciones ===== */
+(function(){const R={p1:0.7247,p2:0.6268,n1:5169,n2:17689},p1R=$('#z_p1R'),p2R=$('#z_p2R');
+ function upd(){const p1=+p1R.value,p2=+p2R.value,n1=R.n1,n2=R.n2;
+  $('#z_p1').textContent=(p1*100).toFixed(1)+'%';$('#z_p2').textContent=(p2*100).toFixed(1)+'%';
+  const pp=(p1*n1+p2*n2)/(n1+n2),se=Math.sqrt(pp*(1-pp)*(1/n1+1/n2)),z=(p1-p2)/se,p=2*(1-Phi(Math.abs(z))),rej=p<0.05;
+  $('#z_out').innerHTML='<div class="stat-line"><span>p̂ 2021</span><span>'+(p1*100).toFixed(1)+'%</span></div>'+
+   '<div class="stat-line"><span>p̂ 2022</span><span>'+(p2*100).toFixed(1)+'%</span></div>'+
+   '<div class="stat-line"><span>Estadístico z</span><span>'+z.toFixed(2)+'</span></div>'+
+   '<div class="stat-line"><span>valor p</span><span>'+(p<1e-4?p.toExponential(1):p.toFixed(4))+'</span></div>'+
+   '<div style="margin-top:8px">'+(rej?'<span class="pill rej">se rechaza H₀ (cambió)</span>':'<span class="pill ok">no se rechaza H₀</span>')+'</div>';}
+ function rst(){p1R.value=R.p1;p2R.value=R.p2;upd();}
+ [p1R,p2R].forEach(x=>x.oninput=upd);$('#z_reset').onclick=rst;rst();})();
+
+/* ===== Con nuestros datos: mínimos cuadrados ===== */
+(function(){const R={sl:DATA.reg_slope,ic:DATA.reg_int},slR=$('#ls_slR'),icR=$('#ls_icR'),pts=DATA.reg_pts;
+ const W=640,H=340,padL=46,padB=40,padT=14,padR=16,xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);
+ const xmin=0,xmax=Math.max(...xs),ymin=Math.min(...ys)-0.2,ymax=Math.max(...ys)+0.2;
+ const X=x=>padL+(W-padL-padR)*((x-xmin)/(xmax-xmin)),Y=y=>H-padB-(H-padB-padT)*((y-ymin)/(ymax-ymin));
+ let sseReal=0;pts.forEach(([x,y])=>{const pr=R.ic+R.sl*x;sseReal+=(y-pr)*(y-pr);});
+ function upd(){const sl=+slR.value,ic=+icR.value;$('#ls_sl').textContent=sl.toFixed(3);$('#ls_ic').textContent=ic.toFixed(2);
+  let sse=0;pts.forEach(([x,y])=>{const pr=ic+sl*x;sse+=(y-pr)*(y-pr);});
+  const s=$('#ls_svg');clr(s);
+  el('line',{x1:padL,y1:H-padB,x2:W-padR,y2:H-padB,stroke:'#c7d0dc'},s);el('line',{x1:padL,y1:padT,x2:padL,y2:H-padB,stroke:'#c7d0dc'},s);
+  el('text',{x:W/2,y:H-6,'text-anchor':'middle','font-size':11,fill:'#5b6675'},s).textContent='n.º de oferentes →';
+  el('text',{x:14,y:H/2,'text-anchor':'middle','font-size':11,fill:'#5b6675',transform:'rotate(-90 14 '+(H/2)+')'},s).textContent='log₁₀(monto)';
+  pts.forEach(([x,y])=>el('circle',{cx:X(x),cy:Y(y),r:2.6,fill:'#2563a8','fill-opacity':.28},s));
+  el('line',{x1:X(xmin),y1:Y(ic+sl*xmin),x2:X(xmax),y2:Y(ic+sl*xmax),stroke:'#d64545','stroke-width':2.5},s);
+  const near=Math.abs(sse-sseReal)/sseReal<0.003;
+  $('#ls_out').innerHTML='Error total (suma de cuadrados):<br><b class="big-num" style="color:'+(near?'var(--green)':'var(--ink)')+'">'+sse.toFixed(1)+'</b><br><span style="font-size:12px;color:var(--muted)">'+(near?'¡Es (casi) el mínimo posible! Esta es la recta real (r='+DATA.reg_r+').':'Mové la recta para achicar el error…')+'</span>';}
+ function rst(){slR.value=R.sl;icR.value=R.ic;upd();}
+ [slR,icR].forEach(x=>x.oninput=upd);$('#ls_reset').onclick=rst;rst();})();
+
 </script>
 </body></html>
