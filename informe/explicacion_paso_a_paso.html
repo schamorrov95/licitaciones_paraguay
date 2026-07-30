@@ -103,23 +103,22 @@ from statsmodels.stats.proportion import proportions_ztest, proportion_confint</
 
 <!-- ============================================================ -->
 <h2 id="p2">3. Limpieza: el pipeline de preparación</h2>
-<p>La función <code>cargar_y_limpiar()</code> concentra toda la preparación. Recibe los CSV crudos y devuelve una tabla lista para analizar. Sus pasos, en orden:</p>
+<p>La celda de carga concentra toda la preparación: recibe los CSV crudos y devuelve la base analítica lista. Sus pasos, en orden:</p>
 
 <div class="step">
 <span class="lbl lbl-q">Qué hace (paso a paso dentro de la función)</span>
 <ol>
-<li><b>Une</b> 2021 y 2022 en una sola tabla y renombra las 66 columnas OCDS a nombres en español legibles (<code>monto_licitado</code>, <code>num_oferentes</code>, <code>modalidad</code>, …).</li>
-<li><b>Descarta</b> columnas de texto libre, identificadores internos y columnas casi vacías.</li>
-<li><b>Convierte fechas</b> de texto a formato <code>datetime</code>.</li>
-<li>Pasa columnas numéricas a enteros y <b>elimina columnas con más de 25.000 nulos</b> (prácticamente vacías).</li>
-<li><b>Filtra</b> los procesos verdaderamente cerrados: <code>estado == 'complete'</code> y <code>detalle_estado == 'Adjudicada'</code>.</li>
-<li><b>Convierte el monto a dólares</b>: los montos en guaraníes se dividen por un tipo de cambio fijo (<code>TIPO_CAMBIO = 7200</code> PYG/USD, promedio 2021–2022); los que ya están en USD se dejan igual.</li>
-<li><b>Crea variables derivadas</b>: <code>tipo_es</code> (Bienes/Servicios/Obras) y <code>competencia</code> (1 si hubo más de un oferente, 0 si hubo uno solo).</li>
+<li><b>Selecciona solo las ~10 columnas necesarias</b> (de las 66 del archivo OCDS) y las renombra a nombres claros (<code>monto_licitado</code>, <code>num_oferentes</code>, <code>modalidad</code>, …).</li>
+<li><b>Une</b> 2021 y 2022 y quita procesos <b>duplicados</b> por id de proceso.</li>
+<li><b>Filtra</b> los procesos completados y adjudicados: <code>estado == 'complete'</code> y <code>detalle_estado == 'Adjudicada'</code>.</li>
+<li><b>Verifica las monedas</b> presentes (solo PYG y USD) y <b>convierte a USD</b>: los montos en guaraníes se dividen por <code>TIPO_CAMBIO = 7200</code> PYG/USD (referencia BCP, promedio 2021–2022); los que ya están en USD se dejan igual.</li>
+<li><b>Crea variables derivadas</b>: <code>tipo_es</code> (Bienes/Servicios/Obras) y <code>competencia</code> (1 = más de un oferente, 0 = uno solo, faltante si se desconoce).</li>
 </ol>
 <span class="lbl lbl-r">Resultado</span>
-<div class="out">Dataset limpio: (23982, 37) | por año: {2022: 18567, 2021: 5415}</div>
+<div class="out">Frecuencia de moneda: PYG 23948 · USD 34
+Procesos adjudicados: 23,982 | por año: {2022: 18567, 2021: 5415}</div>
 <span class="lbl lbl-i">Interpretación</span>
-<p>De los ~39.957 registros crudos se conservan <b>23.982 procesos adjudicados y completos</b>, con 37 columnas. La muestra está desbalanceada por año (más procesos cargados en 2022), lo que se tendrá en cuenta al comparar.</p>
+<p>De los ~39.957 registros crudos se conservan <b>23.982 procesos completados y adjudicados</b>. La muestra está desbalanceada por año (más procesos cargados en 2022; ver cobertura por año), lo que se tiene en cuenta al comparar.</p>
 </div>
 
 <div class="concepto"><b>Concepto — ¿por qué convertir a una sola moneda?</b> Sumar o promediar montos en monedas distintas no tiene sentido. Al llevar todo a USD las cifras se vuelven comparables. <b>Advertencia honesta:</b> usar un tipo de cambio <i>fijo</i> para los dos años es una simplificación: parte de la diferencia de montos entre 2021 y 2022 podría deberse al movimiento cambiario real, no solo a que se contrató “más caro”. Conviene tenerlo presente al interpretar.</div>
@@ -235,7 +234,7 @@ li, ls = media - tcrit*ee, media + tcrit*ee</pre>
 IC95% (log10): (4,3629 ; 4,3800)
 IC95% en USD (media geométrica): 23.521 -> (23.061 ; 23.991)</div>
 <span class="lbl lbl-i">Interpretación</span>
-<p>Con un <b>95% de confianza</b>, la <b>media geométrica</b> del monto adjudicado de <i>toda la población</i> de contrataciones está entre <b>23.061 y 23.991 USD</b>. El intervalo es muy angosto (~930 USD de amplitud) porque el n es enorme: cuanto más grande la muestra, más preciso el estimado.</p>
+<p>Con un <b>95% de confianza</b>, la <b>media geométrica</b> del monto licitado de <i>toda la población</i> de contrataciones está entre <b>23.061 y 23.991 USD</b>. El intervalo es muy angosto (~930 USD de amplitud) porque el n es enorme: cuanto más grande la muestra, más preciso el estimado.</p>
 </div>
 <div class="concepto"><b>Concepto — qué es (y qué NO es) un intervalo de confianza.</b> El IC del 95% <b>no</b> dice que “el 95% de los contratos cuesta entre 23.061 y 23.991”. Dice que, si repitiéramos el muestreo muchísimas veces y construyéramos un intervalo cada vez, el <b>95% de esos intervalos contendría la verdadera media poblacional</b>. Es una afirmación sobre el método, no sobre un contrato individual. El <b>error estándar</b> (EE = desvío/√n) mide cuánto varía la media entre muestras; se achica con n grande. Con n tan grande, la t de Student ≈ la normal (t* = 1,96).</div>
 
@@ -300,7 +299,7 @@ Decisión: se RECHAZA H0</div>
 
 <!-- ============================================================ -->
 <h2 id="p11">12. Regresión lineal múltiple</h2>
-<p>Pregunta: <b>¿qué variables explican el monto adjudicado?</b> Variable respuesta: <code>log₁₀(monto)</code>. Predictores: n.º de oferentes, duración, tipo y modalidad.</p>
+<p>Pregunta: <b>¿qué variables explican el monto licitado?</b> Variable respuesta: <code>log₁₀(monto)</code>. Predictores: n.º de oferentes, duración, tipo y modalidad.</p>
 
 <h3>12.1 Diagrama de dispersión (Gráfico 3)</h3>
 <div class="step">

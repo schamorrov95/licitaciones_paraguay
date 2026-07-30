@@ -19,7 +19,10 @@ Análisis completo del pipeline de ciencia de datos aplicado a datos reales de c
 │   ├── licitaciones_paraguay.ipynb          # pipeline ML (clasificación/regresión/clustering)
 │   └── trabajo_practico_estadistica.ipynb   # análisis estadístico inferencial (TP Integrado)
 ├── informe/
-│   └── trabajo_practico_estadistica.html    # informe A4 imprimible a PDF (Arial 11)
+│   ├── trabajo_practico_estadistica.html    # informe A4 imprimible a PDF (Arial 11)
+│   ├── trabajo_practico_estadistica.pdf     # informe en PDF (5 págs, para entregar)
+│   ├── explicacion_paso_a_paso.html         # guía imprimible del código, celda por celda
+│   └── explicacion_interactiva.html         # guía interactiva y visual (para aprender)
 ├── .gitignore
 ├── requirements.txt
 └── README.md
@@ -27,7 +30,7 @@ Análisis completo del pipeline de ciencia de datos aplicado a datos reales de c
 
 Los CSV (~101 MB) no se incluyen en el repositorio: el notebook los descarga
 automáticamente con `gdown` desde una carpeta pública de Google Drive
-([enlace](https://drive.google.com/drive/folders/1738grWDl9j2VXf3ju0JFq0Njo2WXiQGo)).
+([enlace](https://drive.google.com/drive/folders/1u3rRbpS0ioVadkA5HS_peP6CpwrMXouw)).
 Ver [`data/README.md`](data/README.md) para el detalle de los archivos
 (`records_adj_2021.csv`, `records_adj_2022.csv`, `records_contratos_2021.csv`,
 `records_contratos_2022.csv`) y su origen en el Portal DNCP.
@@ -48,8 +51,11 @@ El notebook [`notebooks/trabajo_practico_estadistica.ipynb`](notebooks/trabajo_p
 desarrolla un análisis estadístico inferencial completo sobre el mismo dataset
 (descripción y clasificación de variables, limpieza, análisis descriptivo,
 estimación por intervalos de confianza, pruebas de hipótesis, regresión
-lineal múltiple, y resumen ejecutivo). El informe listo para entregar (A4, Arial 11,
-imprimible a PDF) está en [`informe/trabajo_practico_estadistica.html`](informe/trabajo_practico_estadistica.html).
+lineal múltiple, y resumen ejecutivo). La variable de monto corresponde al
+**monto licitado (estimado)** del proceso (campo OCDS `tender/value/amount`), no
+al finalmente adjudicado. El informe listo para entregar (A4, 5 páginas) está en
+[`informe/trabajo_practico_estadistica.html`](informe/trabajo_practico_estadistica.html)
+(y su PDF), acompañado de dos guías explicativas en la misma carpeta.
 
 ## Dataset
 

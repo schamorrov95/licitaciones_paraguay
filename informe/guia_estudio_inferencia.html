@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guía de estudio — De cero a la defensa (Secciones 5–8)</title>
+<style>
+:root{
+  --bg:#eef2f8; --surface:#fff; --surface2:#f7f9fc; --ink:#182338; --muted:#5b6675;
+  --line:#dde3ec; --primary:#2563a8; --primary-d:#1b4b86; --green:#2e9e5b; --amber:#e0a800;
+  --red:#d64545; --purple:#6b4fbf; --shadow:0 2px 10px rgba(24,35,56,.07),0 1px 3px rgba(24,35,56,.06); --radius:14px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-size:16px;}
+h1,h2,h3,h4{line-height:1.25;margin:0;}
+p{margin:.6em 0;}
+a{color:var(--primary);}
+.wrap{max-width:940px;margin:0 auto;padding:0 18px;}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--primary),var(--purple));z-index:100;transition:width .1s;}
+nav.chips{position:sticky;top:0;z-index:50;background:rgba(238,242,248,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:8px 0;}
+nav.chips .row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;}
+nav.chips a{flex:0 0 auto;font-size:12.5px;text-decoration:none;color:var(--muted);background:var(--surface);border:1px solid var(--line);padding:5px 11px;border-radius:999px;white-space:nowrap;transition:.15s;}
+nav.chips a:hover{color:var(--primary);border-color:var(--primary);}
+nav.chips a.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+header.hero{background:linear-gradient(135deg,#1b4b86,#2563a8 55%,#6b4fbf);color:#fff;padding:44px 0 38px;}
+.badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);padding:3px 12px;border-radius:999px;font-size:12.5px;margin-bottom:14px;}
+header.hero h1{font-size:30px;font-weight:800;letter-spacing:-.5px;}
+header.hero p{font-size:16px;opacity:.94;max-width:700px;}
+section{padding:32px 0 8px;}
+.sec-tag{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;}
+.sec-tag .dot{width:9px;height:9px;border-radius:50%;background:var(--primary);}
+h2.title{font-size:25px;font-weight:800;letter-spacing:-.4px;margin-bottom:4px;}
+.lead{color:var(--muted);font-size:16.5px;max-width:740px;}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px;margin:18px 0;}
+.card h3{font-size:18px;margin-bottom:2px;}
+.card h4{font-size:15px;margin:14px 0 2px;color:var(--primary-d);}
+.widget-hint{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:7px;margin:2px 0 14px;}
+.widget-hint::before{content:"👆";}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:720px){.grid2{grid-template-columns:1fr;}header.hero h1{font-size:24px;}}
+label.ctl{display:block;font-size:13px;font-weight:600;margin:10px 0 3px;}
+input[type=range]{width:100%;accent-color:var(--primary);}
+select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font:inherit;}
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px;}
+.seg button{border:0;background:transparent;padding:7px 13px;border-radius:7px;cursor:pointer;font-weight:600;color:var(--muted);font-size:13.5px;}
+.seg button.on{background:var(--primary);color:#fff;}
+button.btn{cursor:pointer;border:0;background:var(--primary);color:#fff;font-weight:600;padding:9px 16px;border-radius:9px;font:inherit;}
+button.btn:hover{background:var(--primary-d);}
+.readout{font-variant-numeric:tabular-nums;}
+.big-num{font-size:28px;font-weight:800;letter-spacing:-.5px;}
+/* labeled teaching blocks */
+.lbls{display:inline-block;font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;padding:2px 9px;border-radius:4px;margin:12px 0 3px;}
+.l-que{background:#dbe6f6;color:#1b4b86;} .l-para{background:#e7dcfa;color:#4a2f9e;}
+.l-form{background:#fde8cf;color:#8a5a00;} .l-ej{background:#dff0df;color:#1f7a44;} .l-tp{background:#fdd;color:#a12; background:#ffe0e0;color:#a12633;}
+.formula{background:#0f172a;color:#e7edf5;border-radius:10px;padding:14px 16px;margin:8px 0;font-family:"Cambria Math",Georgia,serif;font-size:20px;text-align:center;}
+.symbols{list-style:none;padding:0;margin:8px 0;}
+.symbols li{padding:5px 0;border-bottom:1px dashed var(--line);font-size:14.5px;}
+.symbols b{display:inline-block;min-width:46px;font-family:"Cambria Math",Georgia,serif;color:var(--primary-d);font-size:16px;}
+.callout{border-left:4px solid var(--primary);background:var(--surface2);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;}
+.callout.key{border-color:var(--amber);background:#fff8e6;} .callout.win{border-color:var(--green);background:#eefaf1;} .callout.warn{border-color:var(--red);background:#fdecec;}
+.callout .t{font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
+.callout.key .t{color:#8a6d00;} .callout.win .t{color:#1f7a44;} .callout.warn .t{color:#a12633;} .callout .t.p{color:var(--primary-d);}
+.rescard{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--surface);}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;}
+.pill.rej{background:#fdecec;color:var(--red);} .pill.ok{background:#eefaf1;color:var(--green);}
+.stat-line{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line);padding:5px 0;font-size:14px;}
+.stat-line span:last-child{font-weight:700;font-variant-numeric:tabular-nums;}
+table.mini{border-collapse:collapse;width:100%;font-size:13.5px;margin:6px 0;}
+table.mini th,table.mini td{border:1px solid var(--line);padding:5px 8px;text-align:center;}
+table.mini th{background:#e8edf5;} table.mini td:first-child,table.mini th:first-child{text-align:left;}
+.quiz .opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:11px 14px;margin:7px 0;cursor:pointer;font-size:14.5px;}
+.quiz .opt:hover{border-color:var(--primary);} .quiz .opt.correct{border-color:var(--green);background:#eefaf1;} .quiz .opt.wrong{border-color:var(--red);background:#fdecec;}
+.quiz .explain{font-size:13.5px;color:var(--muted);margin-top:8px;display:none;} .quiz .explain.show{display:block;}
+.acc details{border:1px solid var(--line);border-radius:10px;margin:7px 0;background:var(--surface);overflow:hidden;}
+.acc summary{cursor:pointer;padding:11px 15px;font-weight:600;list-style:none;display:flex;justify-content:space-between;}
+.acc summary::-webkit-details-marker{display:none;} .acc summary::after{content:"+";color:var(--primary);font-weight:800;font-size:19px;} .acc details[open] summary::after{content:"–";}
+.acc .body{padding:0 15px 13px;color:var(--muted);font-size:14.5px;}
+svg{display:block;max-width:100%;}
+.legendrow{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--muted);margin-top:8px;}
+.legendrow i{width:12px;height:12px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-1px;}
+footer{color:var(--muted);font-size:13px;padding:28px 0 50px;text-align:center;}
+.mono{font-family:Consolas,monospace;font-size:13px;background:var(--surface2);padding:2px 6px;border-radius:5px;}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+
+.deriv{background:#0f172a;color:#e7edf5;border-radius:12px;padding:16px 18px;margin:12px 0;}
+.deriv .dh{color:#8fbcf0;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.deriv ol{margin:6px 0 0;padding-left:22px;} .deriv li{margin:8px 0;font-size:14px;line-height:1.55;}
+.deriv code{background:#1e293b;color:#8fe3b0;padding:1px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:12.5px;}
+.deriv .ok{background:#12351f;color:#9df0b8;border-radius:8px;padding:8px 12px;margin-top:12px;font-weight:600;font-size:13.5px;}
+.qacard .acc{margin-top:6px;}
+nav.chips a{scroll-margin:20px;}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<h2 class="sr-only">Guía de estudio interactiva de estadística inferencial y regresión para las secciones 5 a 8 del trabajo práctico.</h2>
+
+<header class="hero"><div class="wrap">
+  <span class="badge">Guía de estudio · para la defensa oral</span>
+  <h1>De cero a la defensa: Inferencia y Regresión</h1>
+  <p>Todo lo que pasa <b>desde la Sección 5</b> del trabajo, explicado <b>como si no supiéramos nada</b>: qué es cada cosa, para qué sirve, la fórmula símbolo por símbolo, un ejemplo simple y cómo se ve <b>en nuestros datos</b>. Movés los controles y los gráficos responden.</p>
+</div></header>
+
+<nav class="chips"><div class="wrap"><div class="row" id="navrow">
+  <a href="#" data-tab="base">0 · Cimientos</a>
+  <a href="#" data-tab="ee">1 · Error estándar</a>
+  <a href="#" data-tab="ic">2 · Intervalos (Sec. 5)</a>
+  <a href="#" data-tab="hip">3 · Hipótesis (Sec. 6)</a>
+  <a href="#" data-tab="reg">4 · Regresión (Sec. 7)</a>
+  <a href="#" data-tab="sup">5 · Supuestos</a>
+  <a href="#" data-tab="glos">Glosario</a>
+  <a href="#" data-tab="quiz">🎓 Defensa</a>
+</div></div></nav>
+
+<div class="wrap">
+
+<!-- ===================== 0. CIMIENTOS ===================== -->
+<section id="base">
+  <div class="sec-tag"><span class="dot"></span>Empezamos de cero</div>
+  <h2 class="title">0. Cuatro cimientos que hay que tener claros</h2>
+  <p class="lead">Antes de la Sección 5 conviene fijar cuatro ideas. Todo lo demás se apoya en esto.</p>
+
+  <div class="card">
+    <h3>① Población vs. muestra</h3>
+    <p>La <b>población</b> es <i>todo</i> lo que nos interesa; la <b>muestra</b> son los datos que efectivamente tenemos. La estadística usa la muestra para <b>estimar</b> cosas de la población.</p>
+    <span class="lbls l-ej">Ejemplo simple</span>
+    <p>Querés saber la altura promedio de tu ciudad (población). No medís a todos: medís a 500 personas (muestra) y con eso estimás.</p>
+    <span class="lbls l-tp">En el TP</span>
+    <p>Nuestra muestra son las <b>23.982 contrataciones</b> de 2021–2022. Con ellas estimamos cómo se comporta el gasto público en general.</p>
+  </div>
+
+  <div class="card">
+    <h3>② La distribución normal y el desvío estándar</h3>
+    <p>Muchos datos, al graficarlos, forman una <b>campana</b>: la mayoría en el centro y pocos en los extremos. Es la <b>distribución normal</b>. El <b>desvío estándar (σ)</b> mide qué tan "ancha" es la campana: cuánto se alejan los datos del promedio en promedio.</p>
+    <div class="callout key"><div class="t">💡 La regla 68–95–99,7</div>
+      En una campana normal, el <b>68%</b> de los datos cae a ±1 desvío del promedio, el <b>95%</b> a ±2 desvíos y el <b>99,7%</b> a ±3. Tocá los botones para verlo.</div>
+    <div class="seg" id="sdSeg"><button class="on" data-k="1">±1σ (68%)</button><button data-k="2">±2σ (95%)</button><button data-k="3">±3σ (99,7%)</button></div>
+    <svg id="normSvg" viewBox="0 0 640 260" role="img"></svg>
+    <h4>Probalo con nuestros datos</h4>
+    <div class="widget-hint">Elegí un monto y mirá a cuántos desvíos está del típico (su "puntaje z")</div>
+    <label class="ctl">Monto del contrato: <b id="zAmt" style="color:var(--primary)"></b></label>
+    <input type="range" id="zRange" min="2.5" max="6.5" step="0.01" value="5">
+    <p id="zMsg" style="font-size:14px;color:var(--muted)"></p>
+  </div>
+  <div class="callout"><div class="t p">③ El puntaje z</div>
+    El <b>puntaje z</b> traduce cualquier valor a "cuántos desvíos está del promedio": <span class="mono">z = (valor − promedio) / σ</span>. Un z=0 es justo el promedio; z=+2 es de los más altos (solo ~2,5% lo supera). Es la regla que conecta todo lo que viene.</div>
+
+  <div class="card">
+    <h3>④ Por qué usamos log₁₀ y "media geométrica"</h3>
+    <p>Los montos son <b>muy dispares</b> (van de cientos a millones). En esos casos el promedio común (media aritmética) <b>engaña</b>: unos pocos contratos gigantes lo inflan. Aplicamos <b>logaritmo</b> (que "acerca" los valores grandes) y trabajamos en esa escala. Al volver a dólares con <span class="mono">10^x</span> obtenemos la <b>media geométrica</b>: el valor <b>típico</b> real.</p>
+    <span class="lbls l-tp">En el TP</span>
+    <p>Media aritmética del monto = <b>174.044 USD</b> (inflada). Media geométrica ≈ <b>23.500 USD</b> (representa mejor lo típico). Por eso todo el análisis del monto se hace en <span class="mono">log₁₀</span>.</p>
+  </div>
+</section>
+
+<!-- ===================== 1. ERROR ESTÁNDAR ===================== -->
+<section id="ee">
+  <div class="sec-tag"><span class="dot"></span>El puente</div>
+  <h2 class="title">1. El error estándar (la pieza que todo usa)</h2>
+  <p class="lead">Si tomáramos otra muestra de 23.982 contratos, el promedio daría <i>parecido</i> pero no idéntico. El <b>error estándar</b> mide ese "temblor" del promedio entre muestras.</p>
+  <div class="card">
+    <span class="lbls l-que">Qué es</span>
+    <p>Cuánto variaría el <b>promedio de la muestra</b> si repitiéramos el muestreo muchas veces. <b>No</b> es lo mismo que el desvío σ (que mide los datos individuales): el error estándar mide el <b>promedio</b>.</p>
+    <span class="lbls l-form">Fórmula</span>
+    <div class="formula">EE = σ ⁄ √n</div>
+    <ul class="symbols">
+      <li><b>EE</b> error estándar (el "temblor" del promedio)</li>
+      <li><b>σ</b> desvío estándar de los datos</li>
+      <li><b>n</b> tamaño de la muestra (cuántos datos)</li>
+      <li><b>√n</b> raíz de n — por eso, para bajar el error a la mitad hay que <b>cuadruplicar</b> los datos</li>
+    </ul>
+    <span class="lbls l-para">Para qué sirve</span>
+    <p>Es el ladrillo de <b>todo</b> lo que sigue: los intervalos de confianza y las pruebas de hipótesis se construyen con el error estándar.</p>
+    <h4>Cuantos más datos, más preciso (probalo)</h4>
+    <div class="widget-hint">Mové el tamaño de muestra n y mirá cómo se angosta el intervalo</div>
+    <label class="ctl">Tamaño de muestra n = <b id="eeN" style="color:var(--primary)"></b></label>
+    <input type="range" id="eeRange" min="30" max="24000" step="10" value="200">
+    <svg id="eeSvg" viewBox="0 0 640 130" role="img"></svg>
+    <p id="eeMsg" style="font-size:14px;color:var(--muted)"></p>
+  </div>
+  <div class="callout key"><div class="t">💡 Por qué nuestros resultados son tan "seguros"</div>
+    Con <b>n ≈ 23.900</b>, √n ≈ 155, así que el error estándar es <b>diminuto</b>. Por eso nuestros intervalos son angostos y las pruebas dan valores p minúsculos: no es magia, es que tenemos <b>muchísimos datos</b>.</div>
+</section>
+
+<!-- ===================== 2. INTERVALOS DE CONFIANZA ===================== -->
+<section id="ic">
+  <div class="sec-tag"><span class="dot"></span>Sección 5</div>
+  <h2 class="title">2. Intervalos de confianza (estimar con un margen)</h2>
+  <p class="lead">Un solo número ("el promedio es 23.521") nunca es exacto. Un intervalo dice: "el verdadero valor está <b>entre A y B</b>, con 95% de confianza".</p>
+
+  <div class="card">
+    <span class="lbls l-que">Qué es</span>
+    <p>Un <b>rango</b> alrededor de nuestra estimación que, casi seguro, contiene el verdadero valor de la población.</p>
+    <span class="lbls l-para">Para qué sirve</span>
+    <p>Para ser honestos sobre la incertidumbre: en vez de un número seco, damos un rango creíble.</p>
+    <span class="lbls l-form">Fórmula (para una media)</span>
+    <div class="formula">IC = x̄ ± t* · EE</div>
+    <ul class="symbols">
+      <li><b>x̄</b> el promedio de la muestra (nuestra estimación)</li>
+      <li><b>t*</b> "cuántos errores estándar" abarcamos para tener 95% de confianza (≈ <b>1,96</b> con muchos datos)</li>
+      <li><b>EE</b> el error estándar de la sección anterior</li>
+      <li><b>±</b> por eso el intervalo es simétrico: un margen para cada lado</li>
+    </ul>
+    <span class="lbls l-ej">Ejemplo simple</span>
+    <p>Medís 100 cafés: el precio promedio es 30, con EE = 1. Entonces IC = 30 ± 1,96·1 = <b>(28,04 ; 31,96)</b>. "El precio promedio real está entre ~28 y ~32, con 95% de confianza."</p>
+  </div>
+
+  <div class="card">
+    <h3>Lo que un intervalo de confianza <u>sí</u> y <u>no</u> significa</h3>
+    <div class="widget-hint">Generá muestras y contá cuántos intervalos "atrapan" el valor real (la línea negra)</div>
+    <button class="btn" id="ciBtn">🎲 Generar 20 muestras nuevas</button>
+    <span id="ciCount" style="margin-left:12px;font-weight:700"></span>
+    <svg id="ciSvg" viewBox="0 0 640 300" role="img"></svg>
+    <div class="legendrow">
+      <span><i style="background:var(--green)"></i>atrapa el valor real</span>
+      <span><i style="background:var(--red)"></i>no lo atrapa</span>
+      <span><i style="background:var(--ink)"></i>valor real (μ)</span>
+    </div>
+    <div class="callout warn"><div class="t">⚠️ El error típico de interpretación</div>
+      "95% de confianza" <b>NO</b> significa "el 95% de los contratos cuesta entre A y B". Significa que <b>el método acierta el 95% de las veces</b>: si repitiéramos el muestreo, 95 de cada 100 intervalos contendrían el verdadero valor. Es una afirmación sobre el <b>método</b>, no sobre un contrato.</div>
+  </div>
+
+  <div class="grid2">
+    <div class="rescard">
+      <div style="font-weight:700;margin-bottom:6px">📌 En el TP — Media del monto (5a)</div>
+      <div class="stat-line"><span>Promedio (log₁₀)</span><span>4,3715</span></div>
+      <div class="stat-line"><span>Error estándar</span><span>0,00438</span></div>
+      <div class="stat-line"><span>t*</span><span>1,96</span></div>
+      <div class="stat-line"><span>IC 95% (USD)</span><span>23.061 – 23.991</span></div>
+      <p style="font-size:13.5px;color:var(--muted);margin-top:8px">"El monto <b>típico</b> de una contratación está entre <b>23.061 y 23.991 USD</b>, con 95% de confianza." Rango angosto = mucha precisión (n enorme).</p>
+    </div>
+    <div class="rescard">
+      <div style="font-weight:700;margin-bottom:6px">📌 En el TP — Proporción con competencia (5b)</div>
+      <div class="stat-line"><span>p̂ (estimación)</span><span>64,9%</span></div>
+      <div class="stat-line"><span>IC 95%</span><span>64,3% – 65,5%</span></div>
+      <div class="stat-line"><span>n</span><span>22.858</span></div>
+      <p style="font-size:13.5px;color:var(--muted);margin-top:8px">Para <b>proporciones</b> (sí/no) la fórmula usa <span class="mono">p̂ ± 1,96·√(p̂(1−p̂)/n)</span>. Usamos también el <b>método de Wilson</b> (más confiable cuando la proporción es cercana a 0 o 1); acá ambos coinciden.</p>
+    </div>
+  </div>
+</section>
+
+
+<div class="card" style="border:2px solid var(--primary)">
+  <h3>🔬 Con nuestros datos — Intervalo de la <u>media</u> (jugá y reseteá)</h3>
+  <div class="widget-hint">Cambiá n, el promedio y la dispersión, y mirá cómo se mueve el IC. "Reset" vuelve a los valores reales del TP.</div>
+  <div class="grid2">
+   <div>
+    <label class="ctl">n (tamaño de muestra) = <b id="im_n" style="color:var(--primary)"></b></label><input type="range" id="im_nR" min="100" max="24000" step="50">
+    <label class="ctl">Promedio log₁₀ = <b id="im_m" style="color:var(--primary)"></b></label><input type="range" id="im_mR" min="4.0" max="4.7" step="0.0001">
+    <label class="ctl">Desvío σ = <b id="im_s" style="color:var(--primary)"></b></label><input type="range" id="im_sR" min="0.4" max="0.9" step="0.001">
+    <button class="btn" id="im_reset" style="margin-top:10px">↺ Reset a los datos reales</button>
+   </div>
+   <div><svg id="im_svg" viewBox="0 0 320 90" role="img"></svg><div class="rescard" id="im_out" style="text-align:center"></div></div>
+  </div>
+</div>
+<div class="card" style="border:2px solid var(--primary)">
+  <h3>🔬 Con nuestros datos — Intervalo de la <u>proporción</u> (competencia)</h3>
+  <div class="widget-hint">Cambiá la proporción y n; "Reset" vuelve al 64,9% real.</div>
+  <div class="grid2">
+   <div>
+    <label class="ctl">Proporción p̂ = <b id="ip_p" style="color:var(--primary)"></b></label><input type="range" id="ip_pR" min="0.40" max="0.80" step="0.001">
+    <label class="ctl">n = <b id="ip_n" style="color:var(--primary)"></b></label><input type="range" id="ip_nR" min="100" max="24000" step="50">
+    <button class="btn" id="ip_reset" style="margin-top:10px">↺ Reset a los datos reales</button>
+   </div>
+   <div><svg id="ip_svg" viewBox="0 0 320 90" role="img"></svg><div class="rescard" id="ip_out" style="text-align:center"></div></div>
+  </div>
+</div>
+
+
+<div class="card">
+<h3>🎯 De los datos al número real — IC de la media</h3>
+<p style="font-size:14px;color:var(--muted)">Desmenuzamos, con los valores exactos del TP, cómo se llega a <b>(23.061 ; 23.991) USD</b>.</p>
+<div class="deriv"><div class="dh">Punto de partida (de la muestra)</div>
+x̄ = 4,3715 (promedio del log) · s = 0,677 (desvío) · n = 23.853
+<ol>
+<li>Error estándar: <code>EE = s/√n = 0,677 / 154,4 = 0,00438</code></li>
+<li>Valor crítico (95%, <i>t</i> de Student, gl=23.852): <code>t* = 1,9601</code> <span style="opacity:.7">(≈1,96: con n enorme la t ≈ la normal)</span></li>
+<li>Margen de error: <code>t*·EE = 1,9601 × 0,00438 = 0,00859</code></li>
+<li>IC en escala log: <code>4,3715 ± 0,00859 = (4,3629 ; 4,3800)</code></li>
+<li>Volver a dólares con 10^x: <code>10^4,3629 = 23.061</code> · <code>10^4,3800 = 23.991</code></li>
+</ol>
+<div class="ok">✅ Coincide con la celda [20] del notebook: 23.061 – 23.991 USD (centro 23.521).</div></div>
+<div class="deriv"><div class="dh">Y la proporción (5b)</div>
+éxitos k=14.833 · n=22.858 → p̂ = 14.833/22.858 = 0,6489
+<ol>
+<li>Error estándar: <code>EE = √(p̂(1−p̂)/n) = √(0,6489·0,3511/22.858) = 0,00316</code></li>
+<li>Margen: <code>1,96 × 0,00316 = 0,00619</code></li>
+<li>IC: <code>0,6489 ± 0,00619 = (0,6427 ; 0,6551)</code> → 64,3% – 65,5%</li>
+</ol>
+<div class="ok">✅ Celda [22]. El método de Wilson da lo mismo (0,6427 ; 0,6551).</div></div>
+</div>
+<div class="card qacard">
+<h3>🎓 Preguntas de defensa — Intervalos de confianza</h3>
+<div class="acc">
+<details><summary>¿El IC 95% significa que el 95% de los contratos cuesta entre 23k y 24k?</summary><div class="body"><b>No.</b> Es una afirmación sobre el <b>método</b>: si repitiéramos el muestreo, el 95% de los intervalos así construidos contendría el verdadero promedio. No habla de un contrato individual ni de dónde caen los datos.</div></details>
+<details><summary>¿Por qué la media geométrica y no el promedio común?</summary><div class="body">El monto es muy asimétrico: unos pocos contratos gigantes inflan el promedio aritmético (174.044 USD) y deja de representar lo típico. En escala log y volviendo con 10^x obtenemos ~23.500 USD, el valor realmente típico.</div></details>
+<details><summary>¿Por qué el intervalo es tan angosto?</summary><div class="body">Por el n enorme (≈23.900): el error estándar s/√n es diminuto. Más datos ⇒ más precisión.</div></details>
+<details><summary>¿Para qué el método de Wilson?</summary><div class="body">Es un IC de proporción más robusto (útil con p cerca de 0/1 o n chico). Que coincida con la aproximación normal confirma que el resultado es estable.</div></details>
+</div></div>
+
+<!-- ===================== 3. HIPÓTESIS ===================== -->
+<section id="hip">
+  <div class="sec-tag"><span class="dot"></span>Sección 6</div>
+  <h2 class="title">3. Pruebas de hipótesis (¿es real o es azar?)</h2>
+  <p class="lead">Vimos que el monto de 2022 parece mayor que el de 2021. Pero ¿es una diferencia <b>real</b> o pudo salir así por casualidad? Eso responde una prueba de hipótesis.</p>
+
+  <div class="card">
+    <h3>El vocabulario, con una analogía de juicio ⚖️</h3>
+    <table class="mini">
+      <tr><th>Término</th><th>Qué es</th><th>En el juicio</th></tr>
+      <tr><td><b>H₀</b> (hipótesis nula)</td><td>"No pasa nada / no hay diferencia"</td><td>El acusado es inocente</td></tr>
+      <tr><td><b>H₁</b> (alternativa)</td><td>"Sí hay diferencia"</td><td>El acusado es culpable</td></tr>
+      <tr><td><b>Estadístico</b> (t o z)</td><td>Qué tan lejos de "nada" está lo observado</td><td>La fuerza de la evidencia</td></tr>
+      <tr><td><b>valor p</b></td><td>Probabilidad de ver esto (o más) si H₀ fuera cierta</td><td>¿Qué tan increíble es la evidencia si fuera inocente?</td></tr>
+      <tr><td><b>α = 0,05</b></td><td>Umbral de "demasiado raro"</td><td>El listón de "más allá de toda duda razonable"</td></tr>
+    </table>
+    <div class="callout"><div class="t p">La regla de decisión</div>
+      Si <b>valor p &lt; α (0,05)</b> ⇒ la evidencia es demasiado rara para ser casualidad ⇒ <b>rechazamos H₀</b> (declaramos "culpable": sí hay diferencia). Si no, <b>no rechazamos</b> H₀.</div>
+  </div>
+
+  <div class="card">
+    <span class="lbls l-que">¿Bilateral?</span>
+    <p>Nuestro contraste es <b>bilateral</b> porque solo preguntamos <b>si hay diferencia</b>, sin anticipar la dirección (no decimos "2022 es mayor" de antemano). Por eso H₁ usa "≠" y el 5% de riesgo se reparte en <b>las dos colas</b> de la campana.</p>
+    <h4>Jugá con la prueba</h4>
+    <div class="widget-hint">Mové el estadístico observado y el nivel α; mirá el valor p (área roja) y la decisión</div>
+    <svg id="hipSvg" viewBox="0 0 640 250" role="img"></svg>
+    <div class="grid2">
+      <div><label class="ctl">Estadístico observado |z| = <b id="hz" style="color:var(--purple)"></b></label><input type="range" id="hzR" min="0" max="4" step="0.05" value="1.2"></div>
+      <div><label class="ctl">Nivel α = <b id="ha" style="color:var(--purple)"></b></label><input type="range" id="haR" min="0.01" max="0.20" step="0.01" value="0.05"></div>
+    </div>
+    <div class="rescard" style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <div>valor p ≈ <b id="hp" class="readout" style="font-size:18px"></b></div><div id="hdec"></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="rescard">
+      <div style="font-weight:700">📌 TP 6a — Monto 2021 vs 2022 <span class="pill rej">rechaza H₀</span></div>
+      <p style="font-size:13px;color:var(--muted);margin:6px 0 4px">Prueba <b>t de Welch</b>: compara dos promedios sin suponer que los grupos tienen igual dispersión (la opción segura).</p>
+      <div class="stat-line"><span>2021 (geom.)</span><span>16.958 USD</span></div>
+      <div class="stat-line"><span>2022 (geom.)</span><span>25.871 USD</span></div>
+      <div class="stat-line"><span>t</span><span>−17,2</span></div>
+      <div class="stat-line"><span>valor p</span><span>2,7×10⁻⁶⁵</span></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:6px">p es prácticamente 0 → el aumento (+53%) es <b>real</b>, no azar.</p>
+    </div>
+    <div class="rescard">
+      <div style="font-weight:700">📌 TP 6b — Competencia 2021 vs 2022 <span class="pill rej">rechaza H₀</span></div>
+      <p style="font-size:13px;color:var(--muted);margin:6px 0 4px">Prueba <b>z de proporciones</b>: compara dos porcentajes (usa la aproximación normal, válida con n grande).</p>
+      <div class="stat-line"><span>2021</span><span>72,5%</span></div>
+      <div class="stat-line"><span>2022</span><span>62,7%</span></div>
+      <div class="stat-line"><span>z</span><span>13,0</span></div>
+      <div class="stat-line"><span>valor p</span><span>1,7×10⁻³⁸</span></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:6px">La caída de competencia también es <b>real</b>.</p>
+    </div>
+  </div>
+  <div class="callout key"><div class="t">💡 Ojo con estos valores p tan chicos</div>
+    t=−17,2 y z=13 están <b>lejísimos</b> del centro de la campana (fuera de la pantalla del gráfico de arriba). Por eso los valores p son casi 0. Con muestras enormes, hasta diferencias claras dan p minúsculos — coherente con lo que vimos del error estándar.</div>
+</section>
+
+
+<div class="card" style="border:2px solid var(--primary)">
+  <h3>🔬 Con nuestros datos — Prueba <u>t de Welch</u> (monto por año)</h3>
+  <div class="widget-hint">Mové los promedios de cada año y la dispersión; mirá cómo cambian t, el valor p y la decisión. "Reset" = valores reales (t≈−17).</div>
+  <div class="grid2">
+   <div>
+    <label class="ctl">Media 2021 (log₁₀) = <b id="w_m1" style="color:var(--primary)"></b></label><input type="range" id="w_m1R" min="4.0" max="4.6" step="0.001">
+    <label class="ctl">Media 2022 (log₁₀) = <b id="w_m2" style="color:var(--primary)"></b></label><input type="range" id="w_m2R" min="4.0" max="4.6" step="0.001">
+    <label class="ctl">Desvío σ (ambos) = <b id="w_s" style="color:var(--primary)"></b></label><input type="range" id="w_sR" min="0.4" max="1.0" step="0.01">
+    <button class="btn" id="w_reset" style="margin-top:10px">↺ Reset a los datos reales</button>
+   </div>
+   <div class="rescard" id="w_out"></div>
+  </div>
+</div>
+<div class="card" style="border:2px solid var(--primary)">
+  <h3>🔬 Con nuestros datos — Prueba <u>z de proporciones</u> (competencia por año)</h3>
+  <div class="widget-hint">Mové las proporciones de cada año; "Reset" = valores reales (z≈13).</div>
+  <div class="grid2">
+   <div>
+    <label class="ctl">Competencia 2021 = <b id="z_p1" style="color:var(--primary)"></b></label><input type="range" id="z_p1R" min="0.4" max="0.9" step="0.001">
+    <label class="ctl">Competencia 2022 = <b id="z_p2" style="color:var(--primary)"></b></label><input type="range" id="z_p2R" min="0.4" max="0.9" step="0.001">
+    <button class="btn" id="z_reset" style="margin-top:10px">↺ Reset a los datos reales</button>
+   </div>
+   <div class="rescard" id="z_out"></div>
+  </div>
+</div>
+
+
+<div class="card">
+<h3>🎯 De los datos al número real — Pruebas de hipótesis</h3>
+<div class="deriv"><div class="dh">6a · t de Welch (monto por año)</div>
+2021 → m₁=4,2294, s₁≈0,71, n₁=5.378 · 2022 → m₂=4,4128, s₂≈0,67, n₂=18.475
+<ol>
+<li>Error estándar de la diferencia: <code>SE = √(s₁²/n₁ + s₂²/n₂) = 0,01065</code></li>
+<li>Estadístico: <code>t = (m₁−m₂)/SE = (4,2294−4,4128)/0,01065 = −0,1834/0,01065 = −17,2</code></li>
+<li>valor p (bilateral) = <code>2,69×10⁻⁶⁵</code> ≪ 0,05</li>
+</ol>
+<div class="ok">✅ Celda [25]: se rechaza H₀. En USD: 16.958 (2021) vs 25.871 (2022), +53%.</div></div>
+<div class="deriv"><div class="dh">6b · z de proporciones (competencia por año)</div>
+2021 → 3.746/5.169 = 0,7247 · 2022 → 11.087/17.689 = 0,6268
+<ol>
+<li>Proporción combinada: <code>p = 14.833/22.858 = 0,6489</code></li>
+<li>Error estándar: <code>SE = √(p(1−p)(1/n₁+1/n₂)) = 0,00755</code></li>
+<li>Estadístico: <code>z = (0,7247−0,6268)/0,00755 = 0,0979/0,00755 = 12,98</code></li>
+<li>valor p = <code>1,66×10⁻³⁸</code> ≪ 0,05</li>
+</ol>
+<div class="ok">✅ Celda [28]: se rechaza H₀. La competencia cayó de 72,5% a 62,7%.</div></div>
+</div>
+<div class="card qacard">
+<h3>🎓 Preguntas de defensa — Pruebas de hipótesis</h3>
+<div class="acc">
+<details><summary>¿Por qué t de Welch y no la t "común"?</summary><div class="body">La t común supone que los dos grupos tienen la misma varianza. Welch no lo asume (usa la varianza de cada grupo), así que es la opción segura cuando las dispersiones pueden diferir.</div></details>
+<details><summary>¿Por qué el contraste es bilateral?</summary><div class="body">Porque solo preguntamos <b>si hay diferencia</b> entre años, sin anticipar la dirección. H₁ usa "≠" y el 5% de riesgo se reparte en las dos colas.</div></details>
+<details><summary>Un valor p de 10⁻⁶⁵, ¿no es sospechoso?</summary><div class="body">No. Con n grande el error estándar es diminuto, así que una diferencia real (16.958 vs 25.871 USD) queda a 17 desvíos del azar → p prácticamente 0. Es coherente, no un error.</div></details>
+<details><summary>¿Por qué comparan en log y no en dólares directamente?</summary><div class="body">Por la fuerte asimetría del monto. En escala log la distribución es acampanada y el promedio es representativo, condición que la prueba t necesita.</div></details>
+</div></div>
+
+<!-- ===================== 4. REGRESIÓN ===================== -->
+<section id="reg">
+  <div class="sec-tag"><span class="dot"></span>Sección 7</div>
+  <h2 class="title">4. Regresión lineal múltiple (explicar el monto)</h2>
+  <p class="lead">Hasta acá comparamos. Ahora queremos <b>explicar</b>: ¿qué características de una contratación hacen que cueste más o menos?</p>
+
+  <div class="card">
+    <span class="lbls l-que">Qué es</span>
+    <p>Una fórmula que combina varias variables para <b>estimar</b> un resultado. "Múltiple" = usa varias variables a la vez. Encuentra la combinación que <b>mejor se ajusta</b> a los datos (la que comete el menor error posible).</p>
+    <span class="lbls l-form">El modelo del TP</span>
+    <div class="formula" style="font-size:15px">log₁₀(monto) = β₀ + β₁·oferentes + β₂·duración + (efecto tipo) + (efecto modalidad)</div>
+    <ul class="symbols">
+      <li><b>target</b> lo que queremos estimar: <b>log₁₀ del monto</b> (la variable a predecir)</li>
+      <li><b>predictores</b> lo que usamos para estimarlo: oferentes, duración, tipo, modalidad</li>
+      <li><b>β₀</b> el "punto de partida" (intercepto)</li>
+      <li><b>βᵢ</b> cuánto suma o resta cada variable, <b>manteniendo las demás fijas</b> (<i>ceteris paribus</i>)</li>
+    </ul>
+    <span class="lbls l-ej">Ejemplo simple</span>
+    <p>Precio de una casa ≈ base + (precio por m²)·tamaño + (efecto barrio). Cada β dice cuánto aporta cada factor. La regresión "aprende" esos β a partir de los datos.</p>
+  </div>
+
+  <div class="card">
+    <h3>🧮 Calculadora del modelo real del TP</h3>
+    <div class="widget-hint">Elegí las características y mirá el monto estimado (usa los coeficientes reales)</div>
+    <div class="grid2">
+      <div>
+        <label class="ctl">Tipo de compra</label>
+        <select id="rTipo"><option>Bienes</option><option>Obras</option><option>Servicios</option></select>
+        <label class="ctl">Modalidad</label>
+        <select id="rMod"><option>Concurso de Ofertas</option><option>Contratación Directa</option><option>Licitación Pública Nacional</option><option>Contratación por Excepción</option><option>Locación de Inmuebles</option><option>Otras</option></select>
+      </div>
+      <div>
+        <label class="ctl">N.º de oferentes: <b id="rOfV" style="color:var(--primary)"></b></label><input type="range" id="rOf" min="1" max="20" step="1" value="3">
+        <label class="ctl">Duración (días): <b id="rDurV" style="color:var(--primary)"></b></label><input type="range" id="rDur" min="0" max="90" step="1" value="15">
+      </div>
+    </div>
+    <div style="text-align:center;margin:14px 0 4px">
+      <div style="font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Monto estimado</div>
+      <div class="big-num readout" id="rPred" style="color:var(--green);font-size:38px"></div>
+      <div style="font-size:12.5px;color:var(--muted)">log₁₀ = <span id="rLog" class="readout"></span></div>
+    </div>
+    <div id="rBreak"></div>
+  </div>
+
+  <div class="card">
+    <h4>Traducir un coeficiente a "por cuánto multiplica" el monto</h4>
+    <p style="font-size:14px;color:var(--muted);margin-top:0">Como el monto está en log₁₀, un coeficiente no se lee directo: se convierte con <span class="mono">10^coef</span>. Probá:</p>
+    <label class="ctl">Coeficiente (β) = <b id="tcV" style="color:var(--primary)"></b></label>
+    <input type="range" id="tcR" min="-1" max="1" step="0.01" value="0.2357">
+    <div class="rescard" id="tcOut" style="text-align:center"></div>
+    <h4 style="margin-top:16px">El peso de cada variable (coeficientes del modelo)</h4>
+    <div class="seg" id="coefSeg"><button class="on" data-mode="factor">como multiplicador (×)</button><button data-mode="pct">como % de cambio</button></div>
+    <svg id="coefSvg" viewBox="0 0 640 320" role="img"></svg>
+  </div>
+
+  <div class="grid2">
+    <div class="callout"><div class="t p">R² = 0,66 — ¿qué es?</div>
+      El <b>R²</b> es la fracción del monto que el modelo logra explicar, de 0 (nada) a 1 (todo). <b>0,66 = dos tercios</b>: muy bueno para datos sociales/económicos. El tercio restante depende de cosas que no están en el modelo.</div>
+    <div class="callout"><div class="t p">Prueba F (p ≈ 0) — ¿qué es?</div>
+      Contesta: "¿el modelo, en conjunto, sirve para algo?" H₀ = "ninguna variable aporta". Como p ≈ 0, <b>rechazamos H₀</b>: el conjunto de variables <b>sí explica</b> el monto.</div>
+  </div>
+  <div class="callout"><div class="t p">Variables "dummy" y categoría base</div>
+    Tipo y modalidad son texto (Bienes, Obras…). El modelo las convierte en variables <b>0/1</b> ("¿es Obra? sí/no"). Deja una como <b>base</b> de comparación: acá <b>Bienes + Concurso de Ofertas</b>. Por eso cada coeficiente se lee <b>respecto de esa base</b> (ej.: "Obras cuesta 72% más <i>que Bienes</i>").</div>
+</section>
+
+
+<div class="card" style="border:2px solid var(--primary)">
+  <h3>🔬 Con nuestros datos — La recta de "mejor ajuste"</h3>
+  <div class="widget-hint">Cada punto es una contratación real (muestra). Movés la recta y el error total sube o baja. "Reset" la lleva a la recta real de mínimos cuadrados (la de menor error).</div>
+  <svg id="ls_svg" viewBox="0 0 640 340" role="img"></svg>
+  <div class="grid2">
+    <div>
+      <label class="ctl">Pendiente = <b id="ls_sl" style="color:var(--primary)"></b></label><input type="range" id="ls_slR" min="-0.05" max="0.2" step="0.001">
+      <label class="ctl">Intercepto = <b id="ls_ic" style="color:var(--primary)"></b></label><input type="range" id="ls_icR" min="3.8" max="4.6" step="0.01">
+    </div>
+    <div class="rescard" id="ls_out" style="text-align:center"></div>
+  </div>
+  <button class="btn" id="ls_reset" style="margin-top:10px">↺ Reset a la recta real (mínimos cuadrados)</button>
+</div>
+
+
+<div class="card">
+<h3>🎯 De los datos al número real — Regresión</h3>
+<div class="deriv"><div class="dh">Cómo se lee un coeficiente</div>
+El modelo entrega coeficientes en escala log₁₀. Para leerlos en % se usa 10^coef.
+<ol>
+<li><b>Obras</b> coef = +0,2357 → <code>10^0,2357 = ×1,72</code> → <b>+72%</b> vs Bienes.</li>
+<li><b>Contratación Directa</b> coef = −0,7093 → <code>10^(−0,7093) = ×0,20</code> → <b>−80%</b> vs Concurso.</li>
+<li><b>+1 oferente</b> coef = +0,0240 → <code>10^0,024 = ×1,057</code> → <b>+5,7%</b> por oferente.</li>
+</ol></div>
+<div class="deriv"><div class="dh">Qué significan R² y F (con los números reales)</div>
+<ol>
+<li><b>R² = 0,663</b>: <code>R² = 1 − (error del modelo)/(variación total)</code>. El modelo reduce 2/3 de la variación del monto → explica <b>~66%</b>.</li>
+<li><b>F = 4.914</b> (p ≈ 0): compara el modelo contra "no usar ninguna variable". Un F tan grande ⇒ el conjunto de variables <b>sí</b> aporta.</li>
+</ol>
+<div class="ok">✅ Celda [32]: n = 22.465, R² = 0,663, F = 4.914, p(F) ≈ 0.</div></div>
+</div>
+<div class="card qacard">
+<h3>🎓 Preguntas de defensa — Regresión</h3>
+<div class="acc">
+<details><summary>¿Cuál es la variable a predecir y por qué en log?</summary><div class="body">El <b>monto licitado</b>, en <b>log₁₀</b>. Se usa log por la fuerte asimetría del monto: así la relación es más lineal y los residuos más simétricos.</div></details>
+<details><summary>¿Qué significa el coeficiente −0,71 de Contratación Directa?</summary><div class="body">Como está en log₁₀: 10^(−0,71) ≈ 0,20, o sea <b>×0,2 = 80% menos</b> que la categoría base (Concurso de Ofertas), manteniendo lo demás constante.</div></details>
+<details><summary>¿0,66 de R² es bueno?</summary><div class="body">Para datos sociales/económicos, sí: explicar dos tercios de la variación con pocas variables es un ajuste fuerte. El tercio restante depende de factores no incluidos.</div></details>
+<details><summary>¿Por qué colapsaron la modalidad a top-5 + "Otras"?</summary><div class="body">Para evitar categorías con muy pocos casos, que darían coeficientes inestables. Se conservan las 5 modalidades más frecuentes y el resto se agrupa.</div></details>
+<details><summary>¿Qué es la "categoría base"?</summary><div class="body">El nivel omitido de cada variable categórica (Bienes y Concurso de Ofertas). Todos los coeficientes se interpretan <b>respecto</b> de esa base.</div></details>
+</div></div>
+
+<!-- ===================== 5. SUPUESTOS ===================== -->
+<section id="sup">
+  <div class="sec-tag"><span class="dot"></span>Sección 7 — control de calidad</div>
+  <h2 class="title">5. Residuos y supuestos (¿es confiable el modelo?)</h2>
+  <p class="lead">Un modelo puede dar números lindos y ser inválido. Por eso revisamos sus <b>residuos</b> — el paso que el profesor pidió reforzar.</p>
+
+  <div class="card">
+    <span class="lbls l-que">¿Qué es un residuo?</span>
+    <p>El <b>error</b> del modelo en cada contrato: <span class="mono">residuo = monto real − monto estimado</span>. Si el modelo fuese perfecto, todos los residuos serían 0. Nunca lo son; lo que importa es <b>cómo se comportan</b>.</p>
+    <h4>Los 3 supuestos que revisamos (con el gráfico de residuos)</h4>
+    <div class="seg" id="supSeg"><button class="on" data-m="ideal">Caso ideal ✅</button><button data-m="real">Nuestro modelo 🔎</button></div>
+    <svg id="supSvg" viewBox="0 0 640 250" role="img"></svg>
+    <p id="supMsg" style="font-size:14px;color:var(--muted)"></p>
+    <table class="mini" style="margin-top:10px">
+      <tr><th>Supuesto</th><th>Qué significa (simple)</th><th>Cómo lo medimos</th><th>En el TP</th></tr>
+      <tr><td><b>Homocedasticidad</b></td><td>El error tiene tamaño parecido en todo el rango (no un "embudo")</td><td>Gráfico izq. + <b>Breusch-Pagan</b></td><td>p≈0 → <span style="color:var(--red)">no del todo</span></td></tr>
+      <tr><td><b>Normalidad</b> de residuos</td><td>Los errores forman una campana (sin colas gigantes)</td><td>QQ-plot + <b>Jarque-Bera</b></td><td>p≈0 → <span style="color:var(--red)">no del todo</span></td></tr>
+      <tr><td><b>Independencia</b></td><td>Un error no depende del anterior</td><td><b>Durbin-Watson</b> (ideal ≈ 2)</td><td>1,9 → <span style="color:var(--green)">sí ✔</span></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h4>¿Qué es un QQ-plot? (el gráfico de la derecha del Gráfico 4)</h4>
+    <p>Compara nuestros residuos con una campana perfecta. Si los puntos caen sobre la <b>diagonal</b>, los errores son "normales". Si se <b>despegan en las puntas</b>, hay <b>colas pesadas</b>: unos pocos valores extremos (nuestro caso, por los megacontratos).</p>
+    <div class="seg" id="qqSeg"><button class="on" data-m="normal">Errores normales ✅</button><button data-m="heavy">Colas pesadas (nuestro caso)</button></div>
+    <svg id="qqSvg" viewBox="0 0 640 240" role="img"></svg>
+  </div>
+
+  <div class="callout win"><div class="t">✅ Cómo defenderlo (honesto y correcto)</div>
+    "Verificamos los supuestos: la <b>independencia</b> se cumple (Durbin-Watson ≈ 2), pero hay algo de <b>heterocedasticidad</b> y los residuos tienen <b>colas pesadas</b> (no-normalidad). Esto es <b>esperable</b> con datos de dinero y n&gt;22.000, donde cualquier desvío mínimo da significativo. El ~95% de los residuos se comporta bien. Lo reportamos como <b>limitación</b>: el modelo es válido para <b>describir asociaciones</b>, no para predecir un contrato exacto."</div>
+</section>
+
+
+<div class="card">
+<h3>🎯 Cómo leímos los supuestos (con los tests reales)</h3>
+<div class="deriv"><div class="dh">Los 3 chequeos</div>
+<ol>
+<li><b>Homocedasticidad</b> — Breusch-Pagan: <code>p ≈ 0</code> → no se cumple del todo (hay heterocedasticidad).</li>
+<li><b>Normalidad</b> de residuos — Jarque-Bera: <code>p ≈ 0</code>; QQ-plot con colas pesadas → no estrictamente.</li>
+<li><b>Independencia</b> — Durbin-Watson: <code>≈ 1,9</code> (cerca de 2) → se cumple.</li>
+</ol>
+<div class="ok">✅ ~95% de los residuos cae en un rango normal. Limitación honesta, no invalida el modelo.</div></div>
+</div>
+<div class="card qacard">
+<h3>🎓 Preguntas de defensa — Supuestos</h3>
+<div class="acc">
+<details><summary>¿Se cumplen los supuestos del modelo?</summary><div class="body">La <b>independencia</b> sí (Durbin-Watson ≈ 2). La <b>homocedasticidad</b> y la <b>normalidad</b> no del todo (Breusch-Pagan y Jarque-Bera con p≈0, colas pesadas). Lo reportamos como limitación.</div></details>
+<details><summary>Si hay heterocedasticidad, ¿el modelo sirve?</summary><div class="body">Sí para <b>describir asociaciones</b> (qué variables se relacionan con el monto y en qué dirección). Para inferencia muy fina convendría usar <b>errores estándar robustos</b>; lo dejamos anotado.</div></details>
+<details><summary>¿Por qué las pruebas "rechazan" siempre con estos datos?</summary><div class="body">Con n&gt;22.000 cualquier desviación mínima de los supuestos da significativa. Por eso miramos también los <b>gráficos</b> (residuos y QQ), que muestran que la desviación es leve y por pocos valores extremos.</div></details>
+<details><summary>¿Qué es un residuo y qué es el QQ-plot?</summary><div class="body">El <b>residuo</b> es el error del modelo (monto real − estimado). El <b>QQ-plot</b> compara esos errores con una campana normal: si caen en la diagonal son normales; despegarse en las puntas = colas pesadas.</div></details>
+</div></div>
+
+<!-- ===================== GLOSARIO ===================== -->
+<section id="glos">
+  <div class="sec-tag"><span class="dot"></span>Chuleta</div>
+  <h2 class="title">Glosario de símbolos y términos</h2>
+  <div class="acc" id="glosBox"></div>
+</section>
+
+<!-- ===================== QUIZ ===================== -->
+<section id="quiz">
+  <div class="sec-tag"><span class="dot"></span>Practicá para la defensa</div>
+  <h2 class="title">Autoevaluación</h2>
+  <p class="lead">Preguntas típicas de defensa. Respondé mentalmente y verificá.</p>
+  
+<div class="card">
+<h3>✅ Checklist de la consigna — ¿dónde está cada ítem?</h3>
+<table class="mini">
+<tr><th>Lo que pide la consigna (Opción B)</th><th>Dónde está</th></tr>
+<tr><td>Problema, variable a predecir y predictores</td><td>Pestaña Regresión · celda [30]</td></tr>
+<tr><td>Descripción y clasificación de variables</td><td>Notebook Sec. 2</td></tr>
+<tr><td>Limpieza: faltantes, atípicos, transformación</td><td>Notebook Sec. 3</td></tr>
+<tr><td>Estimación por intervalos de confianza</td><td>Pestaña Intervalos · celdas [20][22]</td></tr>
+<tr><td>Prueba de hipótesis + justificación bilateral</td><td>Pestaña Hipótesis · celdas [25][28]</td></tr>
+<tr><td>Regresión + interpretación de coeficientes</td><td>Pestaña Regresión · celdas [32][34]</td></tr>
+<tr><td>Análisis de residuales y supuestos</td><td>Pestaña Supuestos · Gráfico 4 + tests</td></tr>
+<tr><td>Diagrama de dispersión</td><td>Notebook Gráfico 3</td></tr>
+</table>
+<p style="font-size:13px;color:var(--muted)">Consejo: para cada número que muestres, tené a mano la celda que lo calcula (pestañas con 🎯) y la respuesta a la pregunta-trampa (🎓).</p>
+</div>
+
+  <div class="card quiz" id="quizBox"></div>
+</section>
+
+</div>
+
+<footer>
+  Guía de estudio del TP Integrado de Estadística · Secciones 5–8 · DNCP Paraguay 2021–2022.<br>
+  Complementa al notebook <span class="mono">trabajo_practico_estadistica.ipynb</span> y al informe. Integrantes: Sebastián Chamorro · Dalma González.
+</footer>
+
+<script>const DATA={"reg_pts": [[1, 5.444], [3, 4.226], [3, 3.75], [5, 4.564], [3, 4.276], [1, 4.038], [2, 4.162], [5, 3.842], [1, 4.672], [2, 4.286], [1, 4.269], [1, 4.129], [3, 4.143], [1, 4.024], [1, 3.842], [1, 4.823], [5, 5.306], [1, 5.047], [1, 4.329], [5, 6.223], [2, 5.523], [3, 5.003], [1, 4.21], [6, 5.254], [1, 5.849], [2, 5.957], [4, 3.017], [4, 4.143], [1, 4.052], [2, 4.346], [3, 5.156], [1, 4.962], [3, 4.291], [2, 3.62], [2, 4.539], [1, 4.561], [1, 4.046], [1, 5.687], [1, 4.075], [2, 4.343], [1, 4.289], [2, 4.368], [1, 4.73], [3, 4.207], [3, 4.151], [3, 4.439], [3, 3.398], [7, 5.584], [8, 4.841], [1, 5.966], [2, 4.213], [2, 5.318], [4, 5.415], [3, 4.097], [1, 4.395], [2, 4.792], [2, 5.949], [3, 3.593], [1, 3.841], [1, 3.609], [1, 5.402], [2, 6.217], [2, 3.62], [1, 4.289], [2, 4.087], [3, 5.243], [1, 3.988], [3, 4.883], [1, 4.205], [1, 5.523], [2, 4.268], [1, 5.068], [3, 3.646], [1, 6.629], [3, 4.338], [1, 4.928], [2, 3.485], [1, 3.815], [4, 4.512], [3, 3.52], [7, 3.745], [3, 4.289], [1, 4.523], [1, 4.333], [2, 4.579], [15, 5.028], [1, 4.738], [2, 3.729], [2, 3.842], [3, 4.188], [1, 2.897], [3, 4.014], [1, 4.184], [3, 4.842], [3, 4.204], [1, 5.319], [3, 4.246], [2, 4.759], [1, 4.432], [4, 3.368], [1, 4.891], [1, 4.43], [1, 4.405], [1, 3.833], [2, 3.772], [3, 4.355], [5, 4.213], [2, 3.745], [3, 4.33], [4, 3.801], [1, 4.716], [2, 4.555], [3, 4.348], [1, 4.291], [1, 5.203], [2, 3.614], [4, 3.944], [3, 3.541], [3, 4.509], [1, 3.338], [9, 4.969], [6, 3.868], [4, 4.428], [2, 4.388], [4, 4.433], [1, 4.284], [3, 4.313], [2, 4.153], [4, 5.712], [2, 4.893], [4, 3.842], [7, 4.923], [1, 4.9], [4, 3.465], [2, 3.912], [4, 4.339], [1, 4.129], [2, 4.111], [3, 2.364], [6, 4.097], [1, 4.035], [2, 4.256], [1, 3.465], [11, 4.982], [3, 4.318], [3, 4.097], [1, 3.964], [3, 4.09], [2, 4.435], [4, 4.745], [1, 4.289], [2, 4.579], [2, 3.935], [1, 4.537], [2, 4.278], [1, 4.444], [5, 4.781], [3, 3.988], [1, 3.745], [4, 5.58], [7, 5.017], [1, 2.687], [2, 3.62], [1, 4.331], [10, 4.979], [2, 4.347], [1, 3.877], [23, 5.454], [1, 3.485], [4, 4.902], [2, 4.257], [2, 4.365], [3, 4.44], [1, 3.996], [3, 4.046], [3, 4.291], [6, 4.766], [7, 3.746], [3, 4.294], [2, 4.859], [2, 4.339], [5, 3.209], [2, 4.444], [5, 4.651], [3, 3.921], [3, 3.62], [2, 3.875], [5, 4.722], [3, 3.745], [4, 4.319], [3, 4.309], [1, 4.796], [1, 5.001], [2, 2.864], [2, 5.62], [3, 4.288], [3, 4.067], [2, 4.388], [5, 4.365], [1, 4.318], [1, 4.036], [1, 4.845], [4, 4.983], [4, 3.582], [1, 4.489], [2, 3.947], [3, 4.368], [3, 4.375], [1, 4.322], [4, 3.719], [3, 3.687], [5, 4.901], [1, 4.213], [3, 4.156], [2, 6.842], [1, 4.749], [2, 3.962], [6, 4.03], [2, 4.852], [3, 3.753], [18, 5.325], [4, 4.097], [2, 4.06], [2, 6.781], [1, 6.664], [7, 3.64], [3, 4.441], [1, 4.016], [2, 4.365], [10, 5.017], [2, 4.59], [7, 4.272], [1, 3.07], [3, 4.143], [1, 4.243], [3, 3.745], [3, 5.092], [1, 4.719], [1, 4.92], [14, 4.819]], "reg_slope": 0.0755, "reg_int": 4.1532, "reg_r": 0.272, "resid_pts": [[5.821, -0.536], [4.087, 0.156], [4.9, -0.435], [4.663, -0.219], [4.113, 0.046], [4.134, 0.218], [3.854, -0.639], [5.749, -0.521], [3.907, 0.102], [4.572, 0.028], [5.493, -0.126], [4.644, 0.037], [3.912, -0.413], [5.475, 0.113], [5.121, -0.439], [5.466, -0.172], [4.111, 0.277], [3.876, -0.692], [4.136, -0.101], [3.949, 0.315], [5.667, 0.791], [4.138, 0.191], [4.136, 0.137], [3.883, -0.549], [4.799, -0.314], [3.854, 0.493], [4.567, -0.029], [4.137, 0.047], [3.9, 0.057], [3.972, 0.24], [4.115, 0.066], [4.134, 0.251], [4.688, -0.015], [4.847, 0.083], [4.159, 0.181], [4.303, 0.715], [5.513, 0.012], [4.617, 0.024], [3.854, 0.109], [5.54, 0.143], [3.912, -0.372], [4.626, 0.192], [5.473, 0.433], [5.699, -0.255], [3.98, 0.319], [3.902, -0.004], [3.879, -0.686], [4.847, -0.347], [5.759, 0.005], [3.91, 0.186], [4.137, 0.152], [4.11, -0.347], [3.912, -0.116], [3.903, -0.433], [3.875, 0.054], [4.136, 0.109], [4.799, 0.134], [3.912, -0.514], [4.849, 0.138], [4.59, 0.263], [4.135, -0.094], [4.135, 0.154], [4.672, -0.252], [4.135, 0.05], [4.135, -0.2], [3.907, -0.685], [3.909, -0.59], [4.136, 0.048], [3.88, -1.253], [4.846, -0.402], [4.564, -0.04], [5.826, -0.172], [3.901, 0.423], [6.072, 0.548], [5.442, 0.431], [4.708, 0.359], [4.644, -0.195], [3.929, -0.379], [4.139, 0.22], [4.823, -0.43], [5.496, -0.375], [3.928, -0.508], [5.516, 0.858], [4.799, 0.225], [4.086, -0.076], [3.908, 0.478], [3.878, -0.233], [4.942, 0.046], [3.955, -0.534], [4.208, -0.199], [4.138, -0.045], [4.311, 0.49], [4.086, 0.125], [3.906, -0.287], [4.087, 0.153], [3.907, 0.339], [3.855, -0.106], [4.088, 0.176], [4.689, 0.047], [3.852, -0.11], [4.086, -0.298], [4.182, -0.499], [5.657, -0.202], [4.669, 0.255], [4.087, 0.267], [4.14, 0.146], [4.088, 0.217], [4.086, 0.089], [4.135, 0.098], [4.686, 0.202], [4.11, 0.239], [3.855, -0.303], [4.134, 0.194], [3.934, -0.713], [4.135, 0.031], [3.852, 0.533], [4.62, -4.273], [3.852, -0.421], [3.928, -0.383], [4.87, 0.047], [5.964, -0.707], [4.135, 0.147], [4.087, -0.245], [3.877, 0.412], [4.02, -0.041], [4.844, -0.012], [3.947, 0.417], [4.329, -0.516], [4.135, 0.008], [4.111, -0.067], [3.959, -0.291], [3.948, -0.408], [4.087, 0.205], [3.907, -0.81], [4.087, 0.246], [5.681, -0.538], [4.566, -0.219], [3.91, 0.332], [5.665, -0.498], [4.134, 0.099], [4.137, 0.11], [4.111, 0.051], [3.948, -0.203], [5.179, -0.313], [4.134, 0.088], [4.62, 0.019], [4.658, -0.118], [4.087, -0.3], [4.112, 0.255], [4.164, 0.195], [4.623, -0.049], [3.996, 0.076], [4.087, 0.097], [5.674, 0.085], [5.439, 1.779], [4.62, 0.237], [4.57, 0.422], [4.616, 0.24], [3.883, -1.16], [4.086, 0.078], [4.237, 0.053], [4.619, 0.411], [3.974, 0.107], [3.927, -0.079], [5.417, 0.545], [4.183, 0.156], [4.11, 0.317], [3.972, 0.328], [5.891, -0.312], [4.114, 0.12], [3.902, 0.128], [3.876, 0.045], [5.537, -0.315], [4.089, 0.152], [3.899, 0.117], [4.568, 0.481], [4.798, -0.406], [4.111, 0.006], [4.134, 0.005], [3.875, -0.362], [3.9, 0.021], [3.884, -0.53], [4.136, 0.11], [4.159, -0.142], [4.333, 0.089], [5.712, -0.333], [4.111, 0.211], [3.852, 0.516], [3.881, 0.466], [5.16, -0.745], [3.856, -0.106], [3.9, 0.251], [4.587, 0.003], [3.916, 0.305], [6.156, -0.601], [4.111, -0.401], [4.113, 0.184], [4.8, -0.281], [3.908, 0.378], [3.932, 0.415], [3.959, 0.36], [3.854, 0.53], [5.07, -1.356], [4.089, -0.169], [3.878, 0.265], [4.136, 0.25], [3.901, 0.146], [3.899, -0.365], [3.909, -0.427], [4.798, -0.074], [4.134, -0.293], [3.851, 0.136], [4.184, -0.082], [3.911, 0.24], [3.931, -0.908], [3.852, 0.274], [3.955, 0.188], [4.87, -0.109], [3.853, 0.436], [3.928, -0.361], [3.996, 0.161], [4.825, -0.096], [4.086, -0.11], [4.305, -0.571], [4.584, 0.358], [4.134, 0.213], [4.134, -0.037], [4.645, 0.123], [4.622, 0.001], [3.9, 0.346], [4.636, 0.053], [3.907, -0.92], [4.306, -0.306], [3.881, 0.107], [3.908, -0.589], [3.88, 0.408], [4.134, -0.172], [4.823, -0.487], [5.424, 0.076], [4.086, 0.012], [4.141, 0.035], [3.997, -0.125], [3.936, 0.137], [4.622, 0.363], [3.877, 0.412], [3.853, -0.664], [3.879, -0.322], [5.498, -0.258], [3.852, -1.033], [3.856, 0.48], [3.908, 0.38], [4.623, 0.159], [4.134, 0.21], [3.854, 0.465], [3.852, -0.385], [4.087, 0.164], [4.135, 0.2], [4.11, 0.209], [4.086, -0.642], [4.134, 0.166], [4.087, 0.056], [3.854, 0.508], [3.855, -0.001], [4.597, 0.216], [4.647, 0.341], [4.624, 0.266], [5.417, 0.328], [4.112, 0.213], [3.907, -0.607], [3.951, 0.12], [3.902, 0.387], [4.135, -0.21], [3.9, 0.395], [3.852, 0.403], [4.894, -0.194], [4.668, 0.24], [4.111, 0.288], [4.135, 0.222], [4.799, -0.287], [3.928, -0.33], [4.62, 0.222], [4.308, 0.612], [4.798, -0.089], [3.901, 0.321], [3.909, -0.247], [4.62, 0.257], [4.871, -0.014], [4.087, 0.222], [4.112, 0.198], [4.8, -0.02], [3.901, 0.251], [5.433, 1.504], [5.634, -0.547], [4.134, -0.389], [4.086, -0.068], [4.823, -0.008], [4.564, 0.218], [4.087, 0.162], [4.798, 0.088], [4.086, -0.438], [4.135, -0.02], [4.11, 0.112], [3.908, 0.411], [3.9, -1.059], [3.907, 0.072], [3.979, 0.015], [4.135, 0.234], [3.908, 0.235], [4.648, -0.085], [4.718, -0.124], [4.645, 0.308], [5.497, -0.034], [4.085, 0.146], [3.878, 0.446], [4.584, -0.119], [3.877, -0.657], [4.134, 0.213], [5.71, -0.266], [3.852, -0.375], [4.111, -0.149]], "qq_pts": [[-2.609, -3.175], [-2.208, -2.515], [-2.0, -2.168], [-1.855, -1.94], [-1.74, -1.78], [-1.645, -1.623], [-1.562, -1.503], [-1.489, -1.393], [-1.424, -1.303], [-1.363, -1.22], [-1.308, -1.155], [-1.256, -1.097], [-1.207, -1.04], [-1.161, -0.995], [-1.118, -0.945], [-1.076, -0.895], [-1.036, -0.852], [-0.998, -0.81], [-0.961, -0.773], [-0.926, -0.732], [-0.891, -0.696], [-0.858, -0.656], [-0.825, -0.623], [-0.794, -0.591], [-0.763, -0.554], [-0.733, -0.526], [-0.703, -0.493], [-0.674, -0.464], [-0.646, -0.434], [-0.618, -0.407], [-0.591, -0.381], [-0.564, -0.355], [-0.538, -0.329], [-0.511, -0.302], [-0.486, -0.278], [-0.46, -0.252], [-0.435, -0.228], [-0.41, -0.21], [-0.385, -0.186], [-0.361, -0.165], [-0.337, -0.145], [-0.313, -0.122], [-0.289, -0.1], [-0.265, -0.084], [-0.242, -0.064], [-0.218, -0.041], [-0.195, -0.026], [-0.172, -0.004], [-0.149, 0.015], [-0.126, 0.025], [-0.103, 0.045], [-0.08, 0.066], [-0.057, 0.081], [-0.034, 0.1], [-0.011, 0.118], [0.011, 0.131], [0.034, 0.146], [0.057, 0.166], [0.08, 0.183], [0.103, 0.203], [0.126, 0.219], [0.149, 0.234], [0.172, 0.251], [0.195, 0.267], [0.218, 0.281], [0.242, 0.297], [0.265, 0.314], [0.289, 0.331], [0.313, 0.344], [0.337, 0.359], [0.361, 0.376], [0.385, 0.387], [0.41, 0.401], [0.435, 0.418], [0.46, 0.433], [0.486, 0.451], [0.511, 0.466], [0.538, 0.485], [0.564, 0.501], [0.591, 0.509], [0.618, 0.523], [0.646, 0.539], [0.674, 0.555], [0.703, 0.57], [0.733, 0.583], [0.763, 0.6], [0.794, 0.62], [0.825, 0.633], [0.858, 0.652], [0.891, 0.674], [0.926, 0.699], [0.961, 0.725], [0.998, 0.753], [1.036, 0.79], [1.076, 0.829], [1.118, 0.86], [1.161, 0.894], [1.207, 0.927], [1.256, 0.96], [1.308, 0.99], [1.363, 1.028], [1.424, 1.056], [1.489, 1.092], [1.562, 1.124], [1.645, 1.169], [1.74, 1.221], [1.855, 1.281], [2.0, 1.393], [2.208, 1.996], [2.609, 3.068]], "sd_log": 0.6826};</script>
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const NS='http://www.w3.org/2000/svg';
+const fmt=n=>Math.round(n).toLocaleString('es-PY');
+function el(t,a={},p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+function clr(s){while(s.firstChild)s.removeChild(s.firstChild);}
+function erf(x){const t=1/(1+.3275911*Math.abs(x));const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t*Math.exp(-x*x);return x>=0?y:-y;}
+const Phi=z=>.5*(1+erf(z/Math.SQRT2));
+function randn(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+const nd=z=>Math.exp(-z*z/2)/Math.sqrt(2*Math.PI);
+
+/* tabs */
+const wrap=[...document.querySelectorAll('.wrap')].find(w=>w.querySelector(':scope>section')),links=$$('#navrow a');const groups={};let cur=null;
+[...wrap.children].forEach(ch=>{if(ch.tagName==='SECTION')cur=ch.id;if(cur){(groups[cur]=groups[cur]||[]).push(ch);}});
+function showTab(id){for(const k in groups)groups[k].forEach(e=>e.style.display=(k===id)?'':'none');links.forEach(a=>a.classList.toggle('active',a.dataset.tab===id));const c=links.find(a=>a.dataset.tab===id);if(c)c.scrollIntoView({inline:'center',block:'nearest'});window.scrollTo(0,0);}
+links.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();showTab(a.dataset.tab);}));
+$('#progress').style.display='none';showTab('base');
+
+/* ---------- W1: normal + sd + z ---------- */
+const MEAN=4.3715, SD=0.676;
+function curvePath(X,Y,a,b){let d='';for(let z=a;z<=b+1e-9;z+=0.05)d+=(d?'L':'M')+X(z).toFixed(1)+' '+Y(nd(z)).toFixed(1);return d;}
+function drawNorm(k){
+  const s=$('#normSvg');clr(s);const W=640,H=260,pad=30,base=H-40,peak=24;
+  const X=z=>pad+(W-2*pad)*((z+4)/8),Y=d=>base-(d/0.4)*(base-peak);
+  el('path',{d:curvePath(X,Y,-k,k)+`L${X(k)} ${base} L${X(-k)} ${base} Z`,fill:'#bcd6f2'},s);
+  el('path',{d:curvePath(X,Y,-4,4),fill:'none',stroke:'#2563a8','stroke-width':2.5},s);
+  el('line',{x1:pad,y1:base,x2:W-pad,y2:base,stroke:'#c7d0dc'},s);
+  for(let z=-3;z<=3;z++){el('line',{x1:X(z),y1:base,x2:X(z),y2:base+5,stroke:'#c7d0dc'},s);
+    el('text',{x:X(z),y:base+20,'text-anchor':'middle','font-size':11,fill:'#5b6675'},s).textContent=(z>0?'+':'')+z+'σ';}
+  const pct=[0,68,95,99.7][k];
+  el('text',{x:W/2,y:16,'text-anchor':'middle','font-size':15,'font-weight':800,fill:'#1b4b86'},s).textContent=`±${k}σ contiene el ${pct}% de los datos`;
+}
+$$('#sdSeg button').forEach(b=>b.onclick=()=>{$$('#sdSeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');drawNorm(+b.dataset.k);});
+drawNorm(1);
+const zR=$('#zRange');
+zR.oninput=()=>{const lg=+zR.value,usd=Math.pow(10,lg),z=(lg-MEAN)/SD,pct=Phi(z)*100;
+  $('#zAmt').textContent=fmt(usd)+' USD';
+  $('#zMsg').innerHTML=`Ese monto está a <b>z = ${z.toFixed(2)}</b> desvíos del típico. Es más caro que el <b>${pct.toFixed(0)}%</b> de las contrataciones.`;};
+zR.oninput();
+
+/* ---------- W3: error estándar vs n ---------- */
+const eeR=$('#eeRange');
+function drawEE(){
+  const n=+eeR.value,ee=SD/Math.sqrt(n),half=1.96*ee;$('#eeN').textContent=fmt(n);
+  const s=$('#eeSvg');clr(s);const W=640,pad=40,y=60,bw=W-2*pad;
+  const span=0.06,X=v=>pad+bw*((v-(MEAN-span))/(2*span));
+  el('line',{x1:pad,y1:y,x2:W-pad,y2:y,stroke:'#c7d0dc'},s);
+  el('line',{x1:X(MEAN),y1:y-30,x2:X(MEAN),y2:y+12,stroke:'#182338','stroke-dasharray':'4 4'},s);
+  el('text',{x:X(MEAN),y:y-34,'text-anchor':'middle','font-size':11,fill:'#182338'},s).textContent='promedio';
+  const lo=Math.max(MEAN-span,MEAN-half),hi=Math.min(MEAN+span,MEAN+half);
+  el('rect',{x:X(lo),y:y-9,width:X(hi)-X(lo),height:18,rx:6,fill:'#bcd6f2',stroke:'#2563a8'},s);
+  const loU=Math.pow(10,MEAN-half),hiU=Math.pow(10,MEAN+half);
+  $('#eeMsg').innerHTML=`Con n=${fmt(n)}: error estándar=${ee.toFixed(5)} → IC 95% del monto típico ≈ <b>${fmt(loU)} – ${fmt(hiU)} USD</b>. ${n>15000?'≈ el n del TP.':'Subí n y mirá cómo se angosta.'}`;
+}
+eeR.oninput=drawEE;drawEE();
+
+/* ---------- W2: CI repeated sampling ---------- */
+(function(){const s=$('#ciSvg'),btn=$('#ciBtn'),cnt=$('#ciCount');const W=640,H=300,pad=26,n=120,se=SD/Math.sqrt(n);
+ const X=v=>pad+(W-2*pad)*((v-(MEAN-4*se))/(8*se));
+ function run(){clr(s);let ok=0;const rows=20,top=18,gap=(H-36)/rows;
+  el('line',{x1:X(MEAN),y1:8,x2:X(MEAN),y2:H-8,stroke:'#182338','stroke-width':2,'stroke-dasharray':'4 4'},s);
+  el('text',{x:X(MEAN),y:12,'text-anchor':'middle','font-size':11,'font-weight':700,fill:'#182338'},s).textContent='μ real';
+  for(let i=0;i<rows;i++){let sum=0;for(let j=0;j<n;j++)sum+=MEAN+SD*randn();const m=sum/n,lo=m-1.96*se,hi=m+1.96*se,c=(lo<=MEAN&&MEAN<=hi);if(c)ok++;const col=c?'#2e9e5b':'#d64545',yy=top+i*gap+gap/2;
+   el('line',{x1:X(lo),y1:yy,x2:X(hi),y2:yy,stroke:col,'stroke-width':3,'stroke-linecap':'round'},s);el('circle',{cx:X(m),cy:yy,r:3.5,fill:col},s);}
+  cnt.innerHTML=`<span style="color:${ok>=18?'var(--green)':'var(--amber)'}">${ok} de 20</span> atraparon μ`;}
+ btn.onclick=run;run();})();
+
+/* ---------- W4: hypothesis playground ---------- */
+(function(){const s=$('#hipSvg'),zR=$('#hzR'),aR=$('#haR');const W=640,H=250,pad=34,base=H-34,peak=26;
+ const X=z=>pad+(W-2*pad)*((z+4)/8),Y=d=>base-(d/0.4)*(base-peak);
+ function draw(){clr(s);const z=+zR.value,a=+aR.value;let zc=1.96,lo=0,hi=6;for(let i=0;i<40;i++){const m=(lo+hi)/2;(2*(1-Phi(m))>a)?lo=m:hi=m;}zc=(lo+hi)/2;
+  el('path',{d:curvePath(X,Y,-4,-zc)+`L${X(-zc)} ${base} L${X(-4)} ${base} Z`,fill:'#f6c9c9'},s);
+  el('path',{d:curvePath(X,Y,zc,4)+`L${X(4)} ${base} L${X(zc)} ${base} Z`,fill:'#f6c9c9'},s);
+  el('path',{d:curvePath(X,Y,-4,4),fill:'none',stroke:'#2563a8','stroke-width':2.5},s);
+  el('line',{x1:pad,y1:base,x2:W-pad,y2:base,stroke:'#c7d0dc'},s);
+  [-zc,zc].forEach(c=>el('line',{x1:X(c),y1:peak-4,x2:X(c),y2:base,stroke:'#d64545','stroke-dasharray':'4 4'},s));
+  el('text',{x:X(zc),y:peak-6,'text-anchor':'middle','font-size':10.5,fill:'#d64545'},s).textContent='crítico '+zc.toFixed(2);
+  [z,-z].forEach(v=>{el('line',{x1:X(v),y1:Y(nd(v)),x2:X(v),y2:base,stroke:'#6b4fbf','stroke-width':2.5},s);el('circle',{cx:X(v),cy:Y(nd(v)),r:4,fill:'#6b4fbf'},s);});
+  el('text',{x:X(z),y:base+18,'text-anchor':'middle','font-size':11,'font-weight':700,fill:'#6b4fbf'},s).textContent='±'+z.toFixed(2);
+  const p=2*(1-Phi(z));$('#hz').textContent=z.toFixed(2);$('#ha').textContent=a.toFixed(2);
+  $('#hp').textContent=p<0.001?p.toExponential(1):p.toFixed(3);const rej=p<a;
+  $('#hdec').innerHTML=rej?'<span class="pill rej">se rechaza H₀</span>':'<span class="pill ok">no se rechaza H₀</span>';
+  $('#hp').style.color=rej?'var(--red)':'var(--green)';}
+ zR.oninput=draw;aR.oninput=draw;draw();})();
+
+/* ---------- W5: regression calculator ---------- */
+const B0=4.5333,BOF=0.0240,BDUR=0.0005;
+const TIPO={'Bienes':0,'Obras':0.2357,'Servicios':0.0563};
+const MOD={'Concurso de Ofertas':0,'Contratación Directa':-0.7093,'Licitación Pública Nacional':0.8477,'Contratación por Excepción':0.7472,'Locación de Inmuebles':-0.3129,'Otras':0.5112};
+function calc(){const tp=$('#rTipo').value,md=$('#rMod').value,of=+$('#rOf').value,du=+$('#rDur').value;
+ $('#rOfV').textContent=of;$('#rDurV').textContent=du;
+ const lg=B0+TIPO[tp]+MOD[md]+BOF*of+BDUR*du,usd=Math.pow(10,lg);
+ $('#rPred').textContent=fmt(usd)+' USD';$('#rLog').textContent=lg.toFixed(3);
+ const terms=[['Base (Bienes·Concurso)',B0,1],['Tipo: '+tp,TIPO[tp]],['Modalidad: '+md,MOD[md]],[of+' oferentes',BOF*of],[du+' días',BDUR*du]];
+ let h='<div style="font-size:12px;color:var(--muted);margin-bottom:4px">Suma que arma el log del monto:</div>';
+ terms.forEach(([l,v,base])=>{const col=base?'#5b6675':v>0?'#2e9e5b':v<0?'#d64545':'#9aa6b6';const sg=base?'':(v>=0?'+':'');
+  h+=`<div style="display:flex;justify-content:space-between;font-size:13.5px;padding:2px 0;border-bottom:1px dashed var(--line)"><span>${l}</span><span class="readout" style="color:${col};font-weight:700">${sg}${v.toFixed(3)}</span></div>`;});
+ $('#rBreak').innerHTML=h;}
+['#rTipo','#rMod','#rOf','#rDur'].forEach(x=>{$(x).oninput=calc;$(x).onchange=calc;});calc();
+
+/* ---------- W8: log->% translator ---------- */
+const tcR=$('#tcR');
+tcR.oninput=()=>{const c=+tcR.value,f=Math.pow(10,c),pct=(f-1)*100;$('#tcV').textContent=(c>=0?'+':'')+c.toFixed(2);
+ $('#tcOut').innerHTML=`10^(${c.toFixed(2)}) = <b>×${f.toFixed(2)}</b> &nbsp;→&nbsp; el monto cambia <b style="color:${pct>=0?'var(--green)':'var(--red)'}">${pct>=0?'+':''}${pct.toFixed(0)}%</b>`;};
+tcR.oninput();
+
+/* ---------- coef chart ---------- */
+const COEFS=[['Licitación Púb. Nacional',0.8477],['Contratación por Excepción',0.7472],['Modalidad "Otras"',0.5112],['Tipo Obras',0.2357],['Tipo Servicios',0.0563],['+1 oferente',0.0240],['Locación de Inmuebles',-0.3129],['Contratación Directa',-0.7093]];
+function drawCoef(mode){const s=$('#coefSvg');clr(s);const W=640,rh=34,top=8,x0=210,bw=W-x0-30,H=top+COEFS.length*rh+16;s.setAttribute('viewBox',`0 0 ${W} ${H}`);
+ const cx=x0+bw/2;el('line',{x1:cx,y1:top,x2:cx,y2:H-18,stroke:'#c7d0dc','stroke-dasharray':'3 3'},s);
+ el('text',{x:cx,y:H-4,'text-anchor':'middle','font-size':10.5,fill:'#5b6675'},s).textContent='×1 (sin efecto)';
+ COEFS.forEach(([l,c],i)=>{const y=top+i*rh+rh/2,x=cx+(bw/2)*Math.max(-1,Math.min(1,c)),pos=c>=0,col=pos?'#2e9e5b':'#d64545';
+  el('rect',{x:pos?cx:x,y:y-9,width:Math.abs(x-cx),height:18,rx:4,fill:col,'fill-opacity':.85},s);
+  el('text',{x:x0-8,y:y+4,'text-anchor':'end','font-size':12,fill:'#182338'},s).textContent=l;
+  const f=Math.pow(10,c),pct=(f-1)*100,t=mode==='factor'?'×'+f.toFixed(2):(pct>=0?'+':'')+pct.toFixed(0)+'%';
+  el('text',{x:pos?x+6:x-6,y:y+4,'text-anchor':pos?'start':'end','font-size':12,'font-weight':700,fill:col},s).textContent=t;});}
+$$('#coefSeg button').forEach(b=>b.onclick=()=>{$$('#coefSeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');drawCoef(b.dataset.mode);});
+drawCoef('factor');
+
+/* ---------- W7: residual plot ideal vs real ---------- */
+function drawSup(m){const s=$('#supSvg');clr(s);const W=640,H=250,padL=40,padB=34,base=H-padB,top=14,right=20;
+ const mid=(top+base)/2,amp=(base-top)/2-6;
+ el('line',{x1:padL,y1:top,x2:padL,y2:base,stroke:'#c7d0dc'},s);
+ el('line',{x1:padL,y1:mid,x2:W-right,y2:mid,stroke:'#d64545','stroke-dasharray':'5 4'},s);
+ el('text',{x:(W+padL)/2,y:H-6,'text-anchor':'middle','font-size':11,fill:'#5b6675'},s).textContent='valores ajustados (monto estimado) \u2192';
+ el('text',{x:padL-6,y:top+6,'text-anchor':'end','font-size':10,fill:'#5b6675'},s).textContent='+error';
+ if(m==='real'){const pts=DATA.resid_pts,fx=pts.map(p=>p[0]),ry=pts.map(p=>Math.abs(p[1]));
+   const fmin=Math.min(...fx),fmax=Math.max(...fx),rmax=Math.max(...ry);
+   const X=f=>padL+(W-right-padL)*((f-fmin)/(fmax-fmin)),Y=r=>mid-(r/rmax)*amp;
+   pts.forEach(([f,r])=>el('circle',{cx:X(f),cy:Y(r),r:2.6,fill:'#6b4fbf','fill-opacity':.35},s));
+   $('#supMsg').innerHTML='<b>Nuestro modelo (datos reales):</b> la nube se abre un poco hacia la derecha (algo de heterocedasticidad) y hay <b>puntos lejanos</b> (montos extremos mal predichos). Aceptable; lo anotamos como limitaci\u00f3n.';
+ }else{const X=f=>padL+(W-right-padL)*f;
+   for(let i=0;i<260;i++){const fx=Math.random(),e=randn()*0.33;el('circle',{cx:X(fx),cy:mid-Math.max(-1,Math.min(1,e))*amp,r:2.6,fill:'#2563a8','fill-opacity':.32},s);}
+   $('#supMsg').innerHTML='<b>Caso ideal:</b> nube pareja, del mismo grosor en todo el rango y centrada en la l\u00ednea roja. Se cumplen los supuestos.';}}
+$$('#supSeg button').forEach(b=>b.onclick=()=>{$$('#supSeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');drawSup(b.dataset.m);});
+drawSup('ideal');
+
+/* ---------- QQ-plot ---------- */
+function drawQQ(m){const s=$('#qqSvg');clr(s);const W=640,H=240,pad=34,base=H-pad,top=14,size=base-top;
+ const X=tt=>W/2-size/2+(tt+3)/6*size,Y=tt=>base-(tt+3)/6*size;
+ el('line',{x1:X(-3),y1:Y(-3),x2:X(3),y2:Y(3),stroke:'#d64545','stroke-width':2},s);
+ el('text',{x:X(0),y:H-4,'text-anchor':'middle','font-size':11,fill:'#5b6675'},s).textContent='lo esperado si fueran normales \u2192';
+ if(m==='heavy'){DATA.qq_pts.forEach(([th,ob])=>el('circle',{cx:X(th),cy:Y(Math.max(-3,Math.min(3,ob))),r:3,fill:'#2563a8','fill-opacity':.5},s));
+   el('text',{x:X(-2.4),y:Y(2.6),'font-size':11,fill:'#5b6675'},s).textContent='datos reales: se despegan en las puntas \u2717';
+ }else{const N=60;for(let i=0;i<N;i++){const q=-2.6+5.2*(i+.5)/N,obs=q+randn()*0.06;el('circle',{cx:X(q),cy:Y(Math.max(-3,Math.min(3,obs))),r:3,fill:'#2563a8','fill-opacity':.5},s);}
+   el('text',{x:X(-2.4),y:Y(2.6),'font-size':11,fill:'#5b6675'},s).textContent='siguen la diagonal \u2714';}}
+$$('#qqSeg button').forEach(b=>b.onclick=()=>{$$('#qqSeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');drawQQ(b.dataset.m);});
+drawQQ('normal');
+
+/* ---------- glosario ---------- */
+const GLOS=[
+ ['μ (mu)','El verdadero promedio de la <b>población</b> (lo que no conocemos y queremos estimar).'],
+ ['x̄ (equis barra)','El promedio de la <b>muestra</b> (lo que calculamos con nuestros datos).'],
+ ['σ (sigma) y s','Desvío estándar: cuánto se alejan los datos del promedio. σ es el poblacional; s el de la muestra.'],
+ ['EE — error estándar','Cuánto varía el promedio de una muestra a otra: EE = s/√n. Se achica con más datos.'],
+ ['p̂ (pe sombrero)','La proporción estimada en la muestra (ej.: 64,9% con competencia).'],
+ ['IC 95%','Intervalo de confianza: rango que contiene el valor real el 95% de las veces (afirmación sobre el método).'],
+ ['t* / valor crítico','Cuántos errores estándar abarca el intervalo para tener 95% de confianza (≈1,96 con n grande).'],
+ ['H₀ / H₁','Hipótesis nula (“no hay diferencia”) y alternativa (“sí hay”). Se busca evidencia para rechazar H₀.'],
+ ['valor p','Probabilidad de ver un resultado así de extremo si H₀ fuera cierta. Si p&lt;0,05, se rechaza H₀.'],
+ ['α (alfa)','Umbral de decisión (0,05): riesgo máximo aceptado de rechazar H₀ siendo verdadera.'],
+ ['Contraste bilateral','H₁ usa “≠”: interesa cualquier diferencia, sin anticipar dirección; el riesgo se reparte en dos colas.'],
+ ['t de Welch','Prueba para comparar dos promedios sin suponer igual varianza entre grupos.'],
+ ['z de proporciones','Prueba para comparar dos porcentajes (usa aproximación normal, válida con n grande).'],
+ ['β (beta)','Coeficiente de la regresión: cuánto aporta cada variable al resultado, con lo demás fijo.'],
+ ['R²','Fracción del resultado que el modelo explica, de 0 a 1 (0,66 = dos tercios).'],
+ ['Prueba F','Contrasta si el modelo, en conjunto, explica algo (H₀: ninguna variable aporta).'],
+ ['Variable dummy','Codificación 0/1 de una categoría; se compara contra una “categoría base”.'],
+ ['Residuo','Error del modelo: monto real − monto estimado.'],
+ ['Homocedasticidad','Que los errores tengan tamaño parecido en todo el rango (sin “embudo”). Se testea con Breusch-Pagan.'],
+ ['Normalidad de residuos','Que los errores formen una campana. Se ve en el QQ-plot y se testea con Jarque-Bera.'],
+ ['Durbin-Watson','Mide independencia de los residuos; ≈2 = sin autocorrelación (bien).'],
+ ['Media geométrica','Promedio calculado en escala log y devuelto a la escala original; el “valor típico” con datos muy dispares.'],
+];
+const gb=$('#glosBox');GLOS.forEach(([t,b])=>{const d=document.createElement('details');d.innerHTML=`<summary>${t}</summary><div class="body">${b}</div>`;gb.appendChild(d);});
+
+/* ---------- quiz ---------- */
+const QUIZ=[
+ {q:'El profesor pregunta: "¿qué significa exactamente su IC 95% de 23.061–23.991 USD?"',
+  o:['Que el 95% de los contratos cuesta entre esos valores','Que el método que usamos captura el verdadero promedio en el 95% de las muestras posibles','Que estamos 95% seguros de cada contrato'],a:1,
+  e:'El IC habla del método de estimación, no de dónde caen los datos ni de un contrato individual.'},
+ {q:'¿Por qué el valor p de la prueba t dio casi 0 (2,7×10⁻⁶⁵)?',
+  o:['Porque la diferencia entre años es real y además tenemos n enorme, lo que vuelve la evidencia contundente','Porque hay un error en el cálculo','Porque α es muy chico'],a:0,
+  e:'Con n grande el error estándar es diminuto, así que una diferencia clara queda "lejísimos" del azar → p minúsculo.'},
+ {q:'La Contratación Directa tiene coeficiente −0,71. ¿Cómo se defiende?',
+  o:['Resta 0,71 USD al monto','10^(−0,71)≈0,20, o sea ~80% menos que la categoría base (Concurso de Ofertas)','No es significativa'],a:1,
+  e:'Como el monto está en log₁₀, se traduce con 10^coef: ×0,20 = −80% respecto de la base.'},
+ {q:'¿Por qué el contraste es bilateral y no unilateral?',
+  o:['Porque hay dos años','Porque solo preguntamos si hay diferencia, sin anticipar la dirección','Porque α=0,05'],a:1,
+  e:'H₁ usa "≠"; no afirmamos de antemano qué año es mayor, así que el riesgo se reparte en las dos colas.'},
+ {q:'Sobre los supuestos: el QQ-plot muestra colas pesadas y Breusch-Pagan da p≈0. ¿Qué decimos?',
+  o:['El modelo es inválido y hay que descartarlo','Los supuestos no se cumplen del todo (hay heterocedasticidad y no-normalidad), algo esperable con datos de dinero y n grande; lo reportamos como limitación','Los supuestos se cumplen perfectamente'],a:1,
+  e:'Honestidad: se reconoce la limitación, se explica por qué ocurre y se aclara que el modelo sigue sirviendo para describir asociaciones.'},
+ {q:'¿Qué mide R²=0,66?',
+  o:['Que el modelo acierta el 66% de los montos exactos','Que el modelo explica dos tercios de la variación del monto','Que el 66% de las variables son significativas'],a:1,
+  e:'R² es la fracción de la variabilidad del monto explicada por el conjunto de predictores.'},
+];
+const qb=$('#quizBox');
+QUIZ.forEach((it,i)=>{const d=document.createElement('div');d.style.marginBottom='16px';
+ d.innerHTML=`<div style="font-weight:700;margin-bottom:6px">${i+1}. ${it.q}</div>`;
+ it.o.forEach((o,oi)=>{const b=document.createElement('button');b.className='opt';b.textContent=o;
+  b.onclick=()=>{if(d.dataset.done)return;d.dataset.done=1;[...d.querySelectorAll('.opt')].forEach((x,xi)=>{if(xi===it.a)x.classList.add('correct');else if(xi===oi)x.classList.add('wrong');x.style.cursor='default';});d.querySelector('.explain').classList.add('show');};
+  d.appendChild(b);});
+ const ex=document.createElement('div');ex.className='explain';ex.innerHTML='<b>Por qué:</b> '+it.e;d.appendChild(ex);qb.appendChild(d);});
+
+/* ===== Con nuestros datos: IC media ===== */
+(function(){const R={n:23853,m:4.3715,s:0.677},nR=$('#im_nR'),mR=$('#im_mR'),sR=$('#im_sR');
+ function upd(){const n=+nR.value,m=+mR.value,sd=+sR.value;$('#im_n').textContent=fmt(n);$('#im_m').textContent=m.toFixed(3);$('#im_s').textContent=sd.toFixed(3);
+  const ee=sd/Math.sqrt(n),half=1.96*ee,lo=Math.pow(10,m-half),hi=Math.pow(10,m+half),ctr=Math.pow(10,m);
+  const s=$('#im_svg');clr(s);const W=320,pad=22,y=44,bw=W-2*pad,span=0.05,X=v=>pad+bw*((v-(m-span))/(2*span));
+  el('line',{x1:pad,y1:y,x2:W-pad,y2:y,stroke:'#c7d0dc'},s);
+  const L=Math.max(m-span,m-half),Hh=Math.min(m+span,m+half);
+  el('rect',{x:X(L),y:y-9,width:Math.max(2,X(Hh)-X(L)),height:18,rx:6,fill:'#bcd6f2',stroke:'#2563a8'},s);
+  el('circle',{cx:X(m),cy:y,r:4,fill:'#1b4b86'},s);
+  $('#im_out').innerHTML='IC 95% del monto típico:<br><b class="big-num" style="color:var(--primary)">'+fmt(lo)+' – '+fmt(hi)+'</b><br><span style="font-size:12px;color:var(--muted)">centro '+fmt(ctr)+' USD · EE='+ee.toFixed(5)+'</span>';}
+ function rst(){nR.value=R.n;mR.value=R.m;sR.value=R.s;upd();}
+ [nR,mR,sR].forEach(x=>x.oninput=upd);$('#im_reset').onclick=rst;rst();})();
+
+/* ===== Con nuestros datos: IC proporción ===== */
+(function(){const R={p:0.6489,n:22858},pR=$('#ip_pR'),nR=$('#ip_nR');
+ function upd(){const p=+pR.value,n=+nR.value;$('#ip_p').textContent=(p*100).toFixed(1)+'%';$('#ip_n').textContent=fmt(n);
+  const ee=Math.sqrt(p*(1-p)/n),lo=p-1.96*ee,hi=p+1.96*ee;
+  const s=$('#ip_svg');clr(s);const W=320,pad=30,y=44,bw=W-2*pad,X=v=>pad+bw*v;
+  el('line',{x1:pad,y1:y,x2:W-pad,y2:y,stroke:'#c7d0dc'},s);
+  [0,.25,.5,.75,1].forEach(v=>el('text',{x:X(v),y:y+18,'text-anchor':'middle','font-size':9,fill:'#9aa6b6'},s).textContent=(v*100)+'%');
+  el('rect',{x:X(Math.max(0,lo)),y:y-9,width:Math.max(2,X(Math.min(1,hi))-X(Math.max(0,lo))),height:18,rx:6,fill:'#bcd6f2',stroke:'#2563a8'},s);
+  el('circle',{cx:X(p),cy:y,r:4,fill:'#1b4b86'},s);
+  $('#ip_out').innerHTML='IC 95%:<br><b class="big-num" style="color:var(--primary)">'+(lo*100).toFixed(1)+'% – '+(hi*100).toFixed(1)+'%</b>';}
+ function rst(){pR.value=R.p;nR.value=R.n;upd();}
+ [pR,nR].forEach(x=>x.oninput=upd);$('#ip_reset').onclick=rst;rst();})();
+
+/* ===== Con nuestros datos: Welch ===== */
+(function(){const R={m1:4.2294,m2:4.4128,s:0.69,n1:5378,n2:18475},m1R=$('#w_m1R'),m2R=$('#w_m2R'),sR=$('#w_sR');
+ function upd(){const m1=+m1R.value,m2=+m2R.value,sd=+sR.value,n1=R.n1,n2=R.n2;
+  $('#w_m1').textContent=m1.toFixed(3);$('#w_m2').textContent=m2.toFixed(3);$('#w_s').textContent=sd.toFixed(2);
+  const t=(m1-m2)/Math.sqrt(sd*sd/n1+sd*sd/n2),p=2*(1-Phi(Math.abs(t))),rej=p<0.05;
+  $('#w_out').innerHTML='<div class="stat-line"><span>2021 (geom.)</span><span>'+fmt(Math.pow(10,m1))+' USD</span></div>'+
+   '<div class="stat-line"><span>2022 (geom.)</span><span>'+fmt(Math.pow(10,m2))+' USD</span></div>'+
+   '<div class="stat-line"><span>Estadístico t</span><span>'+t.toFixed(2)+'</span></div>'+
+   '<div class="stat-line"><span>valor p</span><span>'+(p<1e-4?p.toExponential(1):p.toFixed(4))+'</span></div>'+
+   '<div style="margin-top:8px">'+(rej?'<span class="pill rej">se rechaza H₀ (hay diferencia)</span>':'<span class="pill ok">no se rechaza H₀</span>')+'</div>';}
+ function rst(){m1R.value=R.m1;m2R.value=R.m2;sR.value=R.s;upd();}
+ [m1R,m2R,sR].forEach(x=>x.oninput=upd);$('#w_reset').onclick=rst;rst();})();
+
+/* ===== Con nuestros datos: z proporciones ===== */
+(function(){const R={p1:0.7247,p2:0.6268,n1:5169,n2:17689},p1R=$('#z_p1R'),p2R=$('#z_p2R');
+ function upd(){const p1=+p1R.value,p2=+p2R.value,n1=R.n1,n2=R.n2;
+  $('#z_p1').textContent=(p1*100).toFixed(1)+'%';$('#z_p2').textContent=(p2*100).toFixed(1)+'%';
+  const pp=(p1*n1+p2*n2)/(n1+n2),se=Math.sqrt(pp*(1-pp)*(1/n1+1/n2)),z=(p1-p2)/se,p=2*(1-Phi(Math.abs(z))),rej=p<0.05;
+  $('#z_out').innerHTML='<div class="stat-line"><span>p̂ 2021</span><span>'+(p1*100).toFixed(1)+'%</span></div>'+
+   '<div class="stat-line"><span>p̂ 2022</span><span>'+(p2*100).toFixed(1)+'%</span></div>'+
+   '<div class="stat-line"><span>Estadístico z</span><span>'+z.toFixed(2)+'</span></div>'+
+   '<div class="stat-line"><span>valor p</span><span>'+(p<1e-4?p.toExponential(1):p.toFixed(4))+'</span></div>'+
+   '<div style="margin-top:8px">'+(rej?'<span class="pill rej">se rechaza H₀ (cambió)</span>':'<span class="pill ok">no se rechaza H₀</span>')+'</div>';}
+ function rst(){p1R.value=R.p1;p2R.value=R.p2;upd();}
+ [p1R,p2R].forEach(x=>x.oninput=upd);$('#z_reset').onclick=rst;rst();})();
+
+/* ===== Con nuestros datos: mínimos cuadrados ===== */
+(function(){const R={sl:DATA.reg_slope,ic:DATA.reg_int},slR=$('#ls_slR'),icR=$('#ls_icR'),pts=DATA.reg_pts;
+ const W=640,H=340,padL=46,padB=40,padT=14,padR=16,xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);
+ const xmin=0,xmax=Math.max(...xs),ymin=Math.min(...ys)-0.2,ymax=Math.max(...ys)+0.2;
+ const X=x=>padL+(W-padL-padR)*((x-xmin)/(xmax-xmin)),Y=y=>H-padB-(H-padB-padT)*((y-ymin)/(ymax-ymin));
+ let sseReal=0;pts.forEach(([x,y])=>{const pr=R.ic+R.sl*x;sseReal+=(y-pr)*(y-pr);});
+ function upd(){const sl=+slR.value,ic=+icR.value;$('#ls_sl').textContent=sl.toFixed(3);$('#ls_ic').textContent=ic.toFixed(2);
+  let sse=0;pts.forEach(([x,y])=>{const pr=ic+sl*x;sse+=(y-pr)*(y-pr);});
+  const s=$('#ls_svg');clr(s);
+  el('line',{x1:padL,y1:H-padB,x2:W-padR,y2:H-padB,stroke:'#c7d0dc'},s);el('line',{x1:padL,y1:padT,x2:padL,y2:H-padB,stroke:'#c7d0dc'},s);
+  el('text',{x:W/2,y:H-6,'text-anchor':'middle','font-size':11,fill:'#5b6675'},s).textContent='n.º de oferentes →';
+  el('text',{x:14,y:H/2,'text-anchor':'middle','font-size':11,fill:'#5b6675',transform:'rotate(-90 14 '+(H/2)+')'},s).textContent='log₁₀(monto)';
+  pts.forEach(([x,y])=>el('circle',{cx:X(x),cy:Y(y),r:2.6,fill:'#2563a8','fill-opacity':.28},s));
+  el('line',{x1:X(xmin),y1:Y(ic+sl*xmin),x2:X(xmax),y2:Y(ic+sl*xmax),stroke:'#d64545','stroke-width':2.5},s);
+  const near=Math.abs(sse-sseReal)/sseReal<0.003;
+  $('#ls_out').innerHTML='Error total (suma de cuadrados):<br><b class="big-num" style="color:'+(near?'var(--green)':'var(--ink)')+'">'+sse.toFixed(1)+'</b><br><span style="font-size:12px;color:var(--muted)">'+(near?'¡Es (casi) el mínimo posible! Esta es la recta real (r='+DATA.reg_r+').':'Mové la recta para achicar el error…')+'</span>';}
+ function rst(){slR.value=R.sl;icR.value=R.ic;upd();}
+ [slR,icR].forEach(x=>x.oninput=upd);$('#ls_reset').onclick=rst;rst();})();
+
+</script>
+</body></html>
